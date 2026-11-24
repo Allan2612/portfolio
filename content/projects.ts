@@ -23,7 +23,7 @@ type Text = {
   summary: string;
   role: string;
   team: string;
-  /** Three short points: the case study’s "In short" box and the home page’s 5-minute mode. */
+  /** Three short points: the case study’s "In short" box and the home page’s "Full detail" mode. */
   keyPoints: [string, string, string];
   /** The project’s strongest fact, set large on the home page when there is no screenshot. */
   highlight: { value: string; label: string };

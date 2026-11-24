@@ -23,8 +23,10 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           <div className="intro-grid">
             <p className="intro-statement rise rise-2">{site.hero.statement}</p>
             <div className="rise rise-3">
-              <p>{site.hero.location}</p>
-              <p className="mt-2 text-soft">{site.hero.education}</p>
+              <p className="font-semibold">{site.hero.status}</p>
+              <p className="mt-1">{site.hero.location}</p>
+              <p className="mt-1">{site.hero.remote}</p>
+              <p className="mt-3 text-soft">{site.hero.education}</p>
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <a href="#work" className="button">
                   {site.hero.primary}
@@ -82,10 +84,20 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                       ))}
                     </ul>
                     <p className="mt-4 text-small text-soft">{p.cardStack.join(" · ")}</p>
-                    <p className="mt-6">
+                    <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
                       <Link href={href} className="read-more">
                         {site.work.readCase} <span aria-hidden="true">→</span>
                       </Link>
+                      {p.links.live && (
+                        <a href={p.links.live} className="link">
+                          {site.work.live} <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                      {p.links.repo && (
+                        <a href={p.links.repo} className="link">
+                          {site.work.code} <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
                     </p>
                   </div>
                   <Link href={href} className="work-visual" tabIndex={-1} aria-hidden="true">
@@ -143,7 +155,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             </dl>
             <div className="split-main">
               <div className="grid gap-5">
-                {/* 1-minute reading: the first paragraph; the other two appear in the 5-minute mode. */}
+                {/* Summary: the first paragraph; the other two appear in "Full detail". */}
                 {site.about.paragraphs.map((p, i) => (
                   <p key={p.slice(0, 24)} className={i === 0 ? "text-lead" : "detail"}>
                     {p}

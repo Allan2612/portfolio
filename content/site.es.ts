@@ -26,7 +26,9 @@ const site: SiteCopy = {
   hero: {
     statement:
       "Construyo aplicaciones web completas con TypeScript y PostgreSQL, y las entrego probadas y en producción.",
-    location: "Pérez Zeledón, Costa Rica · UTC−6 · Disponibilidad inmediata, abierto a trabajo remoto",
+    location: "Pérez Zeledón, Costa Rica (UTC−6)",
+    status: "Disponibilidad inmediata · Junior · Inglés (B2)",
+    remote: "Abierto a trabajo remoto, incluso para equipos de EE. UU. como contratista, con horario completo de la zona central de EE. UU.",
     education: "Egresado de Ingeniería en Sistemas de Información (UNA), graduación en mayo de 2027.",
     primary: "Ver proyectos",
     cv: "Descargar CV",
@@ -36,7 +38,7 @@ const site: SiteCopy = {
       "119 archivos de pruebas en CI, como único desarrollador",
       "Análisis de brechas de 311 requisitos",
     ],
-    reading: { legend: "Leer esta página en", short: "1 minuto", full: "5 minutos" },
+    reading: { legend: "Nivel de detalle", short: "Resumen", full: "Completo" },
   },
   kinds: { live: "En producción", internship: "Práctica profesional", "open-source": "Código abierto" },
   months: ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."],
@@ -44,6 +46,8 @@ const site: SiteCopy = {
   work: {
     heading: "Proyectos destacados",
     readCase: "Leer el caso",
+    live: "Sitio en vivo",
+    code: "Código",
   },
   experience: {
     heading: "Experiencia",
