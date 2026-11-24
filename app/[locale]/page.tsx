@@ -123,16 +123,16 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                     <p className="mt-4 text-small text-soft">{p.cardStack.join(" · ")}</p>
                     <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
                       <Link href={href} className="read-more">
-                        {site.work.readCase} <span className="arrow" aria-hidden="true">→</span>
+                        {site.work.readCase}<span className="sr-only" translate="no"> ({t.title})</span> <span className="arrow" aria-hidden="true">→</span>
                       </Link>
                       {p.links.live && (
                         <a href={p.links.live} className="link">
-                          {site.work.live} <span aria-hidden="true">↗</span>
+                          {site.work.live}<span className="sr-only" translate="no"> ({t.title})</span> <span aria-hidden="true">↗</span>
                         </a>
                       )}
                       {p.links.repo && (
                         <a href={p.links.repo} className="link">
-                          {site.work.code} <span aria-hidden="true">↗</span>
+                          {site.work.code}<span className="sr-only" translate="no"> ({t.title})</span> <span aria-hidden="true">↗</span>
                         </a>
                       )}
                     </p>
@@ -140,7 +140,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                   <Link href={href} className="work-visual" tabIndex={-1} aria-hidden="true">
                     {p.thumb ? (
                       <span className="shutter">
-                        <Image src={p.thumb.src} alt="" sizes="(min-width: 64rem) 45vw, 100vw" className="h-auto w-full" />
+                        <Image src={p.thumb.src} alt={p.thumb.alt[locale]} sizes="(min-width: 64rem) 45vw, 100vw" className="h-auto w-full" />
                       </span>
                     ) : (
                       <span className="tile">
