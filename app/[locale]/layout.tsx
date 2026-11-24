@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { STIX_Two_Text } from "next/font/google";
-import { getSite, isLocale, locales } from "@/lib/i18n";
+import { getSite, isLocale, locales, ogLocale, otherLocale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
 import { themeScript } from "@/lib/theme";
+import { Motion } from "@/components/motion";
 import "../globals.css";
 
 // Self-hosted at build time by next/font, so the CSP can keep font-src 'self'.
@@ -32,7 +33,14 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
       canonical: `/${locale}`,
       languages: { en: "/en", es: "/es", "x-default": "/en" },
     },
-    openGraph: { title: site.meta.title, description: site.meta.description, locale, type: "website" },
+    openGraph: {
+      title: site.meta.title,
+      description: site.meta.description,
+      locale: ogLocale[locale],
+      alternateLocale: ogLocale[otherLocale(locale)],
+      siteName: site.name,
+      type: "website",
+    },
   };
 }
 
@@ -47,7 +55,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Motion />
+      </body>
     </html>
   );
 }

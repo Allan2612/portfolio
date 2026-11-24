@@ -3,8 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer, Header } from "@/components/chrome";
+import { JsonLd, person } from "@/components/json-ld";
 import { getProject, projects } from "@/content/projects";
-import { formatPeriod, getSite, isLocale, otherLocale } from "@/lib/i18n";
+import { caseOutline } from "@/lib/case-outline";
+import { formatPeriod, getSite, isLocale, ogLocale, otherLocale } from "@/lib/i18n";
+import { siteUrl } from "@/lib/site-url";
 
 // Nested under [locale]: called once per locale. With cacheComponents there is no dynamicParams;
 // unknown slugs fall through to notFound() below.
@@ -25,7 +28,14 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projects
       canonical: `/${locale}${path}`,
       languages: { en: `/en${path}`, es: `/es${path}`, "x-default": `/en${path}` },
     },
-    openGraph: { title: t.title, description: t.summary, type: "article" },
+    openGraph: {
+      title: t.title,
+      description: t.summary,
+      locale: ogLocale[locale],
+      alternateLocale: ogLocale[otherLocale(locale)],
+      siteName: getSite(locale).name,
+      type: "article",
+    },
   };
 }
 
@@ -41,15 +51,34 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
   const prev = projects[index - 1];
   const next = projects[index + 1];
   const cs = site.caseStudy;
+  const outline = caseOutline(slug, locale);
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@type": "Article",
+          headline: t.title,
+          description: t.summary,
+          inLanguage: locale,
+          url: `${siteUrl}/${locale}/projects/${slug}`,
+          author: person(locale),
+        }}
+      />
       <Header locale={locale} switchPath={`/${otherLocale(locale)}/projects/${slug}`} />
+      {/* Reading progress for a long case study (scroll-driven CSS; absent where unsupported). */}
+      <div className="read-progress" aria-hidden="true" />
       <main id="main">
         <article>
           <header className="col pt-[max(3rem,10vh)]">
             <p className="text-small">
               <a href={`/${locale}#work`} className="link">{cs.back}</a>
+              {outline.minutes && (
+                <span className="text-soft">
+                  {" · "}
+                  {outline.minutes} {cs.minRead}
+                </span>
+              )}
             </p>
             <h1 className="page-title mt-6 rise" translate="no">{t.title}</h1>
             <p className="mt-5 max-w-measure text-lead rise rise-2">{t.summary}</p>
@@ -69,7 +98,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
 
           {/* For readers who will not read the whole case: three points, set apart. */}
           <section className="col mt-12" aria-labelledby="in-short">
-            <div className="in-short max-w-wide">
+            <div className="in-short max-w-wide" data-reveal>
               <h2 id="in-short" className="text-small font-semibold">
                 {cs.inShort}
               </h2>
@@ -82,37 +111,51 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
           </section>
 
           <div className="split mt-14">
-            <dl className="facts split-side">
-              <div>
-                <dt>{cs.role}</dt>
-                <dd>{t.role}</dd>
-              </div>
-              <div>
-                <dt>{cs.period}</dt>
-                <dd>{formatPeriod(project.start, project.end, locale)}</dd>
-              </div>
-              <div>
-                <dt>{cs.team}</dt>
-                <dd>{t.team}</dd>
-              </div>
-              <div>
-                <dt>{cs.status}</dt>
-                <dd>{site.kinds[project.kind]}</dd>
-              </div>
-              <div>
-                <dt>{cs.stack}</dt>
-                <dd>{project.stack.join(", ")}</dd>
-              </div>
-              {(project.links.live || project.links.repo) && (
+            <div className="split-side">
+              <dl className="facts">
                 <div>
-                  <dt>{cs.links}</dt>
-                  <dd className="grid gap-1">
-                    {project.links.live && <a href={project.links.live} className="link">{cs.live}</a>}
-                    {project.links.repo && <a href={project.links.repo} className="link">{cs.repo}</a>}
-                  </dd>
+                  <dt>{cs.role}</dt>
+                  <dd>{t.role}</dd>
                 </div>
+                <div>
+                  <dt>{cs.period}</dt>
+                  <dd>{formatPeriod(project.start, project.end, locale)}</dd>
+                </div>
+                <div>
+                  <dt>{cs.team}</dt>
+                  <dd>{t.team}</dd>
+                </div>
+                <div>
+                  <dt>{cs.status}</dt>
+                  <dd>{site.kinds[project.kind]}</dd>
+                </div>
+                <div>
+                  <dt>{cs.stack}</dt>
+                  <dd>{project.stack.join(", ")}</dd>
+                </div>
+                {(project.links.live || project.links.repo) && (
+                  <div>
+                    <dt>{cs.links}</dt>
+                    <dd className="grid gap-1">
+                      {project.links.live && <a href={project.links.live} className="link">{cs.live}</a>}
+                      {project.links.repo && <a href={project.links.repo} className="link">{cs.repo}</a>}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+              {outline.headings.length > 1 && (
+                <nav className="toc" aria-label={cs.onThisPage}>
+                  <p className="text-small text-soft">{cs.onThisPage}</p>
+                  <ul>
+                    {outline.headings.map((h) => (
+                      <li key={h.id}>
+                        <a href={`#${h.id}`}>{h.text}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
               )}
-            </dl>
+            </div>
             <div className="split-main prose">
               {!project.links.repo && <p className="text-small text-soft">{cs.private}</p>}
               <Body />
@@ -128,21 +171,27 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
                 {cs.ctaButton}
               </a>
             </p>
-            {(prev || next) && (
-              <nav className="mt-12 flex flex-wrap justify-between gap-6" aria-label={`${cs.previous} / ${cs.next}`}>
-                {prev && (
-                  <Link href={`/${locale}/projects/${prev.slug}`} rel="prev" className="link">
-                    {cs.previous}: {prev.text[locale].title}
-                  </Link>
-                )}
-                {next && (
-                  <Link href={`/${locale}/projects/${next.slug}`} rel="next" className="link">
-                    {cs.next}: {next.text[locale].title}
-                  </Link>
-                )}
-              </nav>
-            )}
           </div>
+          {(prev || next) && (
+            <nav className="pager mt-14 max-w-wide" aria-label={`${cs.previous} / ${cs.next}`}>
+              {prev && (
+                <Link href={`/${locale}/projects/${prev.slug}`} rel="prev" className="pager-link">
+                  <span className="text-small text-soft">← {cs.previous}</span>
+                  <span className="pager-title" translate="no">
+                    {prev.text[locale].title}
+                  </span>
+                </Link>
+              )}
+              {next && (
+                <Link href={`/${locale}/projects/${next.slug}`} rel="next" className="pager-link pager-next">
+                  <span className="text-small text-soft">{cs.next} →</span>
+                  <span className="pager-title" translate="no">
+                    {next.text[locale].title}
+                  </span>
+                </Link>
+              )}
+            </nav>
+          )}
         </aside>
       </main>
       <Footer locale={locale} />

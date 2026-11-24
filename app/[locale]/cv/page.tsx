@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Footer, Header } from "@/components/chrome";
-import { formatPeriod, getSite, isLocale, otherLocale } from "@/lib/i18n";
+import { formatPeriod, getSite, isLocale, ogLocale, otherLocale } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/cv">): Promise<Metadata> {
   const { locale } = await params;
@@ -11,6 +11,15 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/cv">): P
     title: `${site.cvPage.title} · ${site.name}`,
     description: site.cvPage.description,
     alternates: { canonical: `/${locale}/cv`, languages: { en: "/en/cv", es: "/es/cv", "x-default": "/en/cv" } },
+    // Own title and description when shared; the image stays the home card (inherited from the layout).
+    openGraph: {
+      title: `${site.cvPage.title} · ${site.name}`,
+      description: site.cvPage.description,
+      locale: ogLocale[locale],
+      alternateLocale: ogLocale[otherLocale(locale)],
+      siteName: site.name,
+      type: "website",
+    },
   };
 }
 
