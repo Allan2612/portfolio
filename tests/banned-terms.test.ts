@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 import { compileTerms, findBanned, parseTerms } from "../scripts/banned-terms.mjs";
 
 // Fake terms only: the real list is private and never enters the repo.
@@ -26,5 +27,14 @@ describe("banned-terms", () => {
 
   it("returns nothing for clean text", () => {
     expect(findBanned("A modular ERP for a software company.", compiled)).toEqual([]);
+  });
+});
+
+describe("banned-terms on PDFs", () => {
+  it("reads the text inside a compressed PDF, so a term there is caught", async () => {
+    const { pdfText } = await import("../scripts/banned-terms.mjs");
+    const text = await pdfText(readFileSync("public/cv/Allan-Vargas-Torres-CV-EN.pdf"));
+    // A public phrase stands in for a banned one: the point is that PDF text reaches the matcher.
+    expect(findBanned(text, compileTerms(["Perez Zeledon"]))).toEqual(["Perez Zeledon"]);
   });
 });
