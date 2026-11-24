@@ -59,7 +59,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body>
         {children}
         <Motion />
-        {isLocale(locale) && <Lightbox close={getSite(locale).nav.close} />}
+        {isLocale(locale) && <Lightbox close={getSite(locale).nav.close} zoom={getSite(locale).nav.zoom} />}
       </body>
     </html>
   );

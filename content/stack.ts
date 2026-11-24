@@ -18,6 +18,7 @@ const techs: Record<string, Tech> = {
   SQL: { used: both("TyT · SaaS · ERP · La Aguja de Oro") },
   "HTML/CSS": { icon: "html5", used: both(`TyT · ${site.en}`, `TyT · ${site.es}`) },
   C: { icon: "c", used: both("Quimera") },
+  "C++": { icon: "cplusplus" },
   "Java (coursework)": { icon: "openjdk", used: both("University coursework") },
   "Java (cursos)": { icon: "openjdk", used: both("Cursos de la universidad") },
   React: { icon: "react", used: both(`TyT · SaaS · ${site.en}`, `TyT · SaaS · ${site.es}`) },
