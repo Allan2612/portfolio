@@ -3,19 +3,20 @@ import type { StaticImageData } from "next/image";
 import type { Locale } from "@/lib/i18n";
 import tytHomeEn from "./images/tyt/home-en.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
-import tytServices from "./images/tyt/services.webp";
 import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
 import InvoicingEs from "./projects/e-invoicing.es.mdx";
 import MikuEn from "./projects/miku.en.mdx";
 import MikuEs from "./projects/miku.es.mdx";
+import RuticaEn from "./projects/rutica.en.mdx";
+import RuticaEs from "./projects/rutica.es.mdx";
 import ErpEn from "./projects/modular-erp.en.mdx";
 import ErpEs from "./projects/modular-erp.es.mdx";
 import TytEn from "./projects/tyt.en.mdx";
 import TytEs from "./projects/tyt.es.mdx";
 
-export type Kind = "live" | "internship" | "open-source";
+export type Kind = "live" | "internship" | "open-source" | "course";
 
 type Text = {
   title: string;
@@ -61,10 +62,10 @@ export const projects: Project[] = [
       es: { src: tytHomeEs, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
     },
     thumb: {
-      src: tytServices,
+      src: tytHomeEn,
       alt: {
-        en: "TyT services page: a large heading, filters by area and service cards with photos.",
-        es: "Página de servicios de TyT: un título grande, filtros por área y tarjetas de servicio con fotos.",
+        en: "TyT Tecnología home page: security cameras and computers, with the services as four blocks built from the brand’s shapes.",
+        es: "Inicio de TyT Tecnología: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca.",
       },
     },
     text: {
@@ -166,6 +167,42 @@ export const projects: Project[] = [
       },
     },
     body: { en: MikuEn, es: MikuEs },
+  },
+  {
+    slug: "rutica",
+    kind: "course",
+    start: "2026-01",
+    end: null,
+    stack: ["Expo 54", "React Native 0.81", "Expo Router", "TypeScript", "Supabase (PostgreSQL, Auth, Storage, Edge Functions)", "Row-level security", "TanStack Query", "Zustand", "React Hook Form + Zod", "PGlite", "GitHub Actions", "Vercel"],
+    cardStack: ["React Native", "Expo", "Supabase", "PostgreSQL (RLS)"],
+    links: { repo: "https://github.com/Allan2612/app-rutica" },
+    text: {
+      en: {
+        title: "Rutica",
+        summary: "Mobile app for nearby businesses, events and deals, built with another student. I audited it end to end and fixed what I found before production.",
+        role: "Developer with another student; the audit and the fixes are mine",
+        team: "In a pair (course project); audit and fixes on my own",
+        keyPoints: [
+          "A mobile app built in a pair, then audited end to end on my own",
+          "More than 140 findings turned into an 88-task plan, carried out and released",
+          "Security rules enforced by the database and checked in CI on every push",
+        ],
+        highlight: { value: "140+", label: "audit findings in 8 reports, from security to legal compliance" },
+      },
+      es: {
+        title: "Rutica",
+        summary: "App móvil de comercios, eventos y promociones cercanos, desarrollada en pareja. La auditoré de punta a punta y corregí lo encontrado antes de producción.",
+        role: "Desarrollador junto a otro estudiante; la auditoría y las correcciones son mías",
+        team: "En pareja (proyecto de curso); auditoría y correcciones por mi cuenta",
+        keyPoints: [
+          "Una app móvil desarrollada en pareja y después auditada de punta a punta por mi cuenta",
+          "Más de 140 hallazgos convertidos en un plan de 88 tareas, ejecutado y publicado",
+          "Reglas de seguridad que hace cumplir la base de datos, revisadas en CI en cada push",
+        ],
+        highlight: { value: "140+", label: "hallazgos de auditoría en 8 informes, de la seguridad al cumplimiento legal" },
+      },
+    },
+    body: { en: RuticaEn, es: RuticaEs },
   },
   {
     slug: "modular-erp",

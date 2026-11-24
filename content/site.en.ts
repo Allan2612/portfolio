@@ -40,7 +40,7 @@ const site = {
     localTime: "local time",
     reading: { legend: "Detail level", short: "Summary", full: "Full detail" },
   },
-  kinds: { live: "Live", internship: "Internship", "open-source": "Open source" },
+  kinds: { live: "Live", internship: "Internship", "open-source": "Open source", course: "Course project" },
   months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   present: "Present",
   work: {
@@ -192,6 +192,13 @@ const site = {
         note: "Open source (MIT)",
         text: "Desktop voice assistant: local Whisper, Gemini function calling over a closed tool set, and a Live2D avatar. Designed to respond in under 3 s and to release the GPU when idle.",
         href: "https://github.com/Allan2612/miku-assistant",
+      },
+      {
+        name: "Rutica",
+        stack: "Expo, React Native, Supabase, TanStack Query",
+        note: "Course project, pair work",
+        text: "Mobile app for nearby businesses, events and deals, co-developed with another student.",
+        href: "https://github.com/Allan2612/app-rutica",
       },
       {
         name: "PlanTica",

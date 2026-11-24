@@ -1,0 +1,46 @@
+## The problem
+
+Rutica is a mobile app for discovering what is nearby in Costa Rica: businesses, attractions, events and promotions, on a map, with reviews and favorites. People publish their own businesses, attractions and events, business owners post promotions, and premium plans give owners more room.
+
+I built it with another student as a course project. Months later, before putting it in production, it needed a hard look: an app where anyone can publish content, rate others and pay for a plan has to hold up when someone does not use it the way it was meant to be used.
+
+## What I did
+
+- **Audited the whole repository on my own:** 8 reports with more than 140 findings, covering queries and the database, UX, performance, functional bugs, security, architecture, legal compliance and code quality.
+- **Turned the audit into a plan of 88 tasks in 8 phases** and carried it out, logging every new problem that appeared along the way: 13 more, each with its status.
+- **Moved the rules into the database.** Who can approve a subscription, which role a new account gets, what happens when approved content is edited, how much an owner can publish: all of it is now enforced by PostgreSQL triggers and row-level security, not only by the app.
+- **Closed the client-side holes:** user content shown inside maps is escaped, links are validated before they are opened or saved, every admin route is protected, and the email functions require a session.
+- **Legal basics:** explicit consent at sign-up, a privacy policy draft under Costa Rica’s data protection law, and account deletion from inside the app, which the app stores require.
+- **Performance and bugs:** a global cache policy for queries, reviews loaded on demand, counts from aggregated queries, and fixes for a crash in the premium dashboard and for sessions that were not kept whole.
+- **A safe path to production:** CI on every push and pull request, `main` and `develop` branches on Vercel, and the migration rehearsed on a copy of the production database before it ran for real.
+
+## How it works now
+
+<FlowDiagram
+  label="From audit to production"
+  steps={[
+    ["Audit", "8 reports, more than 140 findings, each with an ID"],
+    ["Plan", "88 tasks in 8 phases, each linked to the findings it closes"],
+    ["One migration", "Every database change in a single idempotent script, inside a transaction"],
+    ["Tested in CI", "PGlite applies the migration twice and checks 28 security rules"],
+    ["Release", "Rehearsed on a copy of production, then applied and published"],
+  ]}
+  caption="The app code works before and after the migration, so the release order cannot break it."
+/>
+
+### One migration, safe to run twice
+
+All the model changes live in one script. It is idempotent, so running it a second time changes nothing, and it runs inside a transaction, so a failure leaves the database as it was. That made it possible to rehearse it on a copy of production and then apply the same file with confidence.
+
+### Security rules where they cannot be skipped
+
+A rule that only lives in the app can be skipped by anyone who talks to the database API directly. So the rules that matter (subscriptions, roles, moderation, publishing limits) are checked by the database itself. A test applies the migration to an in-memory PostgreSQL (PGlite) and checks 28 of those rules on every push; if one stops holding, CI fails.
+
+## Result
+
+- **Rutica is in production**, with CI, preview deployments for `develop` and every pull request, and a documented release order.
+- 87 of the plan’s 88 tasks are done. The last one is partial: loose `any` types went from 617 to 455, with a cap in CI so the number cannot grow back. A few legal details (tax, refunds, minimum age) are drafted and marked for a lawyer to confirm.
+
+## What I took from it
+
+Auditing code I helped write was humbling. The most serious problems were not in the screens I remembered but in what the database allowed when nobody went through the app. Since then I put the rules that protect people’s data where they cannot be skipped, and I write the test that proves they hold.
