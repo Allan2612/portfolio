@@ -3,7 +3,7 @@
 Personal portfolio site: who I am, what I build, and case studies of work whose code is private.
 Bilingual (English first, Spanish), fully static, deployed on Vercel.
 
-> Status: **Phase 0** (project setup). Content and visual design land in the next phases.
+> Status: **Phase 3**: home page and the first case study (TyT). The other four case studies come next.
 
 ## Stack
 
@@ -40,9 +40,12 @@ pnpm cv:public      # rebuild public/cv/*.pdf (needs the private CV sources and 
 ## Structure
 
 ```
-app/[locale]/        pages (one tree per language)
-content/             site copy and profile data, one file per language
-lib/                 i18n helpers
+app/[locale]/        pages (one tree per language): home and projects/[slug]
+app/globals.css      design tokens (colour, type, layout) and the few component styles
+components/          header, footer, MDX figures and diagrams
+content/             site copy (site.<locale>.ts), project metadata (projects.ts),
+                     case studies (projects/<slug>.<locale>.mdx) and their images
+lib/                 i18n helpers and date formatting
 scripts/             content guard, public CV build
 tests/  e2e/         Vitest and Playwright
 public/cv/           public CV PDFs

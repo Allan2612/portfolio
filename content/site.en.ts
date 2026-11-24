@@ -2,21 +2,174 @@
 const site = {
   name: "Allan Vargas Torres",
   role: "Full Stack Developer",
-  location: "Pérez Zeledón, Costa Rica · UTC−6 · Open to remote",
   meta: {
     title: "Allan Vargas Torres · Full Stack Developer",
     description:
-      "Full stack developer in Costa Rica building web applications with TypeScript and PostgreSQL.",
+      "Full stack developer in Costa Rica. I build complete web applications with TypeScript and PostgreSQL, and ship them tested and in production.",
+    notFoundTitle: "Page not found",
   },
   nav: {
+    label: "Main",
+    work: "Projects",
+    experience: "Experience",
+    about: "About",
+    contact: "Contact",
     switchLocale: "Español",
-    switchLocaleLabel: "Ver este sitio en español",
+    skip: "Skip to content",
+    home: "Home",
+  },
+  hero: {
+    statement:
+      "I build complete web applications with TypeScript and PostgreSQL, and ship them tested and in production.",
+    location: "Pérez Zeledón, Costa Rica · UTC−6 · Available now, open to remote",
+    education: "Information Systems Engineering student, coursework complete, graduating May 2027.",
+    primary: "View projects",
+    cv: "Download CV",
+    contact: "Contact",
+    proof: [
+      "2 client systems in production",
+      "119 test files in CI, as the sole developer",
+      "311-requirement gap analysis",
+    ],
+    reading: { legend: "Read this page in", short: "1 minute", full: "5 minutes" },
+  },
+  kinds: { live: "Live", internship: "Internship", "open-source": "Open source" },
+  months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  present: "Present",
+  work: {
+    heading: "Selected work",
+    readCase: "Read the case study",
+    caseSoon: "Case study coming soon",
+  },
+  experience: {
+    heading: "Experience",
+    items: [
+      {
+        role: "Software Development Intern",
+        org: "Software company",
+        start: "2026-07",
+        end: "2026-11",
+        line: "Modular ERP and e-invoicing platform; university-supervised internship.",
+        detail: [
+          "Implemented accounting-module rules with TDD in NestJS, Drizzle and PostgreSQL. Top contributor on a team of five; 3,500+ tests in the codebase.",
+          "Gap analysis of the same ERP against an international accounting standard: 311 requirements checked against the code and the running system.",
+          "Full-repository audit of a multi-tenant e-invoicing SaaS; fixed its 17 findings before launch and proved tenant isolation with PostgreSQL RLS in CI.",
+        ],
+      },
+      {
+        role: "Full Stack Developer (independent)",
+        org: "TyT Tecnología",
+        start: "2026-07",
+        end: null,
+        line: "Website, catalog and admin dashboard, as the sole developer.",
+        detail: [
+          "Designed, built and deployed the website, product catalog and admin dashboard (Next.js, Prisma, PostgreSQL, Auth.js, Cloudflare R2).",
+          "Bilingual site with technical SEO, WhatsApp order handoff, and AI-generated promotions reviewed before publishing.",
+        ],
+      },
+      {
+        role: "Full Stack Developer",
+        org: "La Aguja de Oro",
+        start: "2024-09",
+        end: null,
+        line: "Odoo 17 ERP built with a partner; started as a university project.",
+        detail: [
+          "Built the sales, quick-service and reporting modules, co-developed repairs and customized warranties, with Costa Rican fiscal print formats. The business runs on it daily.",
+          "Set up and maintain the production server on DigitalOcean: Nginx, HTTPS, hardened SSH, firewall and daily backups.",
+        ],
+      },
+    ],
+  },
+  about: {
+    heading: "About",
+    paragraphs: [
+      "I build web applications end to end: the data model, the API, the interface, the tests and the server they run on. For TyT that meant working out with the owners what the shop needed, designing the data model, building the site and its dashboard, and deploying it. For La Aguja de Oro it meant learning Odoo well enough to fit it to how a tailoring shop actually works, and then setting up and maintaining the server it runs on.",
+      "My habits: tests first when the rules matter, CI on every push, and documentation that someone else can pick up. During my internship that meant writing accounting rules test-first on a team of five, and auditing an e-invoicing platform before its launch.",
+      "I use AI coding assistants every day. Every change still goes through tests and my own review, and I can explain any line I ship. On the ERP gap analysis I designed the AI agents that cross-checked each requirement, including one whose only job was to try to disprove every “missing” verdict; I integrated and validated what they found.",
+    ],
+    facts: [
+      { label: "Based in", value: "Pérez Zeledón, Costa Rica (UTC−6)" },
+      { label: "Education", value: "Universidad Nacional de Costa Rica, graduating May 2027" },
+      { label: "Languages", value: "Spanish (native), English (B2)" },
+    ],
+    stackHeading: "Stack",
+    stack: [
+      { label: "Programming", items: "TypeScript, JavaScript, Python, SQL, HTML/CSS, C; Java (coursework)" },
+      { label: "Frontend & mobile", items: "React, Next.js, React Native, Expo, Tailwind CSS, shadcn/ui" },
+      { label: "Backend", items: "NestJS, Node.js, FastAPI, REST APIs, Odoo" },
+      { label: "Data", items: "PostgreSQL, Prisma, Drizzle, Supabase, Firebase; Oracle (coursework)" },
+      {
+        label: "DevOps & quality",
+        items: "Git, GitHub Actions, Docker, Vitest, Playwright, Linux (Debian/Ubuntu), Nginx, DigitalOcean, Vercel",
+      },
+      { label: "Practices", items: "TDD, Scrum (weekly sprints), ports and adapters, security reviews, LLM integration" },
+    ],
+  },
+  more: {
+    heading: "More projects",
+    items: [
+      {
+        name: "PlanTica",
+        text: "Plant identification from a photo: an on-device pre-check (TensorFlow.js, COCO-SSD) and a vision LLM (Llama 4 Scout via Groq) behind a FastAPI backend. Solo project.",
+        href: "https://github.com/Allan2612/plantApp",
+      },
+      {
+        name: "Digital Kids",
+        text: "Assessment and reporting system for a daycare, built by a team of about 30. Top contributor to the frontend and co-top contributor to the backend.",
+        href: null,
+      },
+      {
+        name: "Quimera",
+        text: "A programming language designed with another student: EBNF grammar, lexer, parser, AST and interpreter in C, plus a PyQt5 editor.",
+        href: null,
+      },
+      {
+        name: "Andromeda",
+        text: "Team course project: a mobile survival app with an offline queue for AI image recognition. I built the resources, trips, dashboards and alerts.",
+        href: null,
+      },
+    ],
+    code: "Code on GitHub",
+  },
+  contactSection: {
+    heading: "Contact",
+    prompt: "Open to full-time roles, remote or in Costa Rica.",
+    lead: "Let's talk.",
+    cvLabel: "CV (PDF)",
+    cvEn: "English",
+    cvEs: "Spanish",
+  },
+  footer: { description: "Allan Vargas Torres · Full stack developer", source: "Source on GitHub" },
+  caseStudy: {
+    role: "Role",
+    period: "Period",
+    team: "Team",
+    stack: "Stack",
+    status: "Status",
+    links: "Links",
+    live: "Visit the live site",
+    repo: "View the code on GitHub",
+    private: "The code is private, so this case study describes the work instead of linking to it.",
+    previous: "Previous project",
+    next: "Next project",
+    cta: "Want to hear more about this project? I'm happy to walk through it in an interview.",
+    ctaButton: "Get in touch",
+    back: "All projects",
+  },
+  notFound: {
+    heading: "Page not found",
+    text: "The page you're looking for doesn't exist or has moved.",
+    home: "Go to the home page",
+    projects: "See the projects",
+    cv: "Download the CV",
   },
   contact: {
     email: "alanvartor@gmail.com",
     linkedin: "https://www.linkedin.com/in/allanvargastorres/",
     github: "https://github.com/Allan2612",
+    repo: "https://github.com/Allan2612/portfolio",
   },
+  cv: { en: "/cv/Allan-Vargas-Torres-CV-EN.pdf", es: "/cv/Allan-Vargas-Torres-CV-ES.pdf" },
 };
 
 export type SiteCopy = typeof site;

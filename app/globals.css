@@ -97,6 +97,398 @@ h3 {
   color: var(--accent-ink);
 }
 
+a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  transition: text-decoration-color 150ms;
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Layout ---------- */
+
+/* The column: every block shares this left edge. */
+.col {
+  padding-left: var(--spacing-inset);
+  padding-right: var(--spacing-gutter);
+}
+
+/* Facts beside the text on wide screens: the facts sit in the margin left of the column edge. */
+.split {
+  padding-left: var(--spacing-inset);
+  padding-right: var(--spacing-gutter);
+  display: grid;
+  gap: 2rem;
+}
+.split-main {
+  max-width: var(--container-measure);
+  min-width: 0;
+}
+@media (min-width: 80rem) {
+  .split {
+    padding-left: var(--spacing-gutter);
+    grid-template-columns: calc(var(--spacing-inset) - var(--spacing-gutter)) minmax(0, var(--container-measure));
+    column-gap: 0;
+  }
+  .split-side {
+    grid-column: 1;
+    padding-right: 2.5rem;
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+  .split-main,
+  .split-title {
+    grid-column: 2;
+  }
+  /* A title above both columns keeps the column edge; the side facts start level with the text. */
+  .split-title + .split-side,
+  .split-title ~ .split-main {
+    grid-row: 2;
+  }
+}
+
+.section-title {
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+  font-weight: 600;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--spacing-gutter);
+  top: -4rem;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.5rem 0.75rem;
+}
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* The one filled control on a screen: brass with ink text. */
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.7rem 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 150ms, transform 150ms;
+}
+.button:hover {
+  background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+.button:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Facts (label above value) ---------- */
+
+.facts {
+  display: grid;
+  align-content: start;
+  gap: 1.1rem;
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+}
+.facts dt {
+  color: var(--soft);
+}
+
+/* ---------- Two-ended rows: text at the left, a value at the far right ---------- */
+
+.two-ends {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+}
+.two-ends-value {
+  color: var(--soft);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Reading length: CSS only. "5 minutes" reveals every .detail block on the page. ---------- */
+
+.reading {
+  border: 0;
+  padding: 0;
+  margin-inline: 0;
+}
+.reading-options {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  background: var(--surface);
+  padding: 0.25rem;
+  gap: 0.25rem;
+}
+.reading label {
+  position: relative;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  font-size: var(--text-small);
+  transition: background-color 150ms, color 150ms;
+}
+.reading input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.reading label:has(input:checked) {
+  background: var(--ink);
+  color: var(--paper);
+}
+.reading label:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.detail {
+  display: none;
+}
+html:has(#reading-full:checked) .detail {
+  display: block;
+}
+html:has(#reading-full:checked) ul.detail {
+  display: grid;
+}
+
+/* ---------- Selected work: a ledger with a preview beside it ---------- */
+
+.ledger-section {
+  position: relative;
+}
+.ledger {
+  display: grid;
+  gap: 1.5rem;
+}
+.ledger-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 1rem;
+  align-items: baseline;
+  text-decoration: none;
+  transition: color 150ms;
+}
+.ledger-name {
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+}
+a.ledger-row .ledger-name {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+.ledger-kind {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: var(--text-small);
+  color: var(--soft);
+}
+.ledger-year {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: var(--text-small);
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+}
+.ledger-summary {
+  margin-top: 0.35rem;
+}
+.ledger-detail > * + * {
+  margin-top: 0.35rem;
+}
+.ledger-detail {
+  margin-top: 0.5rem;
+}
+.ledger-preview {
+  margin-top: 1rem;
+  width: 100%;
+  height: auto;
+}
+@media (min-width: 48rem) {
+  .ledger-row {
+    grid-template-columns: minmax(0, 1fr) 11rem 3rem;
+  }
+  .ledger-kind {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .ledger-year {
+    grid-column: 3;
+    text-align: right;
+  }
+}
+/* Wide screens: the preview leaves the list and sits in the empty space to its right.
+   The first project's preview shows by default; hovering or focusing a project with a preview swaps it. */
+@media (min-width: 80rem) {
+  .ledger > li:hover .ledger-row,
+  .ledger > li:focus-within .ledger-row {
+    color: var(--ink);
+  }
+  .ledger:has(> li:hover) > li:not(:hover) .ledger-row {
+    color: var(--soft);
+  }
+  .ledger-preview {
+    position: absolute;
+    top: calc(var(--spacing-section) + 4rem);
+    left: calc(var(--spacing-inset) + var(--container-measure) + 4rem);
+    width: min(24rem, calc(100% - var(--spacing-inset) - var(--container-measure) - 4rem - var(--spacing-gutter)));
+    margin: 0;
+    opacity: 0;
+    transition: opacity 200ms;
+    pointer-events: none;
+  }
+  .ledger > li:first-child .ledger-preview {
+    opacity: 1;
+  }
+  .ledger:has(> li:is(:hover, :focus-within) .ledger-preview) .ledger-preview {
+    opacity: 0;
+  }
+  .ledger > li:is(:hover, :focus-within) .ledger-preview {
+    opacity: 1;
+  }
+}
+
+/* ---------- Case study text ---------- */
+
+.prose > * + * {
+  margin-top: 1rem;
+}
+.prose h2 {
+  margin-top: 3.5rem;
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+  font-weight: 600;
+}
+.prose h3 {
+  margin-top: 2.25rem;
+  font-weight: 600;
+}
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.75rem;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+.prose li + li {
+  margin-top: 0.5rem;
+}
+.prose strong {
+  font-weight: 600;
+}
+.prose code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--surface);
+  padding: 0.1em 0.3em;
+}
+.prose figure {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+figcaption {
+  margin-top: 0.75rem;
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+  color: var(--soft);
+}
+
+/* A screenshot beside its phone version; the pair may run wider than the text column. */
+.figure-pair-media {
+  display: grid;
+  grid-template-columns: minmax(0, 3.4fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+@media (min-width: 80rem) {
+  .figure-pair {
+    width: min(var(--container-wide), calc(100vw - var(--spacing-inset) - var(--spacing-gutter)));
+  }
+}
+
+/* Diagrams drawn in HTML: filled blocks, no outlines; readable at any width and in both themes. */
+.diagram {
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+}
+.diagram-core {
+  display: grid;
+  gap: 0.25rem;
+  background: var(--surface-2);
+  padding: 1rem 1.25rem;
+}
+.diagram-core strong {
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+.diagram-rows {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.prose .diagram-rows {
+  list-style: none;
+  padding-left: 0;
+}
+.prose .diagram-rows li + li {
+  margin-top: 0;
+}
+.diagram-rows li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr);
+  align-items: stretch;
+}
+.diagram-port,
+.diagram-adapter {
+  background: var(--surface);
+  padding: 0.6rem 0.9rem;
+}
+/* Soft ink on a surface falls under 4.5:1, so text inside blocks stays in full ink. */
+.diagram-adapter {
+  font-weight: 600;
+}
+.diagram-adapter small {
+  display: block;
+  font-weight: 400;
+  font-size: inherit;
+}
+.diagram-arrow {
+  position: relative;
+}
+.diagram-arrow::before {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  right: 0.55rem;
+  top: 50%;
+  border-top: 2px solid var(--soft);
+}
+.diagram-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0.35rem;
+  top: calc(50% - 0.3rem);
+  border-left: 0.45rem solid var(--soft);
+  border-top: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid transparent;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

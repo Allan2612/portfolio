@@ -16,9 +16,19 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   if (!isLocale(locale)) return {};
   const site = getSite(locale);
   return {
+    // Vercel sets this to the production domain, so a custom domain needs no code change.
+    metadataBase: new URL(
+      process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : "http://localhost:3000",
+    ),
     title: site.meta.title,
     description: site.meta.description,
-    alternates: { languages: { en: "/en", es: "/es", "x-default": "/en" } },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: { en: "/en", es: "/es", "x-default": "/en" },
+    },
+    openGraph: { title: site.meta.title, description: site.meta.description, locale, type: "website" },
   };
 }
 
