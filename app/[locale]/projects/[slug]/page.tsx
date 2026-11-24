@@ -51,7 +51,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
             <p className="text-small">
               <a href={`/${locale}#work`} className="link">{cs.back}</a>
             </p>
-            <h1 className="page-title mt-6 rise">{t.title}</h1>
+            <h1 className="page-title mt-6 rise" translate="no">{t.title}</h1>
             <p className="mt-5 max-w-measure text-lead rise rise-2">{t.summary}</p>
           </header>
 

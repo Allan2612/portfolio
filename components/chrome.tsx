@@ -12,7 +12,7 @@ export function Header({ locale, switchPath }: { locale: Locale; switchPath: str
       <a href="#main" className="skip-link">
         {site.nav.skip}
       </a>
-      <Link href={home} className="font-semibold no-underline">
+      <Link href={home} className="font-semibold no-underline" translate="no">
         {site.name}
       </Link>
       <nav aria-label={site.nav.label} className="order-last w-full sm:order-none sm:ml-auto sm:w-auto">
