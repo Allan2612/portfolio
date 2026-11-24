@@ -1,4 +1,4 @@
-import Image, { type ImageProps, type StaticImageData } from "next/image";
+import Image, { getImageProps, type ImageProps, type StaticImageData } from "next/image";
 
 type Props = Omit<ImageProps, "src"> & {
   src: StaticImageData;
@@ -23,10 +23,23 @@ export function ThemedImage({ zoom, ...props }: Props) {
   );
 }
 
-function Picture({ src, dark, alt, ...rest }: Omit<Props, "zoom">) {
-  if (!dark) return <Image src={src} alt={alt} {...rest} />;
+function Picture({ src, dark, alt, fetchPriority, ...rest }: Omit<Props, "zoom">) {
+  if (!dark) return <Image src={src} alt={alt} fetchPriority={fetchPriority} {...rest} />;
+  // Above the fold (the case cover): fetch early only the copy the system theme shows. Marking both
+  // copies high priority made them compete and pushed back the largest paint.
+  const preloads =
+    fetchPriority === "high"
+      ? ([
+          [src, "(prefers-color-scheme: light)"],
+          [dark, "(prefers-color-scheme: dark)"],
+        ] as const).map(([image, media]) => {
+          const { props } = getImageProps({ src: image, alt, sizes: rest.sizes });
+          return <link key={media} rel="preload" as="image" href={props.src} imageSrcSet={props.srcSet} imageSizes={props.sizes} media={media} fetchPriority="high" />;
+        })
+      : null;
   return (
     <span className="themed">
+      {preloads}
       <span className="themed-light">
         <Image src={src} alt={alt} {...rest} />
       </span>

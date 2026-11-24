@@ -22,6 +22,7 @@ const site: SiteCopy = {
     theme: "Cambiar entre claro y oscuro",
     top: "Volver arriba",
     close: "Cerrar",
+    zoom: "Ajustar a la pantalla o ver a tamaño completo",
     skip: "Saltar al contenido",
     home: "Inicio",
   },
@@ -105,7 +106,7 @@ const site: SiteCopy = {
     ],
     stackHeading: "Tecnologías",
     stack: [
-      { label: "Lenguajes", items: "TypeScript, JavaScript, Python, SQL, HTML/CSS, C; Java (cursos)" },
+      { label: "Lenguajes", items: "TypeScript, JavaScript, Python, SQL, HTML/CSS, C, C++; Java (cursos)" },
       { label: "Frontend y móvil", items: "React, Next.js, React Native, Expo, Tailwind CSS, shadcn/ui" },
       { label: "Backend", items: "NestJS, Node.js, FastAPI, API REST, Odoo" },
       { label: "Datos", items: "PostgreSQL, Prisma, Drizzle, Supabase, Firebase; Oracle (cursos)" },

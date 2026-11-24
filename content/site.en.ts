@@ -20,6 +20,7 @@ const site = {
     theme: "Switch between light and dark",
     top: "Back to top",
     close: "Close",
+    zoom: "Fit to screen or view at full size",
     skip: "Skip to content",
     home: "Home",
   },
@@ -103,7 +104,7 @@ const site = {
     ],
     stackHeading: "Stack",
     stack: [
-      { label: "Programming", items: "TypeScript, JavaScript, Python, SQL, HTML/CSS, C; Java (coursework)" },
+      { label: "Programming", items: "TypeScript, JavaScript, Python, SQL, HTML/CSS, C, C++; Java (coursework)" },
       { label: "Frontend & mobile", items: "React, Next.js, React Native, Expo, Tailwind CSS, shadcn/ui" },
       { label: "Backend", items: "NestJS, Node.js, FastAPI, REST APIs, Odoo" },
       { label: "Data", items: "PostgreSQL, Prisma, Drizzle, Supabase, Firebase; Oracle (coursework)" },

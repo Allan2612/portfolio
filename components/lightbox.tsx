@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Full-screen viewer for screenshots. Any .zoom-trigger button (components/themed-image.tsx) opens it with
- * the picture the reader is seeing (light or dark); a click on the picture toggles between fitting the
+ * the picture the reader is seeing (light or dark); a click, Enter or Space on the picture toggles between fitting the
  * screen and its full size, which then scrolls. The native <dialog> gives Esc, focus return and inert page.
  */
-export function Lightbox({ close }: { close: string }) {
+export function Lightbox({ close, zoom }: { close: string; zoom: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [shot, setShot] = useState<{ src: string; alt: string } | null>(null);
   const [zoomed, setZoomed] = useState(false);
@@ -42,8 +42,11 @@ export function Lightbox({ close }: { close: string }) {
         </svg>
       </button>
       {shot && (
-        // eslint-disable-next-line @next/next/no-img-element -- shows the URL next/image already produced
-        <img src={shot.src} alt={shot.alt} onClick={() => setZoomed((z) => !z)} />
+        // A button, so full size is reachable from the keyboard too (Enter or Space).
+        <button type="button" className="lightbox-zoom" aria-pressed={zoomed} title={zoom} onClick={() => setZoomed((z) => !z)}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- shows the URL next/image already produced */}
+          <img src={shot.src} alt={shot.alt} />
+        </button>
       )}
     </dialog>
   );
