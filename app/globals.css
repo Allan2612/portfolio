@@ -338,11 +338,19 @@ footer a:hover,
 .work {
   margin-top: 3rem;
   display: grid;
-  gap: 5rem;
+  gap: 1.5rem;
 }
+/* Each project is one filled block, so it is clear where a project starts and ends. */
 .work-row {
   display: grid;
   gap: 1.5rem;
+  background: var(--surface);
+  padding: clamp(1.25rem, 3vw, 2.75rem);
+  transition: background-color 200ms;
+}
+/* Lighter on hover, not darker: soft ink keeps 4.5:1 against it. */
+.work-row:hover {
+  background: color-mix(in srgb, var(--surface) 55%, var(--paper));
 }
 .work-title {
   font-size: var(--text-head);
@@ -362,11 +370,7 @@ footer a:hover,
   min-height: 15rem;
   height: 100%;
   padding: 1.75rem;
-  background: var(--surface);
-  transition: background-color 200ms;
-}
-.work-row:hover .tile {
-  background: var(--surface-2);
+  background: var(--paper);
 }
 .tile-value {
   font-size: clamp(2.75rem, 1rem + 5vw, 5.5rem);
@@ -389,6 +393,35 @@ footer a:hover,
   .work-row:nth-child(even) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
   }
+}
+
+.read-more {
+  font-weight: 600;
+}
+.read-more:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Three short points: scannable instead of a paragraph. */
+/* No display here: on the home page .detail decides whether the list shows (1 or 5 minutes). */
+.key-points {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.key-points li + li {
+  margin-top: 0.5rem;
+}
+.key-points li::marker {
+  color: var(--soft);
+}
+.in-short {
+  background: var(--surface);
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2.5rem);
+}
+.in-short .key-points {
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
 }
 
 /* ---------- Experience: dates in a narrow column, the role beside them ---------- */
@@ -476,15 +509,20 @@ footer a:hover,
 .prose > * + * {
   margin-top: 1rem;
 }
+/* Sections of a case study are marked by size and space, so it is clear where each one starts. */
 .prose h2 {
-  margin-top: 3.5rem;
-  font-size: var(--text-lead);
-  line-height: var(--text-lead--line-height);
-  font-weight: 600;
+  margin-top: 5rem;
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
 }
 .prose h3 {
-  margin-top: 2.25rem;
-  font-weight: 600;
+  margin-top: 2.5rem;
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+}
+.prose h2 + * {
+  margin-top: 1.25rem;
 }
 .prose h2 + *,
 .prose h3 + * {

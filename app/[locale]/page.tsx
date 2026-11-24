@@ -93,14 +93,16 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                     <p className="text-small text-soft">
                       {site.kinds[p.kind]} · {formatPeriod(p.start, p.end, locale)}
                     </p>
-                    <p className="mt-3">{t.summary}</p>
-                    <div className="detail mt-3">
-                      <p>{t.detail}</p>
-                    </div>
-                    <p className="mt-3 text-small text-soft">{p.cardStack.join(" · ")}</p>
-                    <p className="mt-4">
-                      <Link href={href} className="link">
-                        {site.work.readCase}
+                    <p className="mt-4 text-lead">{t.summary}</p>
+                    <ul className="detail key-points mt-4">
+                      {t.keyPoints.map((k) => (
+                        <li key={k}>{k}</li>
+                      ))}
+                    </ul>
+                    <p className="mt-4 text-small text-soft">{p.cardStack.join(" · ")}</p>
+                    <p className="mt-6">
+                      <Link href={href} className="read-more">
+                        {site.work.readCase} <span aria-hidden="true">→</span>
                       </Link>
                     </p>
                   </div>
@@ -159,8 +161,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             </dl>
             <div className="split-main">
               <div className="grid gap-5">
+                {/* 1-minute reading: the first paragraph; the other two appear in the 5-minute mode. */}
                 {site.about.paragraphs.map((p, i) => (
-                  <p key={p.slice(0, 24)} className={i === 0 ? "text-lead" : undefined}>
+                  <p key={p.slice(0, 24)} className={i === 0 ? "text-lead" : "detail"}>
                     {p}
                   </p>
                 ))}
@@ -186,7 +189,8 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             {site.more.items.map((m) => (
               <li key={m.name}>
                 <h3 className="text-lead">{m.name}</h3>
-                <p className="mt-2">{m.text}</p>
+                <p className="mt-2">{m.short}</p>
+                <p className="detail mt-2">{m.text}</p>
                 {m.href && (
                   <p className="mt-2 text-small">
                     <a href={m.href} className="link">

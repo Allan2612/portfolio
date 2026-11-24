@@ -110,21 +110,25 @@ const site = {
     items: [
       {
         name: "PlanTica",
+        short: "Plant identification from a photo, with an on-device pre-check and a vision LLM.",
         text: "Plant identification from a photo: an on-device pre-check (TensorFlow.js, COCO-SSD) and a vision LLM (Llama 4 Scout via Groq) behind a FastAPI backend. Solo project.",
         href: "https://github.com/Allan2612/plantApp",
       },
       {
         name: "Digital Kids",
+        short: "Assessment system for a daycare; top contributor on a team of about 30.",
         text: "Assessment and reporting system for a daycare, built by a team of about 30. Top contributor to the frontend and co-top contributor to the backend.",
         href: null,
       },
       {
         name: "Quimera",
+        short: "A programming language with its own interpreter in C, built with another student.",
         text: "A programming language designed with another student: EBNF grammar, lexer, parser, AST and interpreter in C, plus a PyQt5 editor.",
         href: null,
       },
       {
         name: "Andromeda",
+        short: "Team mobile app with an offline queue for AI image recognition.",
         text: "Team course project: a mobile survival app with an offline queue for AI image recognition. I built the resources, trips, dashboards and alerts.",
         href: null,
       },
@@ -155,6 +159,7 @@ const site = {
     cta: "Want to hear more about this project? I'm happy to walk through it in an interview.",
     ctaButton: "Get in touch",
     back: "All projects",
+    inShort: "In short",
   },
   cvPage: {
     title: "CV",
