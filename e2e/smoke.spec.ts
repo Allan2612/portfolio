@@ -192,5 +192,7 @@ test("security headers are set", async ({ request }) => {
   expect(h["x-content-type-options"]).toBe("nosniff");
   expect(h["referrer-policy"]).toBe("strict-origin-when-cross-origin");
   expect(h["permissions-policy"]).toContain("camera=()");
+  expect(h["permissions-policy"]).not.toContain("interest-cohort");
+  expect(h["cross-origin-opener-policy"]).toBe("same-origin");
   expect(h["x-powered-by"]).toBeUndefined();
 });
