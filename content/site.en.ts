@@ -24,7 +24,9 @@ const site = {
   hero: {
     statement:
       "I build complete web applications with TypeScript and PostgreSQL, and ship them tested and in production.",
-    location: "Pérez Zeledón, Costa Rica · UTC−6 · Available now, open to remote",
+    location: "Pérez Zeledón, Costa Rica (UTC−6)",
+    status: "Available now · Junior · English (B2)",
+    remote: "Open to remote work, including US teams as a contractor with full overlap with US Central hours.",
     education: "Information Systems Engineering student, coursework complete, graduating May 2027.",
     primary: "View projects",
     cv: "Download CV",
@@ -34,7 +36,7 @@ const site = {
       "119 test files in CI, as the sole developer",
       "311-requirement gap analysis",
     ],
-    reading: { legend: "Read this page in", short: "1 minute", full: "5 minutes" },
+    reading: { legend: "Detail level", short: "Summary", full: "Full detail" },
   },
   kinds: { live: "Live", internship: "Internship", "open-source": "Open source" },
   months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -42,6 +44,8 @@ const site = {
   work: {
     heading: "Selected work",
     readCase: "Read the case study",
+    live: "Live site",
+    code: "Code",
   },
   experience: {
     heading: "Experience",
@@ -76,7 +80,7 @@ const site = {
         end: null,
         line: "Odoo 17 ERP built with a partner; started as a university project.",
         detail: [
-          "Built the sales, quick-service and reporting modules, co-developed repairs and customized warranties, with Costa Rican fiscal print formats. The business runs on it daily.",
+          "Built the sales, quick-service and reporting modules, contributed to repairs and customized warranties, with Costa Rican fiscal print formats. The business runs on it daily.",
           "Set up and maintain the production server on DigitalOcean: Nginx, HTTPS, hardened SSH, firewall and daily backups.",
         ],
       },

@@ -3,7 +3,7 @@
 Personal portfolio site: who I am, what I build, and case studies of work whose code is private.
 Bilingual (English first, Spanish), fully static, deployed on Vercel.
 
-> Status: **Phase 4**: every page is built (home, five case studies, CV, 404) in both languages. Visual polish comes next.
+> Status: **Phase 6**: ready to publish. Every page is built and reviewed in both languages.
 
 ## Stack
 

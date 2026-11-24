@@ -49,13 +49,13 @@ test("every case study links to the next one, and the home page links to every c
   await expect(page).toHaveURL(`/en/projects/${slugs[1]}`);
 });
 
-test("reading for 5 minutes reveals the details; 1 minute hides them", async ({ page }) => {
+test("full detail reveals the details; summary hides them", async ({ page }) => {
   await page.goto("/en");
   const detail = page.locator("#work .detail").first();
   await expect(detail).toBeHidden();
-  await page.getByText("5 minutes", { exact: true }).click();
+  await page.getByText("Full detail", { exact: true }).click();
   await expect(detail).toBeVisible();
-  await page.getByText("1 minute", { exact: true }).click();
+  await page.getByText("Summary", { exact: true }).click();
   await expect(detail).toBeHidden();
 });
 
