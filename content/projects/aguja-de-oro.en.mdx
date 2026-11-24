@@ -1,3 +1,11 @@
+import repair from "../images/aguja/repair.webp";
+import repairDark from "../images/aguja/repair-dark.webp";
+import salePhone from "../images/aguja/sale-phone.webp";
+import salePhoneDark from "../images/aguja/sale-phone-dark.webp";
+import workshop from "../images/aguja/workshop.webp";
+import workshopDark from "../images/aguja/workshop-dark.webp";
+import documents from "../images/aguja/documents.webp";
+
 ## Context
 
 La Aguja de Oro is a tailoring shop. It kept its sales, repairs, warranties and inventory by hand or on loose sheets. It needed a system that fit the way it already worked, printed documents with Costa Rica’s tax details (invoices, quotes, repair tickets and warranty certificates), and something the staff could use from a phone.
@@ -14,7 +22,21 @@ The project was built with a partner, and the split matters:
 - **Print formats for Costa Rica:** invoices, quotes, repair tickets and warranty certificates, with a header the shop configures itself; and a responsive theme so the system works from a phone.
 - **The production server:** set up, secured and maintained by me, with daily backups.
 
-<PhotoSlot>Screens of the system with test data (a sale, a repair ticket and a printed invoice), once the shop gives written permission.</PhotoSlot>
+<FigurePair
+  wide={{ src: repair, dark: repairDark, alt: "A repair order in the system, in Spanish: the customer, the sewing machine, the reported fault, the estimated delivery date and the labour services with their totals." }}
+  narrow={{ src: salePhone, dark: salePhoneDark, alt: "A sale in the system on a phone, in Spanish: the fields stack and the status becomes a menu." }}
+  caption="A repair order on a computer, and a sale on a phone. The system is in Spanish, like the shop. Test data."
+/>
+
+<Figure
+  image={{ src: documents, alt: "The printed invoice and the repair intake ticket, in Spanish: the shop's logo, the customer, the lines with tax, and the checklist of what the machine came with." }}
+  caption="The invoice and the repair intake ticket, in the shop's own formats: tax per line, and a checklist of what each machine arrives with. Test data."
+/>
+
+<Figure
+  image={{ src: workshop, dark: workshopDark, alt: "The workshop board, in Spanish: repairs counted by status, from pending diagnosis to delivered." }}
+  caption="The workshop board: every repair by status, from pending diagnosis to delivered. Test data."
+/>
 
 ## Result
 

@@ -1,3 +1,11 @@
+import repair from "../images/aguja/repair.webp";
+import repairDark from "../images/aguja/repair-dark.webp";
+import salePhone from "../images/aguja/sale-phone.webp";
+import salePhoneDark from "../images/aguja/sale-phone-dark.webp";
+import workshop from "../images/aguja/workshop.webp";
+import workshopDark from "../images/aguja/workshop-dark.webp";
+import documents from "../images/aguja/documents.webp";
+
 ## Contexto
 
 La Aguja de Oro es un taller de costura. Llevaba sus ventas, reparaciones, garantías e inventario a mano o en hojas sueltas. Necesitaba un sistema que se adaptara a su forma de trabajar, impresos con los datos fiscales de Costa Rica (facturas, proformas, boletas de reparación y certificados de garantía) y algo que el personal pudiera usar desde el celular.
@@ -14,7 +22,21 @@ El proyecto se hizo en pareja, y la división importa:
 - **Impresos con formato de Costa Rica:** facturas, proformas, boletas de reparación y certificados de garantía, con un encabezado que el taller configura por su cuenta; y un tema adaptable para que el sistema funcione desde el celular.
 - **El servidor de producción:** lo monté, lo aseguré y lo mantengo, con respaldos diarios.
 
-<PhotoSlot>Pantallas del sistema con datos de prueba (una venta, una boleta de reparación y una factura impresa), cuando el taller dé el permiso por escrito.</PhotoSlot>
+<FigurePair
+  wide={{ src: repair, dark: repairDark, alt: "Una orden de reparación en el sistema: el cliente, la máquina de coser, la falla reportada, la fecha estimada de entrega y los servicios de mano de obra con sus totales." }}
+  narrow={{ src: salePhone, dark: salePhoneDark, alt: "Una venta en el sistema desde un celular: los campos se apilan y el estado pasa a un menú." }}
+  caption="Una orden de reparación en una computadora y una venta en un celular. Datos de prueba."
+/>
+
+<Figure
+  image={{ src: documents, alt: "La factura impresa y la boleta de ingreso de una reparación: el logo del taller, el cliente, las líneas con IVA y la lista de lo que trae la máquina." }}
+  caption="La factura y la boleta de ingreso, con los formatos del taller: el IVA por línea y la lista de lo que trae cada máquina al llegar. Datos de prueba."
+/>
+
+<Figure
+  image={{ src: workshop, dark: workshopDark, alt: "El tablero del taller: las reparaciones contadas por estado, de pendiente de diagnóstico a entregado." }}
+  caption="El tablero del taller: cada reparación por estado, de pendiente de diagnóstico a entregado. Datos de prueba."
+/>
 
 ## Resultado
 
