@@ -10,6 +10,9 @@ export default defineConfig({
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "phone", use: { ...devices["Pixel 7"] } },
+    { name: "safari", use: { ...devices["Desktop Safari"] } },
+    { name: "iphone", use: { ...devices["iPhone 15"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
   ],
   webServer: {
     command: "pnpm start",

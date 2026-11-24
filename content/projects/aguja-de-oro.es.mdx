@@ -1,0 +1,65 @@
+## El problema
+
+El taller llevaba sus ventas, reparaciones, garantías e inventario a mano o en hojas sueltas. Necesitaba:
+
+- un sistema que se adaptara a su forma de trabajar, y no al revés;
+- impresos (facturas, proformas, boletas de reparación y certificados de garantía) con los datos fiscales de Costa Rica;
+- algo que el personal pudiera usar desde el celular.
+
+## Qué construí
+
+El proyecto se hizo en pareja, y la división importa:
+
+- **Ventas** (desarrollador principal): ventas con el IVA incluido en el precio, estados por pestaña, adelantos y vencimientos.
+- **Servicio rápido** (lo creé yo): un módulo nuevo para trabajos cortos que no necesitan todo el flujo de reparación.
+- **Reportes** (míos).
+- **Reparaciones** (lo creó mi compañero; yo aporté): boletas de ingreso, estados de reparación ligados a la factura e historial en el inventario.
+- **Garantías:** personalicé un módulo de terceros, con un certificado rediseñado y vista previa en PDF.
+- **Impresos con formato de Costa Rica:** facturas, proformas con nota de vigencia, boletas de reparación y certificados de garantía, con la dirección en el formato local, tildes correctas y un encabezado que el taller configura desde Ajustes.
+- **Celular:** un tema adaptable de terceros, instalado y ajustado para que el sistema funcione desde el teléfono.
+
+## Infraestructura de producción
+
+Monté y documenté el servidor, y lo mantengo:
+
+- **Un servidor pequeño en la nube**, en DigitalOcean con Ubuntu LTS, con swap para que se mantenga estable con un presupuesto mínimo.
+- **Nginx como proxy inverso**, con HTTPS de Let's Encrypt que se renueva solo, en el dominio propio del negocio.
+- **Acceso restringido:** SSH solo con llave, sin login de root ni contraseñas; un firewall que solo deja pasar el tráfico web y SSH; Odoo no es accesible desde afuera.
+- **Odoo como servicio del sistema**, con su propio usuario.
+- **Respaldos diarios** de la base de datos y de los archivos, con rotación.
+- **Despliegues desde GitHub** con una llave de solo lectura.
+
+<FlowDiagram
+  label="La producción de La Aguja de Oro"
+  steps={[
+    ["El personal, desde el celular o la computadora", "El dominio propio del negocio, por HTTPS"],
+    ["Nginx", "Proxy inverso; HTTPS de Let's Encrypt que se renueva solo"],
+    ["Odoo 17", "Módulos propios; servicio del sistema con su propio usuario, cerrado al exterior"],
+    ["PostgreSQL", "Respaldos diarios de la base de datos y de los archivos, con rotación"],
+  ]}
+  caption="Un servidor pequeño en la nube, detrás de un firewall que solo deja pasar el tráfico web y SSH."
+/>
+
+## Decisiones técnicas
+
+### Extender Odoo en lugar de pelear con él
+
+Cada cambio vive en un módulo propio que hereda de los modelos y las vistas de Odoo, así que el código estándar nunca se edita y el sistema se puede actualizar sin perder los cambios del taller.
+
+### Un servidor pequeño, bien configurado
+
+El negocio es pequeño, y el presupuesto también. En lugar de una máquina más grande, el servidor tiene swap, un proxy inverso y nada expuesto que no haga falta. El costo se mantiene mínimo sin recortar en seguridad ni en respaldos.
+
+### Salir a producción fue el comienzo, no el final
+
+El sistema siguió creciendo después de salir a producción. Desde entonces construí el módulo de servicio rápido, rehíce las ventas para que el estado de la reparación y los adelantos queden ligados a la factura, agregué un encabezado de proforma que el taller configura desde Ajustes y rediseñé las facturas y el certificado de garantía. A la par llegaron las correcciones que solo revela el uso diario: precios con IVA que se actualizan mientras se escriben, logos bien recortados en los impresos, fechas en hora local y PDF que se descargan en cualquier celular. Detalles así deciden si la gente sigue usando un sistema.
+
+## Resultado
+
+- El negocio opera su día a día en el sistema **desde diciembre de 2025**.
+- Costo de infraestructura mínimo, con HTTPS, un servidor reforzado y respaldos diarios.
+- Empezó como proyecto de curso en 2024 y sigue en producción; lo sigo manteniendo.
+
+## Qué me llevo
+
+Un proyecto de curso termina cuando se califica; un sistema del que depende un negocio, no. Desde que el taller empezó a operar con él, cada cambio tenía que poder desplegarse sin riesgo en un día de trabajo, cada pedido necesitaba una respuesta y el servidor pasó a ser mi responsabilidad. Ahí aprendí a tratar los respaldos, los accesos y las actualizaciones como parte del producto, no como algo para después.

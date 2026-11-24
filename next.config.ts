@@ -16,7 +16,8 @@ const csp = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  // No upgrade-insecure-requests: every resource is same-origin and HSTS already forces HTTPS, while
+  // WebKit applies the upgrade to http://localhost too and loads the production build without CSS.
 ].join("; ");
 
 const securityHeaders = [
@@ -35,6 +36,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: false,
   poweredByHeader: false,
   images: { formats: ["image/avif", "image/webp"] },
+  // A 404 for URLs outside /en and /es: the root layout is inside [locale], so app/global-not-found.tsx renders it.
+  experimental: { globalNotFound: true },
   turbopack: {
     rules: {
       "*.css": {

@@ -489,6 +489,71 @@ figcaption {
   border-bottom: 0.3rem solid transparent;
 }
 
+/* Flow: filled steps with a down arrow between them. */
+.diagram-flow,
+.prose .diagram-flow {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+}
+.prose .diagram-flow li + li {
+  margin-top: 0;
+}
+.diagram-flow li {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+}
+.diagram-flow strong {
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+.diagram-flow li + li::before {
+  content: "";
+  position: absolute;
+  left: 1.5rem;
+  top: -1.75rem;
+  height: 1.25rem;
+  border-left: 2px solid var(--soft);
+}
+.diagram-flow li + li::after {
+  content: "";
+  position: absolute;
+  left: calc(1.5rem - 0.3rem + 1px);
+  top: -0.6rem;
+  border-top: 0.45rem solid var(--soft);
+  border-left: 0.3rem solid transparent;
+  border-right: 0.3rem solid transparent;
+}
+
+/* Modules over a shared core. */
+.diagram-modules,
+.prose .diagram-modules {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.5rem;
+}
+.prose .diagram-modules li + li {
+  margin-top: 0;
+}
+.diagram-modules li {
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+.diagram-link,
+.prose .diagram-link {
+  margin: 0;
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  border-left: 2px solid var(--soft);
+  margin-left: 1.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -15,6 +15,7 @@ const site: SiteCopy = {
     work: "Proyectos",
     experience: "Experiencia",
     about: "Sobre mí",
+    cv: "CV",
     contact: "Contacto",
     switchLocale: "English",
     skip: "Saltar al contenido",
@@ -41,7 +42,6 @@ const site: SiteCopy = {
   work: {
     heading: "Proyectos destacados",
     readCase: "Leer el caso",
-    caseSoon: "Caso en preparación",
   },
   experience: {
     heading: "Experiencia",
@@ -157,6 +157,66 @@ const site: SiteCopy = {
     cta: "¿Quiere saber más de este proyecto? Con gusto lo explico en una entrevista.",
     ctaButton: "Contactar",
     back: "Todos los proyectos",
+  },
+  cvPage: {
+    title: "CV",
+    description: "Experiencia, proyectos, habilidades y formación de Allan Vargas Torres, desarrollador full stack. PDF en español y en inglés.",
+    intro: "La misma información de mi CV en PDF, en una sola página.",
+    downloadEn: "Descargar PDF (inglés)",
+    downloadEs: "Descargar PDF (español)",
+    phone: "Teléfono a pedido.",
+    profileHeading: "Perfil",
+    profile:
+      "Egresado de Ingeniería en Sistemas de Información (UNA, graduación en mayo de 2027) y desarrollador full stack con dos sistemas en producción para clientes. Práctica profesional en una empresa de software, en un ERP modular y una plataforma de facturación electrónica. Experiencia en TypeScript (Next.js, NestJS, React Native) y Python, pruebas automatizadas e integración continua.",
+    projectsHeading: "Proyectos",
+    projects: [
+      {
+        name: "Miku Assistant",
+        stack: "Tauri, TypeScript, Python asyncio, Whisper, Gemini",
+        note: "Código abierto (MIT)",
+        text: "Asistente de voz de escritorio: Whisper local, Gemini con function calling sobre un conjunto cerrado de herramientas y avatar Live2D. Diseñado para responder en menos de 3 s y liberar la GPU en reposo.",
+        href: "https://github.com/Allan2612/miku-assistant",
+      },
+      {
+        name: "PlanTica",
+        stack: "Expo, TensorFlow.js, FastAPI, Firebase",
+        note: "Proyecto individual",
+        text: "Identificación de plantas por foto: filtro previo en el celular y un LLM de visión detrás de un backend propio.",
+        href: "https://github.com/Allan2612/plantApp",
+      },
+      {
+        name: "Quimera",
+        stack: "C, Python, PyQt5",
+        note: "Proyecto de curso, en pareja",
+        text: "Lenguaje de programación propio: gramática EBNF, lexer, parser, AST e intérprete en C, con un editor en PyQt5.",
+        href: null,
+      },
+      {
+        name: "Digital Kids",
+        stack: "Next.js, NestJS, Prisma, PostgreSQL",
+        note: "Proyecto de curso, equipo de unas 30 personas",
+        text: "Sistema de evaluaciones para una guardería. Principal contribuidor del frontend y, a la par de otro compañero, del backend.",
+        href: null,
+      },
+    ],
+    skillsHeading: "Habilidades",
+    educationHeading: "Educación",
+    education: [
+      {
+        title: "Bachillerato en Ingeniería en Sistemas de Información",
+        place: "Universidad Nacional de Costa Rica, Sede Regional Brunca",
+        when: "2021 – mayo de 2027 (prevista)",
+        note: "Plan de estudios completo. Optativas: IA, Seguridad Informática, Servidores con Software Libre y Aplicaciones Educativas.",
+      },
+      {
+        title: "Técnico Medio en Informática en Soporte",
+        place: "Colegio Técnico Profesional de Pejibaye",
+        when: "2020",
+        note: null,
+      },
+    ],
+    languagesHeading: "Idiomas",
+    languages: "Español (nativo) · inglés (B2)",
   },
   notFound: {
     heading: "Página no encontrada",

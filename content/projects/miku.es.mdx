@@ -1,0 +1,72 @@
+## El problema
+
+Un modelo de reconocimiento de voz, un modelo de voz y un avatar animado pueden mantener ocupada la GPU y retener cientos de megabytes de memoria todo el día, en una máquina que además se usa para todo lo demás. Y un asistente que controla la PC solo es útil si sabe qué hay abierto, y solo es seguro si no puede hacer cualquier cosa.
+
+Le puse dos metas al diseño: **consumo casi nulo en reposo** y una respuesta en **menos de tres segundos** desde que se activa.
+
+## Cómo funciona
+
+Dos procesos se comunican por un WebSocket local, más un proceso de GPU para la voz y una extensión de navegador opcional:
+
+- **La aplicación** (Tauri v2 y TypeScript): una ventana transparente con el avatar Live2D, animaciones, sincronización de labios y subtítulos.
+- **El núcleo** (Python, asyncio): activación, micrófono y detección de voz, transcripción, el ciclo de agente con Gemini, las herramientas de la PC y la síntesis de voz.
+- **El proceso de voz:** convierte la voz base en la voz del personaje, en la GPU y en su propio proceso.
+- **La extensión de navegador** (Opera): le muestra al núcleo las pestañas abiertas y los resultados de búsqueda.
+
+<FlowDiagram
+  label="Miku Assistant: qué corre dónde"
+  steps={[
+    ["Aplicación · Tauri y TypeScript", "Avatar Live2D, sincronización de labios y subtítulos"],
+    ["Núcleo · Python asyncio", "Palabra clave, Whisper en la CPU, el agente de Gemini y la lista cerrada de herramientas"],
+    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
+  ]}
+  caption="La aplicación y el núcleo se comunican por un WebSocket local; el núcleo arranca y detiene el proceso de voz."
+/>
+
+Una petición sigue estos pasos:
+
+1. Se activa con un atajo de teclado o una palabra clave. En paralelo, Whisper revisa el audio de la palabra clave, así que una activación claramente falsa se descarta sin gastar una petición.
+2. En ese momento empieza a cargarse el proceso de voz, **mientras el usuario todavía habla**.
+3. La grabación termina al detectar silencio y Whisper transcribe en la CPU. Las órdenes inequívocas (volumen, pausa, temporizadores, notas) se resuelven en local, sin el modelo.
+4. Todo lo demás va a Gemini junto con el **estado actual de la PC**: ventanas y pestañas abiertas, cada una con un número, el volumen, los recordatorios y los pendientes. Gemini actúa como agente: llama herramientas, ve sus resultados y responde o da otro paso. Las acciones destructivas piden confirmación.
+5. edge-tts genera la voz base y RVC la convierte.
+6. La aplicación la reproduce con sincronización de labios, una expresión y un subtítulo, y sigue escuchando unos segundos por si la conversación continúa.
+7. Después de un rato sin uso, el avatar se oculta y deja de dibujarse. Más tarde se cierra el proceso de voz y la memoria de la GPU vuelve a cero, mientras otro proceso espera en RAM con sus librerías cargadas, para que la voz vuelva en unos segundos.
+
+## Decisiones técnicas
+
+### Nada de frameworks de GPU en el proceso principal
+
+En Windows, inicializar CUDA deja unos cientos de megabytes residentes que nunca se devuelven. Por eso el proceso principal nunca carga PyTorch: la voz corre en un subproceso que se puede cerrar, y Whisper corre en la CPU con pesos de 8 bits y se queda en RAM. Cerrar el proceso es la única forma confiable de liberar esa memoria de la GPU.
+
+### Una lista cerrada de herramientas
+
+El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Esa es la defensa contra el *prompt injection*: si una página web le dice al asistente que "cierre todo", lo peor que puede hacer es preguntar.
+
+### Ventanas y pestañas como objetos numerados
+
+El modelo ve una lista numerada de lo que está abierto y actúa sobre un número concreto, en lugar de adivinar por el título o simular teclas. "Cierra la segunda pestaña" se vuelve una llamada precisa, no un atajo frágil.
+
+### Solo las órdenes inequívocas se saltan el modelo
+
+El volumen, la multimedia, los temporizadores y las notas se reconocen en local y se ejecutan al instante, sin ir y volver del modelo. Lo que depende de qué hay abierto va a Gemini con el estado de la PC, porque una regla local adivinaría mal.
+
+### Una sola voz, y nunca se cuelga
+
+El personaje tiene una sola voz. Si el proceso de voz todavía está cargando, la respuesta espera; si falla, la respuesta llega solo como subtítulo, nunca con otra voz. Ningún componente puede dejar al asistente trabado.
+
+### Sin framework de interfaz
+
+La aplicación es TypeScript puro con Vite. El WebView ya consume memoria; un framework de interfaz sumaría más para una ventana que muestra un solo personaje.
+
+## Resultado
+
+- **Diseñado para responder en menos de 3 segundos** desde la activación, cargando la voz mientras el usuario todavía habla.
+- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
+- Código abierto con licencia MIT, con notas de arquitectura, referencia de herramientas, registro de cambios y su propio plan de auditoría.
+
+## Lo que sigue
+
+Medir la latencia de cada etapa de punta a punta (transcripción, modelo, síntesis y conversión de voz) en lugar de depender de la meta de diseño.
+
+*Hatsune Miku es © Crypton Future Media. El modelo Live2D y la voz RVC no forman parte del repositorio.*

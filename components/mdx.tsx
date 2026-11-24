@@ -15,6 +15,58 @@ export function FigurePair({ wide, narrow, caption }: { wide: Img; narrow: Img; 
   );
 }
 
+type Step = [title: string, note: string | null];
+
+/** Steps in order, top to bottom, with an arrow between each. */
+export function FlowDiagram({ label, steps, caption }: { label: string; steps: Step[]; caption: string }) {
+  return (
+    <figure className="diagram" aria-label={label}>
+      <ol className="diagram-flow">
+        {steps.map(([title, note]) => (
+          <li key={title}>
+            <strong>{title}</strong>
+            {note && <span>{note}</span>}
+          </li>
+        ))}
+      </ol>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
+
+/** Business modules sitting on a shared core. */
+export function ModulesDiagram({
+  label,
+  modules,
+  link,
+  core,
+  coreNote,
+  caption,
+}: {
+  label: string;
+  modules: string[];
+  link: string;
+  core: string;
+  coreNote: string;
+  caption: string;
+}) {
+  return (
+    <figure className="diagram" aria-label={label}>
+      <ul className="diagram-modules">
+        {modules.map((m) => (
+          <li key={m}>{m}</li>
+        ))}
+      </ul>
+      <p className="diagram-link">{link}</p>
+      <div className="diagram-core">
+        <strong>{core}</strong>
+        <span>{coreNote}</span>
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
+
 type Row = [port: string, adapter: string, note: string | null];
 
 /** Ports and adapters drawn in HTML, so labels stay readable at every width and in both themes. */

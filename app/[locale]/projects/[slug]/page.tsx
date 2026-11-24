@@ -3,19 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer, Header } from "@/components/chrome";
-import { caseStudies, getProject } from "@/content/projects";
+import { getProject, projects } from "@/content/projects";
 import { formatPeriod, getSite, isLocale, otherLocale } from "@/lib/i18n";
 
 // Nested under [locale]: called once per locale. With cacheComponents there is no dynamicParams;
 // unknown slugs fall through to notFound() below.
 export function generateStaticParams() {
-  return caseStudies.map((p) => ({ slug: p.slug }));
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/[slug]">): Promise<Metadata> {
   const { locale, slug } = await params;
   const project = getProject(slug);
-  if (!isLocale(locale) || !project?.body) return {};
+  if (!isLocale(locale) || !project) return {};
   const t = project.text[locale];
   const path = `/projects/${slug}`;
   return {
@@ -32,14 +32,14 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projects
 export default async function ProjectPage({ params }: PageProps<"/[locale]/projects/[slug]">) {
   const { locale, slug } = await params;
   const project = getProject(slug);
-  if (!isLocale(locale) || !project?.body) notFound();
+  if (!isLocale(locale) || !project) notFound();
 
   const site = getSite(locale);
   const t = project.text[locale];
   const Body = project.body[locale];
-  const index = caseStudies.indexOf(project);
-  const prev = caseStudies[index - 1];
-  const next = caseStudies[index + 1];
+  const index = projects.indexOf(project);
+  const prev = projects[index - 1];
+  const next = projects[index + 1];
   const cs = site.caseStudy;
 
   return (
