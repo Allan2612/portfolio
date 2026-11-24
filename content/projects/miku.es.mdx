@@ -1,3 +1,9 @@
+import resources from "../images/miku/resources.webp";
+import quota from "../images/miku/quota.webp";
+import tools from "../images/miku/tools.webp";
+import panel from "../images/miku/panel.webp";
+import avatar from "../images/miku/avatar.webp";
+
 ## Contexto
 
 Miku Assistant es un asistente de voz para Windows, con un personaje animado que vive en el escritorio. Se llama con un atajo de teclado o una palabra clave y se le habla: abre aplicaciones, cambia de ventana y de pestaña, controla la música y el volumen, pone temporizadores y recordatorios, toma notas y responde preguntas. Antes de hacer algo destructivo, pregunta.
@@ -11,6 +17,12 @@ Lo construí por mi cuenta como proyecto de código abierto, con dos metas: resp
 - **La voz propia del personaje**, convertida en la GPU solo mientras hace falta; en reposo, la memoria de video vuelve a cero.
 - **Seguridad desde el diseño:** el asistente solo puede usar una lista cerrada de herramientas, nunca ejecuta comandos arbitrarios y pregunta antes de cualquier acción destructiva.
 - **Una extensión de navegador opcional** para que sepa qué pestañas hay abiertas y pueda actuar sobre ellas.
+
+<FigurePair
+  wide={{ src: panel, alt: "Panel de control de Miku Assistant: Miku encendida y esperando su palabra clave, el estado de cada pieza (backend, voz en la GPU, palabra clave, extensión del navegador, Gemini) y las peticiones del día, marcadas como locales o de Gemini." }}
+  narrow={{ src: avatar, alt: "Miku en el escritorio, en su ventana transparente, con el subtítulo de su respuesta encima: un temporizador puesto." }}
+  caption="El launcher, un panel de control con el estado de cada pieza y las peticiones del día, y Miku en el escritorio con su respuesta como subtítulo. Estado y peticiones de ejemplo."
+/>
 
 <PhotoSlot>Un video corto o GIF del asistente funcionando: la activación, la respuesta hablada con subtítulos y una acción en la PC.</PhotoSlot>
 
@@ -59,9 +71,19 @@ Una petición sigue estos pasos:
 
 En Windows, inicializar CUDA deja unos cientos de megabytes residentes que nunca se devuelven. Por eso el proceso principal nunca carga PyTorch: la voz corre en un subproceso que se puede cerrar, y Whisper corre en la CPU con pesos de 8 bits y se queda en RAM. Cerrar el proceso es la única forma confiable de liberar esa memoria de la GPU.
 
+<Figure
+  image={{ src: resources, alt: "La página de Recursos del panel de control: CPU, memoria y VRAM de Miku, sus procesos y dos gráficos donde la VRAM baja a 0 al liberar la voz." }}
+  caption="La página de Recursos del launcher: mientras habla, la voz usa la GPU; al liberarla, la VRAM vuelve a 0. Datos de ejemplo."
+/>
+
 ### Una lista cerrada de herramientas
 
 El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Eso limita lo que puede lograr un *prompt injection*: nada destructivo se ejecuta sin confirmación. Una página web todavía podría dirigir una herramienta inofensiva, como abrir un enlace o guardar una nota, pero si le dice al asistente que “cierre todo”, lo peor que puede hacer es preguntar.
+
+<Figure
+  image={{ src: tools, alt: "La página de Herramientas del panel de control: las 46 herramientas por grupo, cuáles corren en local y cuáles piden confirmación, cada una con su interruptor." }}
+  caption="Todas las herramientas que puede usar, por grupo: cuáles corren en local sin el modelo, cuáles piden confirmación y un interruptor para apagar cualquiera."
+/>
 
 ### Ventanas y pestañas como objetos numerados
 
@@ -70,6 +92,11 @@ El modelo ve una lista numerada de lo que está abierto y actúa sobre un númer
 ### Solo las órdenes inequívocas se saltan el modelo
 
 El volumen, la multimedia, los temporizadores y las notas se reconocen en local y se ejecutan al instante, sin ir y volver del modelo. Lo que depende de qué hay abierto va a Gemini con el estado de la PC, porque una regla local adivinaría mal.
+
+<Figure
+  image={{ src: quota, alt: "La página de Cuotas del panel de control: las peticiones a Gemini de hoy frente al límite diario gratuito, el modelo de respaldo y los últimos siete días." }}
+  caption="Las peticiones a Gemini en el plan gratuito: hoy, el modelo de respaldo y la última semana. Las órdenes locales no cuentan. Datos de ejemplo."
+/>
 
 ### Una sola voz, y nunca se cuelga
 

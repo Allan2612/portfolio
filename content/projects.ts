@@ -13,6 +13,7 @@ import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
 import InvoicingEs from "./projects/e-invoicing.es.mdx";
+import mikuPanel from "./images/miku/panel.webp";
 import MikuEn from "./projects/miku.en.mdx";
 import MikuEs from "./projects/miku.es.mdx";
 import RuticaEn from "./projects/rutica.en.mdx";
@@ -189,6 +190,49 @@ export const projects: Project[] = [
     body: { en: RuticaEn, es: RuticaEs },
   },
   {
+    slug: "miku",
+    kind: "open-source",
+    start: "2026-10",
+    end: null,
+    stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
+    cardStack: ["Tauri", "TypeScript", "Python asyncio"],
+    links: { repo: "https://github.com/Allan2612/miku-assistant" },
+    thumb: {
+      src: mikuPanel,
+      alt: {
+        en: "Miku Assistant's control panel: Miku on and waiting, the state of each part and the day's requests.",
+        es: "El panel de control de Miku Assistant: Miku encendida y esperando, el estado de cada pieza y las peticiones del día.",
+      },
+    },
+    text: {
+      en: {
+        title: "Miku Assistant",
+        summary: "A voice assistant for Windows with an animated character: you talk to it and it handles apps, tabs, music and reminders, asking before anything destructive.",
+        role: "Personal project",
+        team: "Solo",
+        keyPoints: [
+          "Designed to answer in under 3 seconds",
+          "0 MB of GPU memory in use while idle",
+          "A closed list of tools, with confirmation for anything destructive",
+        ],
+        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
+      },
+      es: {
+        title: "Miku Assistant",
+        summary: "Asistente de voz para Windows con un personaje animado: se le habla y maneja aplicaciones, pestañas, música y recordatorios; pregunta antes de lo destructivo.",
+        role: "Proyecto personal",
+        team: "Individual",
+        keyPoints: [
+          "Diseñado para responder en menos de 3 segundos",
+          "0 MB de memoria de GPU en uso en reposo",
+          "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
+        ],
+        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
+      },
+    },
+    body: { en: MikuEn, es: MikuEs },
+  },
+  {
     slug: "modular-erp",
     kind: "internship",
     start: "2026-08",
@@ -223,42 +267,6 @@ export const projects: Project[] = [
       },
     },
     body: { en: ErpEn, es: ErpEs },
-  },
-  {
-    slug: "miku",
-    kind: "open-source",
-    start: "2026-10",
-    end: null,
-    stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
-    cardStack: ["Tauri", "TypeScript", "Python asyncio"],
-    links: { repo: "https://github.com/Allan2612/miku-assistant" },
-    text: {
-      en: {
-        title: "Miku Assistant",
-        summary: "A voice assistant for Windows with an animated character: you talk to it and it handles apps, tabs, music and reminders, asking before anything destructive.",
-        role: "Personal project",
-        team: "Solo",
-        keyPoints: [
-          "Designed to answer in under 3 seconds",
-          "0 MB of GPU memory in use while idle",
-          "A closed list of tools, with confirmation for anything destructive",
-        ],
-        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
-      },
-      es: {
-        title: "Miku Assistant",
-        summary: "Asistente de voz para Windows con un personaje animado: se le habla y maneja aplicaciones, pestañas, música y recordatorios; pregunta antes de lo destructivo.",
-        role: "Proyecto personal",
-        team: "Individual",
-        keyPoints: [
-          "Diseñado para responder en menos de 3 segundos",
-          "0 MB de memoria de GPU en uso en reposo",
-          "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
-        ],
-        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
-      },
-    },
-    body: { en: MikuEn, es: MikuEs },
   },
   {
     slug: "e-invoicing",
