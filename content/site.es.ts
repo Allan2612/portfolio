@@ -112,21 +112,25 @@ const site: SiteCopy = {
     items: [
       {
         name: "PlanTica",
+        short: "Identificación de plantas por foto, con un filtro previo en el celular y un LLM de visión.",
         text: "Identificación de plantas a partir de una foto: filtro previo en el celular (TensorFlow.js, COCO-SSD) e identificación con un LLM de visión (Llama 4 Scout vía Groq) detrás de un backend en FastAPI. Proyecto individual.",
         href: "https://github.com/Allan2612/plantApp",
       },
       {
         name: "Digital Kids",
+        short: "Sistema de evaluación para una guardería; principal contribuidor en un equipo de unas 30 personas.",
         text: "Sistema de evaluación y reportes para una guardería, hecho por un equipo de unas 30 personas. Principal contribuidor del frontend y, a la par de otro compañero, del backend.",
         href: null,
       },
       {
         name: "Quimera",
+        short: "Un lenguaje de programación con su propio intérprete en C, hecho con otro estudiante.",
         text: "Un lenguaje de programación diseñado con otro estudiante: gramática EBNF, analizador léxico, parser, AST e intérprete en C, más un editor en PyQt5.",
         href: null,
       },
       {
         name: "Andromeda",
+        short: "App móvil en equipo con una cola sin conexión para reconocer imágenes con IA.",
         text: "Proyecto de curso en equipo: una app móvil de supervivencia con una cola sin conexión para el reconocimiento de imágenes con IA. Desarrollé los recursos, los viajes, los paneles y las alertas.",
         href: null,
       },
@@ -157,6 +161,7 @@ const site: SiteCopy = {
     cta: "¿Quiere saber más de este proyecto? Con gusto lo explico en una entrevista.",
     ctaButton: "Contactar",
     back: "Todos los proyectos",
+    inShort: "En resumen",
   },
   cvPage: {
     title: "CV",
