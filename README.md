@@ -12,7 +12,14 @@ Bilingual (English first, Spanish), fully static, deployed on Vercel.
 - Every page is prerendered at build time; there is no server, database or CMS.
 - i18n with a `[locale]` route segment and typed dictionaries (`content/site.<locale>.ts`), no i18n library.
 - Tests: **Vitest** (units), **Playwright** + **axe** (routes, accessibility, HTTP headers)
-- CI: GitHub Actions on every PR (audit, types, lint, tests, build, content guard, E2E)
+- CI: GitHub Actions on every PR and on pushes to `main`/`develop` (audit, types, lint, tests, build, content guard, E2E)
+- CD: Vercel deploys `main` to production and every other branch and PR as a preview
+
+## Branches
+
+`main` is production and `develop` is integration. Work happens on a branch off `develop`, merged
+by PR into `develop`; a release is a PR from `develop` into `main`. Both branches are protected:
+changes only through a PR, the `ci` check must pass, and force pushes and deletion are blocked.
 
 ## Commands
 

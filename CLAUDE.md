@@ -8,4 +8,7 @@
   banned term in code, tests or comments (use made-up examples). The pre-commit hook enforces it.
 - Facts come only from the source material listed in the spec; never invent numbers or claims.
 - Before each commit: `pnpm typecheck && pnpm lint && pnpm test`, plus `pnpm build && pnpm test:e2e`
-  when pages change. Work on a branch and open a PR; never push to `main` directly.
+  when pages change.
+- Branches: `main` is production (Vercel deploys it), `develop` is integration (Vercel previews).
+  Work on a branch off `develop` and open a PR into `develop`; release with a PR `develop` → `main`.
+  Both branches are protected: PR only, CI (`ci`) must pass, no force push.
