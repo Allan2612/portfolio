@@ -1,42 +1,32 @@
-## El problema
+## Contexto
 
-El ERP es un núcleo con servicios transversales y un conjunto de módulos de negocio: contabilidad, tesorería, presupuesto, inventario y otros. Los módulos funcionaban, pero nadie podía decir **con evidencia** qué partes de la norma contable cumplía el sistema y cuáles no. Sin eso no había forma de planificar el trabajo ni de responder las preguntas del área contable.
+En mi práctica profesional en Argana trabajé en un ERP modular: un software de gestión formado por un núcleo común y módulos de contabilidad, tesorería, presupuesto, inventario y otros. Los módulos funcionaban, pero nadie podía decir **con evidencia** qué partes de una norma contable internacional cumplía el sistema y cuáles no. Sin eso no había forma de planificar el trabajo ni de responder las preguntas del área contable.
+
+Lo medí requisito por requisito, con un plan para cerrar las brechas, y después construí reglas contables que faltaban.
 
 ## Qué hice
 
-### El análisis de brechas
+- **Convertí la norma contable en 311 requisitos verificables**, cada uno con la página y el párrafo de donde sale.
+- **Revisé cada requisito dos veces:** leyendo el código, archivo por archivo, y con el sistema en ejecución, haciendo operaciones reales y revisando lo que quedaba en la base de datos.
+- **Diseñé y supervisé agentes de IA** que verificaban cada veredicto, incluido uno cuya única tarea era intentar desmentirlo. Los veredictos siguen siendo míos.
+- **Entregué un informe** para el área contable y un plan de corrección organizado en paquetes de trabajo.
+- **Construí con TDD reglas contables que faltaban**, como principal contribuidor de un equipo de cinco.
 
-- Convertí la norma contable en **311 requisitos verificables**, cada uno con la página y el párrafo de donde sale.
-- Revisé cada requisito contra el sistema de dos formas: **leyendo el código**, archivo por archivo, y **con el sistema en ejecución**, haciendo operaciones reales y revisando lo que quedaba en la base de datos.
-- Entregué un informe para el área contable y un **plan de corrección organizado en paquetes de trabajo**.
+## Resultado
 
-Por primera vez, el cumplimiento del sistema quedó medido requisito por requisito, con un plan para cerrar las brechas.
+- El cumplimiento del sistema frente a la norma quedó **medido con evidencia por primera vez**, con un plan para cerrar las brechas.
+- Fui el **principal contribuidor de un equipo de cinco**, sobre todo en contabilidad, activos fijos, presupuesto y tesorería.
+- **3528 pruebas** en el proyecto y **321 pruebas de interfaz**, todas en verde en la última corrida completa antes de terminar mi práctica.
+- Buena parte de lo que el análisis marcaba como faltante se construyó en las semanas siguientes, así que necesita una segunda pasada contra el sistema de hoy.
+- Documentación del dominio contable que el equipo usa como referencia.
 
-### Agentes de IA como verificadores
+## Qué me llevo
 
-Una sola persona que lee 311 requisitos va a pasar cosas por alto, así que diseñé y supervisé agentes de IA con instrucciones adversariales:
+Leer el código no alcanzaba. Confirmé cada hallazgo ejecutando la operación y mirando las filas que escribía. Desde entonces, “verificado” significa que lo vi pasar en un sistema en ejecución.
 
-- un agente verificaba cada requisito contra el texto de la norma;
-- otro intentaba **desmentir** cada veredicto de “falta” o “incorrecto” antes de aceptarlo.
+## Decisiones técnicas
 
-Yo integré sus resultados y validé cada conclusión. Los agentes hicieron el análisis más exhaustivo; los veredictos siguen siendo míos.
-
-### Construir lo que faltaba, con TDD
-
-Cada regla empezó como una prueba que la enunciaba, escrita antes del código. Lo principal:
-
-- **Catálogo de cuentas** y el mapeo de cada concepto de negocio a su cuenta.
-- **Devengos en la fecha correcta**, y una estimación de cuentas incobrables por antigüedad en cada cierre.
-- **Activos fijos:** depreciación, pruebas de deterioro y bajas que llegan al mayor, además de arrendamientos financieros y subarrendamientos.
-- **Estados financieros:** consolidación de entidades controladas con eliminaciones, información por segmentos y reclasificación de la porción corriente de deudas y provisiones.
-- **Revelaciones:** partes relacionadas, pasivos y activos contingentes, provisiones descontadas y cambios de política contable.
-- **Liquidación presupuestaria**, en la que el superávit libre cubre primero cualquier déficit.
-
-### Decisiones que necesitaban una contadora
-
-Varias preguntas eran para una contadora: cuándo reconocer un tipo de ingreso, a qué cuenta va cada movimiento, cómo tratar un pago adelantado. Esperar habría detenido el trabajo, así que decidí cada una con base en las fuentes oficiales, la dejé escrita con su fuente y con mi grado de confianza, y la marqué para confirmarla después con una contadora. Las cuentas viven en la configuración: si la respuesta cambia, nadie tiene que tocar el código.
-
-## La arquitectura en la que trabajé
+### La arquitectura en la que trabajé
 
 Estas decisiones ya existían cuando llegué; mi trabajo fue construir dentro de ellas, y son buena parte de la razón por la que las reglas se podían probar de forma aislada.
 
@@ -54,14 +44,24 @@ Estas decisiones ya existían cuando llegué; mi trabajo fue construir dentro de
   caption="Cada módulo tiene su propio esquema y nunca importa las tablas de otro."
 />
 
-## Resultado
+### Agentes de IA como verificadores
 
-- El cumplimiento del sistema frente a la norma quedó **medido con evidencia por primera vez**, con un plan para cerrar las brechas.
-- Fui el **principal contribuidor de un equipo de cinco**, sobre todo en contabilidad, activos fijos, presupuesto y tesorería.
-- **3528 pruebas** en el proyecto y **321 pruebas de interfaz**, todas en verde en la última corrida completa antes de terminar mi práctica.
-- Buena parte de lo que el análisis marcaba como faltante se construyó en las semanas siguientes, así que necesita una segunda pasada contra el sistema de hoy.
-- Documentación del dominio contable que el equipo usa como referencia.
+Una sola persona que lee 311 requisitos va a pasar cosas por alto, así que diseñé y supervisé agentes de IA con instrucciones adversariales:
 
-## Qué me llevo
+- un agente verificaba cada requisito contra el texto de la norma;
+- otro intentaba **desmentir** cada veredicto de “falta” o “incorrecto” antes de aceptarlo.
 
-Leer el código no alcanzaba. Confirmé cada hallazgo ejecutando la operación y mirando las filas que escribía. Desde entonces, “verificado” significa que lo vi pasar en un sistema en ejecución.
+Yo integré sus resultados y validé cada conclusión. Los agentes hicieron el análisis más exhaustivo; los veredictos siguen siendo míos.
+
+### Construir lo que faltaba, con TDD
+
+Cada regla empezó como una prueba que la enunciaba, escrita antes del código. Lo principal:
+
+- **Catálogo de cuentas** y el mapeo de cada concepto de negocio a su cuenta.
+- **Activos fijos:** depreciación, pruebas de deterioro y bajas que llegan al mayor.
+- **Estados financieros:** consolidación con eliminaciones y las revelaciones que pide la norma.
+- **Liquidación presupuestaria**, en la que el superávit libre cubre primero cualquier déficit.
+
+### Decisiones que necesitaban una contadora
+
+Varias preguntas eran para una contadora: cuándo reconocer un tipo de ingreso, a qué cuenta va cada movimiento, cómo tratar un pago adelantado. Esperar habría detenido el trabajo, así que decidí cada una con base en las fuentes oficiales, la dejé escrita con su fuente y con mi grado de confianza, y la marqué para confirmarla después con una contadora. Las cuentas viven en la configuración: si la respuesta cambia, nadie tiene que tocar el código.

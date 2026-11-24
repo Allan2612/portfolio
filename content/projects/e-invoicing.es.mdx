@@ -1,25 +1,27 @@
-## El problema
+## Contexto
 
-En Costa Rica cada factura es un comprobante electrónico: se firma, se envía al Ministerio de Hacienda y se acepta o se rechaza. La plataforma ya lo hacía, con una aplicación web y una API para otros sistemas.
+En Costa Rica cada factura es un comprobante electrónico: se firma, se envía al Ministerio de Hacienda y se acepta o se rechaza. En mi práctica profesional en Argana trabajé en una plataforma que hace eso para muchas empresas a la vez, con una aplicación web y una API para otros sistemas, en las semanas previas a su lanzamiento.
 
-Antes del lanzamiento tenía que resistir de dos formas:
-
-- **En los casos que viven las empresas reales:** solicitudes simultáneas, monedas extranjeras, comprobantes que hay que anular y una autoridad tributaria que no siempre responde.
-- **Con muchas empresas en una misma base de datos**, cada una con acceso a todos sus datos y a nada de las demás.
+Mi trabajo era asegurar que resistiera. Primero, en los casos que viven las empresas reales: solicitudes simultáneas, monedas extranjeras, comprobantes que hay que anular y una autoridad tributaria que no siempre responde. Segundo, con muchas empresas en una misma base de datos, cada una con acceso a todos sus datos y a nada de las demás.
 
 ## Qué hice
 
 - **Escribí la auditoría completa del repositorio y corregí sus 17 hallazgos**: 8 fiscales y 9 de lógica de negocio.
 - **Corregí políticas RLS que dejaban a cada empresa sin acceso a sus propios datos**, y probé el aislamiento entre empresas en las 20 tablas con pruebas que corren en CI.
-- **Reforcé la carga de archivos y las solicitudes salientes.** Los archivos se verifican por la firma de su contenido, no por el tipo que declaran.
-- **Hice idempotente la emisión**: una huella por solicitud garantiza que un reintento nunca emita dos veces el mismo comprobante.
-- **Seguridad de las cuentas:** un cambio de rol ya no puede dejar a una empresa sin administrador, y los usuarios nuevos necesitan un correo confirmado y entran por un enlace de invitación en lugar de una contraseña compartida.
-- **API y webhooks:** paginación en todas las colecciones, eventos más útiles y pruebas end-to-end de las API keys.
-- **Cobro de suscripciones por SINPE:** el cliente sube el comprobante de su transferencia y el personal de la plataforma lo revisa desde un panel interno.
-- **Un arranque limpio:** el repositorio compila y arranca desde un checkout nuevo, con datos de demostración y una cuenta por rol, y la verificación de conformidad de extremo a extremo se ejecuta de verdad en CI.
-- **Dependencias:** sin vulnerabilidades altas ni críticas conocidas al cierre de mi etapa.
+- **Hice idempotente la emisión**: un reintento nunca emite dos veces el mismo comprobante.
+- **Reforcé las cuentas, la carga de archivos y las solicitudes salientes**, para que una empresa ya no pueda quedarse sin administrador y los archivos se revisen por lo que realmente contienen.
+- **Dejé la plataforma lista para la siguiente persona**: un repositorio que compila y arranca desde un checkout nuevo con datos de demostración, y sin vulnerabilidades altas ni críticas conocidas al cierre de mi etapa.
 
-## Cómo funciona ahora
+## Resultado
+
+- La plataforma quedó **lista para el lanzamiento, sin defectos fiscales conocidos abiertos**.
+- Sin hallazgos de seguridad altos o críticos conocidos ni vulnerabilidades en dependencias al cierre de mi etapa.
+
+## Qué me llevo
+
+Una auditoría vale tanto como las correcciones que la cierran. Cada hallazgo terminó con una corrección y una prueba que fallaría si el problema volviera, así que quien venga después no tiene que confiar en mi informe: puede ejecutar las pruebas.
+
+## Decisiones técnicas
 
 Tres partes de la plataforma en las que trabajé, y por qué están construidas así.
 
@@ -48,11 +50,11 @@ Cada comprobante pasa por estados explícitos, desde la firma hasta la respuesta
 
 El aislamiento no depende de que cada consulta recuerde un `WHERE company_id = …`. La empresa se fija en la sesión de PostgreSQL con `SET LOCAL` dentro de cada transacción, para que nunca pase a la siguiente solicitud que reutiliza la conexión del pool, y las tablas usan `FORCE ROW LEVEL SECURITY`, para que ni siquiera el dueño de la tabla se salte las políticas. Escribí la prueba de CI que revisa cada tabla en las dos direcciones: cada empresa ve todos sus datos y ninguno de las demás.
 
-## Resultado
+### Otros cambios
 
-- La plataforma quedó **lista para el lanzamiento, sin defectos fiscales conocidos abiertos**.
-- Sin hallazgos de seguridad altos o críticos conocidos ni vulnerabilidades en dependencias al cierre de mi etapa.
-
-## Qué me llevo
-
-Una auditoría vale tanto como las correcciones que la cierran. Cada hallazgo terminó con una corrección y una prueba que fallaría si el problema volviera, así que quien venga después no tiene que confiar en mi informe: puede ejecutar las pruebas.
+- **Idempotencia:** una huella por solicitud hace que un reintento reciba el comprobante original.
+- **Cuentas:** un cambio de rol ya no puede dejar a una empresa sin administrador, y los usuarios nuevos necesitan un correo confirmado y entran por un enlace de invitación en lugar de una contraseña compartida.
+- **Carga de archivos:** se verifican por la firma de su contenido, no por el tipo que declaran.
+- **API y webhooks:** paginación en todas las colecciones, eventos más útiles y pruebas end-to-end de las API keys.
+- **Cobro de suscripciones por SINPE:** el cliente sube el comprobante de su transferencia y el personal de la plataforma lo revisa desde un panel interno.
+- **Un arranque limpio:** datos de demostración con una cuenta por rol, y la verificación de conformidad de extremo a extremo se ejecuta de verdad en CI.

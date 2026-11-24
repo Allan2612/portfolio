@@ -106,3 +106,18 @@ export function PortsDiagram({
     </figure>
   );
 }
+
+/**
+ * A picture that is planned but not ready (missing permission or not taken yet). Locally and on preview
+ * deployments it shows a dashed box saying what goes there; on the production site it renders nothing,
+ * so no public page shows an "image coming soon" gap.
+ */
+export function PhotoSlot({ children }: { children: string }) {
+  if (process.env.VERCEL_ENV === "production") return null;
+  return (
+    <figure className="photo-slot" aria-hidden="true">
+      <span className="photo-slot-mark">Foto pendiente · Planned picture</span>
+      <span>{children}</span>
+    </figure>
+  );
+}

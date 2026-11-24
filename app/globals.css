@@ -1098,6 +1098,25 @@ figcaption {
   color: var(--soft);
 }
 
+/* Planned picture (components/mdx.tsx PhotoSlot): never rendered on the production site. */
+.photo-slot {
+  display: grid;
+  gap: 0.5rem;
+  place-content: center;
+  min-height: 14rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 2px dashed var(--soft);
+  color: var(--soft);
+  text-align: center;
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+}
+.photo-slot-mark {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 /* A screenshot beside its phone version; the pair may run wider than the text column. */
 .figure-pair-media {
   display: grid;

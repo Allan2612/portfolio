@@ -1,24 +1,34 @@
-## The problem
+## Context
 
-The shop kept its sales, repairs, warranties and inventory by hand or on loose sheets. It needed:
+La Aguja de Oro is a tailoring shop. It kept its sales, repairs, warranties and inventory by hand or on loose sheets. It needed a system that fit the way it already worked, printed documents with Costa Rica’s tax details (invoices, quotes, repair tickets and warranty certificates), and something the staff could use from a phone.
 
-- a system that fit the way it already worked, not the other way around;
-- printed documents (invoices, quotes, repair tickets and warranty certificates) with Costa Rica’s tax details;
-- something the staff could use from a phone.
+With a partner, I built it an ERP on Odoo 17, and I set up and maintain the server it runs on. The shop has run its day to day on it since December 2025.
 
-## What I built
+## What I did
 
 The project was built with a partner, and the split matters:
 
 - **Sales** (I was the lead developer): sales with tax included in the price, status tabs, down payments and due dates.
 - **Quick service** (I created it): a new module for short jobs that do not need the full repair flow.
-- **Reports** (mine).
-- **Repairs** (created by my partner; I contributed): intake tickets, repair statuses tied to the invoice, and history in inventory.
-- **Warranties:** I customized a third-party module, with a redesigned certificate and a PDF preview.
-- **Print formats for Costa Rica:** invoices, quotes with a validity note, repair tickets and warranty certificates, with the address in the local format, correct accents and a header the shop configures from Settings.
-- **Mobile:** a responsive third-party theme, installed and adjusted so the system works from a phone.
+- **Reports** (mine), plus contributions to **repairs**, a module my partner created, and a customized **warranties** module with a redesigned certificate.
+- **Print formats for Costa Rica:** invoices, quotes, repair tickets and warranty certificates, with a header the shop configures itself; and a responsive theme so the system works from a phone.
+- **The production server:** set up, secured and maintained by me, with daily backups.
 
-## Production infrastructure
+<PhotoSlot>Screens of the system with test data (a sale, a repair ticket and a printed invoice), once the shop gives written permission.</PhotoSlot>
+
+## Result
+
+- The business has run its day-to-day operations on the system **since December 2025**.
+- Minimal infrastructure cost, with HTTPS, a hardened server and daily backups.
+- It started as a course project in 2024 and is still in production; I keep maintaining it.
+
+## What I took from it
+
+A course project ends when it is graded; a system a business depends on does not. Once the shop started running on it, every change had to be safe to deploy on a working day, every request needed an answer, and the server became my responsibility. That is where I learned to treat backups, access and updates as part of the product, not as an afterthought.
+
+## Technical decisions
+
+### Production infrastructure
 
 I set up and documented the server, and I maintain it:
 
@@ -40,8 +50,6 @@ I set up and documented the server, and I maintain it:
   caption="A small cloud server behind a firewall that only lets web and SSH traffic through."
 />
 
-## Technical decisions
-
 ### Extend Odoo instead of fighting it
 
 Every change lives in a custom module that inherits from Odoo’s own models and views, so the standard code is never edited and the system can be updated without losing the shop’s changes.
@@ -53,13 +61,3 @@ The business is small, and so is the budget. Instead of a bigger machine, the se
 ### Going live was the start, not the end
 
 The system kept growing after it went live. Since then I built the quick-service module, reworked sales so repair status and down payments attach to the invoice, added a quote header the shop configures in Settings, and redesigned the invoices and the warranty certificate. Alongside that came the fixes only daily use reveals: prices with tax shown as they are typed, logos cropped correctly on documents, dates in local time, and PDFs that download on every phone. Small fixes like these decide whether people keep using a system.
-
-## Result
-
-- The business has run its day-to-day operations on the system **since December 2025**.
-- Minimal infrastructure cost, with HTTPS, a hardened server and daily backups.
-- It started as a course project in 2024 and is still in production; I keep maintaining it.
-
-## What I took from it
-
-A course project ends when it is graded; a system a business depends on does not. Once the shop started running on it, every change had to be safe to deploy on a working day, every request needed an answer, and the server became my responsibility. That is where I learned to treat backups, access and updates as part of the product, not as an afterthought.

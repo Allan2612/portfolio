@@ -1,26 +1,52 @@
-import services from "../images/tyt/services.webp";
+import services from "../images/tyt/services-en.webp";
 import phoneHome from "../images/tyt/phone-home-en.webp";
+import catalog from "../images/tyt/catalog-en.webp";
+import phoneProduct from "../images/tyt/phone-product-en.webp";
 
-## The problem
+## Context
 
-TyT Tecnología repairs computers, installs security cameras and sells equipment in Pérez Zeledón. It had no place of its own on the web: nothing that showed up when someone searched for the shop, nowhere to see its services, and no catalog to browse.
+TyT Tecnología is a workshop in Pérez Zeledón, Costa Rica, that repairs computers, installs security cameras and sells equipment. It had no place of its own on the web: nothing showed up when someone searched for the shop, and there was nowhere to see its services or browse what it sells.
 
-Three constraints shaped the project:
+I built its website, catalog and admin dashboard on my own. Today the shop has a bilingual site on its own domain, customers send their order to the shop’s WhatsApp in one tap, and the owners change products, prices and promotions themselves, without a developer.
 
-- **People buy over WhatsApp.** The shop’s customers already close every sale in a chat, so the site had to hand them over to WhatsApp, not replace it with a payment gateway.
-- **The owners keep it up to date.** Products, prices, photos, services and promotions change often, and none of that could depend on a developer.
+Three facts about the business shaped every decision:
+
+- **People buy over WhatsApp.** The shop’s customers already close every sale in a chat, so the site hands them over to WhatsApp instead of replacing it with a payment gateway.
+- **The owners keep it up to date.** Products, prices, photos and promotions change often, and none of that could depend on a developer.
 - **Prices in colones, with a dollar reference.** Equipment is often priced against the dollar, so the site shows both, with an exchange rate that updates itself.
 
-## What I built
+## What I did
 
-- **Public site in Spanish and English:** a services landing page with one page per service, a catalog with filters and category pages, product pages, success stories, contact with a map, and legal pages.
-- **Cart with WhatsApp checkout.** The cart lives in the browser and, once the customer signs in, in their account; the two merge without losing items. Checkout turns the cart into a WhatsApp message to the shop.
-- **Customer accounts** with inquiries handled as message threads, so a customer can choose between the web and WhatsApp.
-- **Admin dashboard** for products and photos, services, categories, success stories, inquiries and site settings (WhatsApp number, hours, location, social links), so nothing the owners need to change is hard-coded.
-- **Daily exchange rate:** a scheduled job updates it, and every price shows in colones with its dollar reference.
-- **AI-assisted product entry:** the admin pastes a product sheet from another store and Gemini fills in the form for review.
-- **Promotions for social media**, described below.
-- **Technical SEO:** per-page metadata, `hreflang`, a sitemap, structured data and statically generated pages.
+- **A public site in Spanish and English:** services, a catalog with filters, product pages, success stories and contact with a map.
+- **Ordering through WhatsApp:** the cart turns into a WhatsApp message to the shop, the way its customers already buy.
+- **An admin dashboard** where the owners manage products and photos, services, promotions, inquiries and the site’s settings.
+- **A look that makes a small shop feel established**, built from its own logo instead of stock photos.
+- **AI that helps but never decides:** it drafts product sheets and promotion photos, a person approves each one, and prices always come from the database.
+
+<FigurePair
+  wide={{ src: catalog, alt: "TyT catalog in English: computers in a carousel, each card with its specs, price in colones and an Add button." }}
+  narrow={{ src: phoneProduct, alt: "A TyT product page on a phone: name, condition, price and photo gallery." }}
+  caption="The catalog on a desktop, and a product page on a phone. The products are still sample content."
+/>
+
+<FigurePair
+  wide={{ src: services, alt: "TyT services page in English: a large heading, filters by area and service cards with photos." }}
+  narrow={{ src: phoneHome, alt: "TyT home page on a phone, in English." }}
+  caption="The services page on a desktop, and the home page on a phone."
+/>
+
+<PhotoSlot>The admin dashboard (product editor or promotion review), once TyT gives written permission.</PhotoSlot>
+
+## Result
+
+- **Live at [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingual, on the shop’s own domain.
+- Built so the owners manage the catalog, services and promotions from the dashboard, without a developer.
+- 19 data models and 119 test files, by one developer, in about five months.
+- The app is containerized, and a move to self-managed infrastructure to lower hosting costs is in progress.
+
+## What I took from it
+
+The hardest part was not the code: it was making a small shop look established with no professional assets, just a logo and a clear idea of how the workshop works. A design system built from the brand’s own shapes and type held up better than stock images would have, and it scales as the catalog grows.
 
 ## Technical decisions
 
@@ -50,13 +76,7 @@ The shop had a logo and nothing else: no professional photography, no illustrati
 - **The home hero is built from TyT’s own isotype**, and its shapes carry down the whole home page instead of a generic banner image.
 - **The workshop ticket as the design language.** Product, service and contact cards look like repair tickets, with a reference code and a tear-off cut, and product specs read like a data sheet.
 - **A type system instead of imagery:** an expanded typeface for headings, a neutral one for body text and a monospace for workshop data such as codes, specs and labels, on a dark palette where one color is reserved for actions and another for status.
-- **Consistent product photos:** AI puts the shop’s own photos on the same studio background (see the next section), so the catalog looks like one collection.
-
-<FigurePair
-  wide={{ src: services, alt: "TyT services page in Spanish: a large heading, filters by area and service cards with photos." }}
-  narrow={{ src: phoneHome, alt: "TyT home page on a phone, in English." }}
-  caption="The services page on a desktop, and the home page on a phone."
-/>
+- **Consistent product photos:** AI puts the shop’s own photos on the same studio background, so the catalog looks like one collection.
 
 ### AI that drafts, a person who approves
 
@@ -67,11 +87,18 @@ Promotions are where AI helps the most and can hurt the most, because a wrong pr
 3. The admin reviews **photo by photo** and approves or discards each one.
 4. **The code draws the flyer**, in 4:5 and 9:16 for social media, with the price and details taken from the database.
 
-Nothing is published without approval, and the model never writes a price.
+Nothing is published without approval, and the model never writes a price. The same idea runs product entry: the admin pastes a product sheet from another store, and Gemini fills in the form for review.
 
 ### Authorization on every action
 
 Every admin screen and every server action checks the administrator role itself. The routing layer also blocks non-admins, but it is not the only lock: if a request reaches an action some other way, the action still refuses it.
+
+### The rest of the system
+
+- **Cart:** it lives in the browser and, once the customer signs in, in their account; the two merge without losing items.
+- **Customer accounts** with inquiries handled as message threads, so a customer can choose between the web and WhatsApp.
+- **Daily exchange rate:** a scheduled job updates it, and every price shows in colones with its dollar reference.
+- **Technical SEO:** per-page metadata, `hreflang`, a sitemap, structured data and statically generated pages.
 
 ### Quality that runs on its own
 
@@ -79,14 +106,3 @@ Every admin screen and every server action checks the administrator role itself.
 - CI on every push: lint, formatting, tests, build and end-to-end.
 - `develop` for daily work and `main` for releases, merged by pull request, with a preview deployment for every branch.
 - Handoff notes, a roadmap and a QA checklist for every deploy, so someone else can pick the project up.
-
-## Result
-
-- **Live at [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingual, on the shop’s own domain.
-- Built so the owners manage the catalog, services and promotions from the dashboard, without a developer.
-- 19 data models and 119 test files, by one developer, in about five months.
-- The app is containerized, and a move to self-managed infrastructure to lower hosting costs is in progress.
-
-## What I took from it
-
-The hardest part was not the code: it was making a small shop look established with no professional assets, just a logo and a clear idea of how the workshop works. A design system built from the brand’s own shapes and type held up better than stock images would have, and it scales as the catalog grows.
