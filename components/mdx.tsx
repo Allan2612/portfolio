@@ -9,8 +9,8 @@ export function FigurePair({ wide, narrow, caption }: { wide: Img; narrow: Img; 
   return (
     <figure className="figure-pair">
       <div className="figure-pair-media">
-        <ThemedImage zoom src={wide.src} dark={wide.dark} alt={wide.alt} sizes="(min-width: 1024px) 40rem, 100vw" className="h-auto w-full" />
-        <ThemedImage zoom src={narrow.src} dark={narrow.dark} alt={narrow.alt} sizes="(min-width: 1024px) 12rem, 40vw" className="h-auto w-full" />
+        <ThemedImage zoom src={wide.src} dark={wide.dark} alt={wide.alt} sizes="(min-width: 1280px) 40rem, 78vw" className="h-auto w-full" />
+        <ThemedImage zoom src={narrow.src} dark={narrow.dark} alt={narrow.alt} sizes="(min-width: 1280px) 12rem, 22vw" className="h-auto w-full" />
       </div>
       <figcaption>{caption}</figcaption>
     </figure>

@@ -176,6 +176,8 @@ test("pages describe themselves for search engines and link previews", async ({ 
 
   const study = await (await request.get("/en/projects/tyt")).text();
   expect(ld(study)).toMatchObject({ "@type": "Article", inLanguage: "en", author: { "@type": "Person" } });
+  expect(ld(study).image).toMatch(/\/en\/projects\/tyt\/opengraph-image\/card$/);
+  expect((await request.get(new URL(ld(study).image).pathname)).headers()["content-type"]).toContain("image/png");
   expect(meta(study, "og:locale")).toBe("en_US");
 
   const cv = await (await request.get("/es/cv")).text();
@@ -235,8 +237,11 @@ test("a screenshot opens full screen, zooms to full size and closes", async ({ p
     await expect(viewer).toBeVisible({ timeout: 1000 });
   }).toPass();
   await expect(viewer.locator("img")).toHaveAttribute("alt", /TyT/);
-  await viewer.locator("img").click();
+  // Full size from the keyboard as well: the picture is a button.
+  await viewer.locator(".lightbox-zoom").focus();
+  await page.keyboard.press("Enter");
   await expect(viewer).toHaveAttribute("data-zoomed", "true");
+  await expect(viewer.locator(".lightbox-zoom")).toHaveAttribute("aria-pressed", "true");
   await page.keyboard.press("Escape");
   await expect(viewer).toBeHidden();
   await expect(trigger).toBeFocused();

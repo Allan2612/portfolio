@@ -50,6 +50,8 @@ export type Project = {
   cover?: Record<Locale, { src: StaticImageData; dark?: StaticImageData; alt: string }>;
   /** Home-page picture for the project row (the cover is used in the intro instead). */
   thumb?: { src: StaticImageData; dark?: StaticImageData; alt: Record<Locale, string> };
+  /** JPEG under content/images/og drawn into the case's share image (next/og cannot read WebP). */
+  ogShot?: Record<Locale, string>;
   text: Record<Locale, Text>;
   /** The case study, one MDX file per language. */
   body: Record<Locale, MDXContent>;
@@ -59,6 +61,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "tyt",
+    ogShot: { en: "tyt-en.jpg", es: "tyt-es.jpg" },
     kind: "live",
     start: "2026-07",
     end: null,
@@ -107,6 +110,7 @@ export const projects: Project[] = [
   },
   {
     slug: "aguja-de-oro",
+    ogShot: { en: "aguja.jpg", es: "aguja.jpg" },
     kind: "live",
     start: "2024-09",
     end: null,
@@ -191,6 +195,7 @@ export const projects: Project[] = [
   },
   {
     slug: "miku",
+    ogShot: { en: "miku.jpg", es: "miku.jpg" },
     kind: "open-source",
     start: "2026-10",
     end: null,

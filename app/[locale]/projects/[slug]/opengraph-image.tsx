@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { ogImage, ogSize } from "@/components/og";
+import { ogImage, ogShot, ogSize } from "@/components/og";
 import { getProject, projects } from "@/content/projects";
 import { getSite, isLocale } from "@/lib/i18n";
 
@@ -19,5 +19,6 @@ export default async function Image({ params }: { params: Promise<{ locale: stri
   if (!isLocale(locale) || !project) notFound();
   const site = getSite(locale);
   const t = project.text[locale];
-  return ogImage({ title: t.title, text: t.summary, label: site.kinds[project.kind], footer: site.name });
+  const shot = project.ogShot ? ogShot(project.ogShot[locale]) : undefined;
+  return ogImage({ title: t.title, text: t.summary, label: site.kinds[project.kind], footer: site.name, shot });
 }

@@ -1169,11 +1169,22 @@ figcaption {
 .lightbox::backdrop {
   background: transparent;
 }
+.lightbox-zoom {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.lightbox-zoom:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
 .lightbox img {
-  max-width: 100%;
+  display: block;
+  max-width: calc(100vw - 3rem);
   max-height: calc(100dvh - 3rem);
   object-fit: contain;
-  cursor: zoom-in;
 }
 /* Full size: the picture keeps its own pixels and the viewer scrolls. */
 .lightbox[data-zoomed] {
@@ -1182,6 +1193,8 @@ figcaption {
 .lightbox[data-zoomed] img {
   max-width: none;
   max-height: none;
+}
+.lightbox[data-zoomed] .lightbox-zoom {
   cursor: zoom-out;
 }
 .lightbox-close {

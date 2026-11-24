@@ -63,6 +63,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
           description: t.summary,
           inLanguage: locale,
           url: `${siteUrl}/${locale}/projects/${slug}`,
+          image: `${siteUrl}/${locale}/projects/${slug}/opengraph-image/card`,
           author: person(locale),
         }}
       />
@@ -102,7 +103,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
 
           {/* For readers who will not read the whole case: three points, set apart. */}
           <section className="col mt-12" aria-labelledby="in-short">
-            <div className="in-short max-w-wide" data-reveal>
+            <div className="in-short max-w-wide">
               <h2 id="in-short" className="text-small font-semibold">
                 {cs.inShort}
               </h2>
