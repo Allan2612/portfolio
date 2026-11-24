@@ -8,6 +8,9 @@ export const defaultLocale: Locale = "en";
 export const isLocale = (value: string): value is Locale =>
   (locales as readonly string[]).includes(value);
 
+/** Open Graph wants language_TERRITORY. */
+export const ogLocale = { en: "en_US", es: "es_CR" } as const;
+
 export const otherLocale = (locale: Locale): Locale => (locale === "en" ? "es" : "en");
 
 const sites = { en, es };

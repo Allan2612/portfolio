@@ -143,11 +143,31 @@ test("sitemap, robots and share images are served", async ({ request }) => {
   const sitemap = await (await request.get("/sitemap.xml")).text();
   for (const path of pages) expect(sitemap).toContain(`/es${path}</loc>`);
   expect(await (await request.get("/robots.txt")).text()).toContain("Sitemap:");
-  for (const url of ["/en/opengraph-image", "/es/projects/miku/opengraph-image"]) {
-    const res = await request.get(url);
-    expect(res.status(), url).toBe(200);
+  for (const page of ["/en", "/es/cv", "/es/projects/miku"]) {
+    const html = await (await request.get(page)).text();
+    const image = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+    expect(image, page).toBeTruthy();
+    const res = await request.get(new URL(image!).pathname + new URL(image!).search);
+    expect(res.status(), image).toBe(200);
     expect(res.headers()["content-type"]).toContain("image/png");
   }
+});
+
+test("pages describe themselves for search engines and link previews", async ({ request }) => {
+  const meta = (html: string, key: string) => html.match(new RegExp(`<meta (?:property|name)="${key}" content="([^"]*)"`))?.[1];
+  const ld = (html: string) => JSON.parse(html.match(/<script type="application\/ld\+json">(.+?)<\/script>/)![1]);
+
+  const home = await (await request.get("/es")).text();
+  expect(ld(home)).toMatchObject({ "@type": "ProfilePage", mainEntity: { "@type": "Person", name: "Allan Vargas Torres" } });
+  expect(meta(home, "og:locale")).toBe("es_CR");
+  expect(meta(home, "og:image:alt")).toContain("Desarrollador");
+
+  const study = await (await request.get("/en/projects/tyt")).text();
+  expect(ld(study)).toMatchObject({ "@type": "Article", inLanguage: "en", author: { "@type": "Person" } });
+  expect(meta(study, "og:locale")).toBe("en_US");
+
+  const cv = await (await request.get("/es/cv")).text();
+  expect(meta(cv, "og:title")).toBe((cv.match(/<title>([^<]+)<\/title>/) ?? [])[1]);
 });
 
 test("unknown pages are a 404 with links back, in both languages", async ({ page, request, browserName }) => {
