@@ -7,7 +7,7 @@ const site: SiteCopy = {
   meta: {
     title: "Allan Vargas Torres · Desarrollador Full Stack",
     description:
-      "Desarrollador full stack en Costa Rica. Construyo aplicaciones web completas con TypeScript y PostgreSQL, y las entrego probadas y en producción.",
+      "Desarrollador full stack en Costa Rica. Resuelvo problemas de punta a punta con software: plataformas web, sistemas de negocio, herramientas de escritorio y los servidores donde corren.",
     notFoundTitle: "Página no encontrada",
   },
   nav: {
@@ -20,12 +20,13 @@ const site: SiteCopy = {
     language: "Idioma",
     languageName: "Español",
     theme: "Cambiar entre claro y oscuro",
+    top: "Volver arriba",
     skip: "Saltar al contenido",
     home: "Inicio",
   },
   hero: {
     statement:
-      "Construyo aplicaciones web completas con TypeScript y PostgreSQL, y las entrego probadas y en producción.",
+      "Resuelvo problemas de punta a punta con software: plataformas web, sistemas de negocio, herramientas de escritorio y los servidores donde corren.",
     location: "Pérez Zeledón, Costa Rica (UTC−6)",
     status: "Disponibilidad inmediata · Junior · Inglés (B2)",
     remote: "Abierto a trabajo remoto, incluso para equipos de EE. UU. como contratista, con horario completo de la zona central de EE. UU.",
@@ -34,10 +35,11 @@ const site: SiteCopy = {
     cv: "Descargar CV",
     contact: "Contacto",
     proof: [
-      "2 sistemas en producción para clientes",
-      "119 archivos de pruebas en CI, como único desarrollador",
-      "Análisis de brechas de 311 requisitos",
+      { value: "2", label: "sistemas en producción para clientes" },
+      { value: "119", label: "archivos de pruebas en CI, como único desarrollador" },
+      { value: "311", label: "requisitos en un análisis de brechas" },
     ],
+    localTime: "hora local",
     reading: { legend: "Nivel de detalle", short: "Resumen", full: "Completo" },
   },
   kinds: { live: "En producción", internship: "Práctica profesional", "open-source": "Código abierto" },
@@ -91,7 +93,7 @@ const site: SiteCopy = {
   about: {
     heading: "Sobre mí",
     paragraphs: [
-      "Construyo aplicaciones web de punta a punta: el modelo de datos, la API, la interfaz, las pruebas y el servidor donde corren. En TyT eso significó definir con los dueños lo que el negocio necesitaba, diseñar el modelo de datos, construir el sitio y su panel, y desplegarlo. En La Aguja de Oro significó aprender Odoo lo suficiente para adaptarlo a la forma en que trabaja un taller de costura, y después montar y mantener el servidor donde corre.",
+      "Construyo software de punta a punta: el modelo de datos, la API, la interfaz, las pruebas y el servidor donde corre. En TyT eso significó definir con los dueños lo que el negocio necesitaba, diseñar el modelo de datos, construir el sitio y su panel, y desplegarlo. En La Aguja de Oro significó aprender Odoo lo suficiente para adaptarlo a la forma en que trabaja un taller de costura, y después montar y mantener el servidor donde corre.",
       "Mis hábitos: pruebas primero cuando las reglas importan, CI en cada push y documentación que otra persona pueda retomar. En la práctica profesional eso fue escribir reglas contables con TDD en un equipo de cinco y auditar una plataforma de facturación electrónica antes de su lanzamiento.",
       "Uso asistentes de IA para programar todos los días. Cada cambio pasa igual por las pruebas y por mi revisión, y puedo explicar cualquier línea que entrego. En el análisis de brechas del ERP diseñé los agentes de IA que verificaban cada requisito, incluido uno cuya única tarea era intentar desmentir cada veredicto de “falta”; yo integré y validé lo que encontraron.",
     ],
@@ -147,11 +149,14 @@ const site: SiteCopy = {
     heading: "Contacto",
     prompt: "Busco un puesto de tiempo completo, remoto o en Costa Rica.",
     lead: "Hablemos.",
+    copy: "Copiar",
+    copied: "Copiado",
+    download: "Descargar",
     cvLabel: "CV (PDF)",
     cvEn: "Inglés",
     cvEs: "Español",
   },
-  footer: { description: "Allan Vargas Torres · Desarrollador full stack", source: "Código en GitHub" },
+  footer: { description: "Desarrollador full stack · Costa Rica", source: "Código en GitHub" },
   caseStudy: {
     role: "Rol",
     period: "Período",
@@ -167,6 +172,8 @@ const site: SiteCopy = {
     cta: "¿Quiere saber más de este proyecto? Con gusto lo explico en una entrevista.",
     ctaButton: "Contactar",
     back: "Todos los proyectos",
+    minRead: "min de lectura",
+    onThisPage: "En esta página",
     inShort: "En resumen",
   },
   cvPage: {

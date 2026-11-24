@@ -5,7 +5,7 @@ const site = {
   meta: {
     title: "Allan Vargas Torres · Full Stack Developer",
     description:
-      "Full stack developer in Costa Rica. I build complete web applications with TypeScript and PostgreSQL, and ship them tested and in production.",
+      "Full stack developer in Costa Rica. I solve problems end to end with software: web platforms, business systems, desktop tools and the servers they run on.",
     notFoundTitle: "Page not found",
   },
   nav: {
@@ -18,12 +18,13 @@ const site = {
     language: "Language",
     languageName: "English",
     theme: "Switch between light and dark",
+    top: "Back to top",
     skip: "Skip to content",
     home: "Home",
   },
   hero: {
     statement:
-      "I build complete web applications with TypeScript and PostgreSQL, and ship them tested and in production.",
+      "I solve problems end to end with software: web platforms, business systems, desktop tools and the servers they run on.",
     location: "Pérez Zeledón, Costa Rica (UTC−6)",
     status: "Available now · Junior · English (B2)",
     remote: "Open to remote work, including US teams as a contractor with full overlap with US Central hours.",
@@ -32,10 +33,11 @@ const site = {
     cv: "Download CV",
     contact: "Contact",
     proof: [
-      "2 client systems in production",
-      "119 test files in CI, as the sole developer",
-      "311-requirement gap analysis",
+      { value: "2", label: "client systems in production" },
+      { value: "119", label: "test files in CI, as the sole developer" },
+      { value: "311", label: "requirements in a gap analysis" },
     ],
+    localTime: "local time",
     reading: { legend: "Detail level", short: "Summary", full: "Full detail" },
   },
   kinds: { live: "Live", internship: "Internship", "open-source": "Open source" },
@@ -89,7 +91,7 @@ const site = {
   about: {
     heading: "About",
     paragraphs: [
-      "I build web applications end to end: the data model, the API, the interface, the tests and the server they run on. For TyT that meant working out with the owners what the shop needed, designing the data model, building the site and its dashboard, and deploying it. For La Aguja de Oro it meant learning Odoo well enough to fit it to how a tailoring shop actually works, and then setting up and maintaining the server it runs on.",
+      "I build software end to end: the data model, the API, the interface, the tests and the server it runs on. For TyT that meant working out with the owners what the shop needed, designing the data model, building the site and its dashboard, and deploying it. For La Aguja de Oro it meant learning Odoo well enough to fit it to how a tailoring shop actually works, and then setting up and maintaining the server it runs on.",
       "My habits: tests first when the rules matter, CI on every push, and documentation that someone else can pick up. During my internship that meant writing accounting rules test-first on a team of five, and auditing an e-invoicing platform before its launch.",
       "I use AI coding assistants every day. Every change still goes through tests and my own review, and I can explain any line I ship. On the ERP gap analysis I designed the AI agents that cross-checked each requirement, including one whose only job was to try to disprove every “missing” verdict; I integrated and validated what they found.",
     ],
@@ -145,11 +147,14 @@ const site = {
     heading: "Contact",
     prompt: "Open to full-time roles, remote or in Costa Rica.",
     lead: "Let’s talk.",
+    copy: "Copy",
+    copied: "Copied",
+    download: "Download",
     cvLabel: "CV (PDF)",
     cvEn: "English",
     cvEs: "Spanish",
   },
-  footer: { description: "Allan Vargas Torres · Full stack developer", source: "Source on GitHub" },
+  footer: { description: "Full stack developer · Costa Rica", source: "Source on GitHub" },
   caseStudy: {
     role: "Role",
     period: "Period",
@@ -165,6 +170,8 @@ const site = {
     cta: "Want to hear more about this project? I’m happy to walk through it in an interview.",
     ctaButton: "Get in touch",
     back: "All projects",
+    minRead: "min read",
+    onThisPage: "On this page",
     inShort: "In short",
   },
   cvPage: {

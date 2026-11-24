@@ -156,6 +156,12 @@ html {
 [id] {
   scroll-margin-top: 1.5rem;
 }
+/* The header is sticky from 48rem up: anchors land below it. */
+@media (min-width: 48rem) {
+  [id] {
+    scroll-margin-top: 6.5rem;
+  }
+}
 
 body {
   font-family: var(--font-serif);
@@ -213,7 +219,8 @@ h3 {
     justify-self: end;
     width: min(100%, 16rem);
     position: sticky;
-    top: 2rem;
+    /* Below the sticky header. */
+    top: 7rem;
     align-self: start;
   }
   .split-main,
@@ -227,8 +234,10 @@ h3 {
   }
 }
 
+/* Fixed, not absolute: inside the sticky header an absolute link could peek out while scrolling. */
 .skip-link {
-  position: absolute;
+  position: fixed;
+  z-index: 40;
   left: var(--spacing-gutter);
   top: -4rem;
   background: var(--ink);
@@ -253,7 +262,7 @@ h3 {
   background: color-mix(in srgb, var(--accent) 85%, var(--ink));
 }
 .button:active {
-  transform: translateY(1px);
+  transform: scale(0.97);
 }
 
 /* ---------- Facts (label above value) ---------- */
@@ -267,6 +276,56 @@ h3 {
 }
 .facts dt {
   color: var(--soft);
+}
+
+/* Section index of a case study: only where the side column is sticky beside the text. */
+.toc {
+  display: none;
+}
+@media (min-width: 80rem) {
+  /* Facts plus index are taller than a short screen: the facts scroll away, only the index stays. */
+  .split-side:has(.toc) {
+    position: static;
+    align-self: stretch;
+  }
+  .toc {
+    display: block;
+    position: sticky;
+    top: 7rem;
+    margin-top: 2.5rem;
+  }
+  .toc ul {
+    display: grid;
+    gap: 0.15rem;
+    margin-top: 0.6rem;
+  }
+  .toc a {
+    display: block;
+    padding: 0.2rem 0 0.2rem 0.85rem;
+    border-left: 2px solid transparent;
+    color: var(--soft);
+    font-size: var(--text-small);
+    line-height: 1.35;
+    transition:
+      color 0.2s var(--ease-out),
+      border-color 0.2s var(--ease-out);
+  }
+  .toc a:hover {
+    color: var(--ink);
+  }
+  .toc a[aria-current] {
+    color: var(--ink);
+    border-left-color: var(--accent);
+  }
+}
+
+/* The name, large, closing every page. */
+.footer-name {
+  font-size: clamp(2.6rem, 8.5vw, 8.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
 }
 
 /* ---------- Two-ended rows: text at the left, a value at the far right ---------- */
@@ -319,14 +378,24 @@ h3 {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
+/* Collapsed: zero height and hidden from assistive tech; "Full detail" opens it to its real height
+   (grid rows 0fr → 1fr, no measuring). Each .detail wraps one child that carries its own top spacing. */
 .detail {
-  display: none;
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 450ms var(--ease-out), opacity 250ms ease, visibility 0s linear 450ms;
+}
+.detail > * {
+  min-height: 0;
+  overflow: hidden;
 }
 html:has(#reading-full:checked) .detail {
-  display: block;
-}
-html:has(#reading-full:checked) ul.detail {
-  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition: grid-template-rows 450ms var(--ease-out), opacity 400ms ease 120ms, visibility 0s;
 }
 
 /* ---------- Links: underlined only in running text; elsewhere position and size say "link" ---------- */
@@ -392,18 +461,6 @@ footer a:hover,
   .intro-grid {
     grid-template-columns: minmax(0, 34rem) minmax(0, 24rem);
     gap: 5rem;
-  }
-}
-.proof {
-  margin-top: 4rem;
-  display: grid;
-  gap: 0.25rem 3rem;
-  font-size: var(--text-small);
-}
-@media (min-width: 48rem) {
-  .proof {
-    grid-auto-flow: column;
-    justify-content: start;
   }
 }
 
@@ -566,23 +623,426 @@ footer a:hover,
   outline-color: var(--paper);
 }
 
-/* ---------- Motion: the intro rises on load (CSS only). No scroll reveals: content must be visible without scrolling into it. ---------- */
+/* ---------- Motion ----------
+   Signature: the name rises word by word from behind its baseline; the intro follows in order.
+   Sections, project blocks and diagram steps arrive once as they scroll in (components/motion.tsx).
+   Anything that starts hidden requires html.js and no reduced-motion preference, so with JavaScript
+   off or "reduce motion" on, the page is simply complete. */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+}
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(1.1rem);
   }
 }
-.rise {
-  animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+@keyframes mask-up {
+  from {
+    transform: translateY(105%);
+  }
 }
-.rise-2 {
-  animation-delay: 90ms;
+
+/* A word inside its own clipping box; the padding pair keeps descenders (g, y) from being cut. */
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
 }
-.rise-3 {
-  animation-delay: 180ms;
+.mask-inner {
+  display: inline-block;
 }
+.shutter {
+  display: block;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro-name .mask-inner {
+    animation: mask-up 950ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 100ms);
+  }
+  .rise {
+    animation: rise 800ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 200ms);
+  }
+
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 700ms var(--ease-out) calc(var(--i, 0) * 80ms),
+      transform 900ms var(--ease-out) calc(var(--i, 0) * 80ms),
+      scale 350ms var(--ease-out),
+      background-color 200ms ease;
+  }
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* "Let's talk." rises from its mask once the closing block is in view. */
+  .js .closing [data-reveal] .mask-inner {
+    transform: translateY(105%);
+    transition: transform 950ms var(--ease-out) 200ms;
+  }
+  .js .closing [data-reveal].is-in .mask-inner {
+    transform: none;
+  }
+
+  /* The TyT screenshot opens like a shutter and settles from a slight zoom. */
+  .js .shutter {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1100ms var(--ease-in-out) 150ms;
+  }
+  .js .shutter img {
+    transform: scale(1.1);
+    transition: transform 1500ms var(--ease-soft) 150ms;
+  }
+  .js .is-in .shutter {
+    clip-path: inset(0);
+  }
+  .js .is-in .shutter img {
+    transform: none;
+  }
+
+  /* Under the pointer: the arrow leads, the picture leans in a little. */
+  @media (hover: hover) and (pointer: fine) {
+    .read-more .arrow {
+      display: inline-block;
+      transition: transform 200ms var(--ease-out);
+    }
+    .work-row:hover .read-more .arrow,
+    .read-more:focus-visible .arrow {
+      transform: translateX(0.3rem);
+    }
+    .work-row:hover .shutter img,
+    .js .work-row.is-in:hover .shutter img {
+      transform: scale(1.025);
+      transition: transform 600ms var(--ease-soft);
+    }
+  }
+}
+
+/* Theme switch: a short crossfade (view transitions; instant where unsupported). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 350ms;
+}
+
+/* Reading progress on case studies, driven by the page scroll (no JavaScript). */
+.read-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .read-progress {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    height: 3px;
+    z-index: 30;
+    background: var(--accent);
+    transform-origin: 0 50%;
+    animation: read-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes read-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Header stays at hand on wider screens; the current section is underlined in the menu. */
+@media (min-width: 48rem) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--paper);
+    padding-bottom: 1rem;
+  }
+}
+header nav a[aria-current] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+  text-decoration-color: var(--accent);
+}
+
+
+
+/* ---------- Interface details ---------- */
+
+/* Menu jumps glide to their section (and back up); instant under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Square icon buttons: copy, back to top. One shape, one size. */
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, scale 200ms var(--ease-out), opacity 300ms ease, translate 300ms var(--ease-out);
+}
+.icon-button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.icon-button:active {
+  scale: 0.92;
+}
+
+.copy-button {
+  color: var(--paper);
+  background: transparent;
+}
+.copy-button:hover,
+.copy-button:focus-visible {
+  background: color-mix(in srgb, var(--paper) 18%, transparent);
+  scale: 1.06;
+}
+.copy-button[data-copied] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* CV downloads on the dark closing field. */
+.download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  font-size: var(--text-small);
+  color: var(--paper);
+  background: transparent;
+  transition: background-color 180ms ease, scale 200ms var(--ease-out);
+}
+.download svg {
+  width: 1rem;
+  height: 1rem;
+  transition: translate 200ms var(--ease-out);
+}
+.download:hover,
+.download:focus-visible {
+  background: color-mix(in srgb, var(--paper) 18%, transparent);
+  scale: 1.04;
+}
+.download:hover svg {
+  translate: 0 2px;
+}
+.download:active {
+  scale: 0.97;
+}
+
+/* Back to top: appears once the page title has scrolled away. */
+.to-top {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  z-index: 25;
+  color: var(--paper);
+  background: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 0.75rem;
+  transition: opacity 300ms ease, translate 300ms var(--ease-out), scale 200ms var(--ease-out), visibility 0s linear 300ms;
+}
+/* Visible and focusable only once shown; hidden, it must not take keyboard focus. */
+.past-intro .to-top {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition: opacity 300ms ease, translate 300ms var(--ease-out), scale 200ms var(--ease-out), visibility 0s;
+}
+.to-top:hover {
+  scale: 1.08;
+}
+
+/* Home: the header wordmark waits until the big name has scrolled away (no double name). */
+.js [data-home] .wordmark {
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 -0.4rem;
+  transition: opacity 300ms ease, translate 300ms var(--ease-out), visibility 0s linear 300ms;
+}
+.js.past-intro [data-home] .wordmark {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition: opacity 300ms ease, translate 300ms var(--ease-out), visibility 0s;
+}
+
+/* Theme button: grows under the pointer, the icon turns. */
+.theme-toggle {
+  transition: background-color 150ms ease, scale 200ms var(--ease-out);
+}
+.theme-toggle svg {
+  transition: rotate 400ms var(--ease-out);
+}
+.theme-toggle:active {
+  scale: 0.9;
+}
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    scale: 1.15;
+  }
+  .theme-toggle:hover svg {
+    rotate: 25deg;
+  }
+  /* Project blocks lean forward a little. */
+  .work-row:hover {
+    scale: 1.012;
+  }
+  .button:hover {
+    scale: 1.03;
+  }
+}
+.work-row {
+  transition: background-color 200ms ease, scale 350ms var(--ease-out);
+}
+.button {
+  transition: background-color 150ms ease, transform 150ms var(--ease-out), scale 200ms var(--ease-out);
+}
+
+/* Proof row: three figures that count up once. */
+.proof {
+  margin-top: 4rem;
+  display: grid;
+  gap: 1.25rem 3rem;
+}
+.proof li {
+  display: grid;
+  gap: 0.15rem;
+}
+.proof-value {
+  font-size: var(--text-head);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.proof-label {
+  font-size: var(--text-small);
+  color: var(--soft);
+  max-width: 16rem;
+}
+@media (min-width: 48rem) {
+  .proof {
+    grid-template-columns: repeat(3, max-content);
+  }
+}
+
+/* Live local time beside the location. */
+.local-time {
+  color: var(--soft);
+}
+
+/* Stack as tags: scannable at a glance. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+/* A tech chip: icon + name. With a mouse it flips over to show where it was used. Both faces sit in
+   one grid cell, so the chip is as wide as its wider face and never covers a neighbour. */
+.tech {
+  font-size: var(--text-small);
+}
+.tech-card {
+  display: grid;
+}
+.tech-face,
+.tech-back {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  white-space: nowrap;
+}
+.tech-face {
+  background: var(--paper);
+}
+.tech svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+.tech-back {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .tech-flip {
+    perspective: 40rem;
+  }
+  .tech-card {
+    transform-style: preserve-3d;
+    transition: transform 550ms var(--ease-out);
+  }
+  .tech-face,
+  .tech-back {
+    backface-visibility: hidden;
+  }
+  .tech-back {
+    display: inline-flex;
+    color: var(--paper);
+    background: var(--ink);
+    transform: rotateX(180deg);
+  }
+  .tech-flip:hover .tech-card {
+    transform: rotateX(180deg);
+  }
+}
+
+/* Case study: previous / next as two large blocks. */
+.pager {
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 48rem) {
+  .pager {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pager-next {
+    grid-column: 2;
+    text-align: right;
+  }
+}
+.pager-link {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  transition: background-color 200ms ease, scale 300ms var(--ease-out);
+}
+.pager-title {
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pager-link:hover {
+    background: color-mix(in srgb, var(--surface) 55%, var(--paper));
+    scale: 1.015;
+  }
+}
+
 /* ---------- Case study text ---------- */
 
 .prose > * + * {
