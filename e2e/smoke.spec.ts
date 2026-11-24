@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const slugs = ["tyt", "e-invoicing", "rutica", "aguja-de-oro", "modular-erp", "miku"];
+const slugs = ["tyt", "aguja-de-oro", "rutica", "miku", "modular-erp", "e-invoicing"];
 const pages = ["", "/cv", ...slugs.map((s) => `/projects/${s}`)];
 
 test("root redirects to English", async ({ request }) => {
@@ -47,6 +47,11 @@ test("every case study links to the next one, and the home page links to every c
   await page.goto("/en/projects/tyt");
   await page.locator('a[rel="next"]').click();
   await expect(page).toHaveURL(`/en/projects/${slugs[1]}`);
+  // The pager wraps: the first case points back to the last, and the last forward to the first.
+  await page.goto("/en/projects/tyt");
+  await expect(page.locator('a[rel="prev"]')).toHaveAttribute("href", `/en/projects/${slugs.at(-1)}`);
+  await page.goto(`/en/projects/${slugs.at(-1)}`);
+  await expect(page.locator('a[rel="next"]')).toHaveAttribute("href", "/en/projects/tyt");
 });
 
 test("full detail reveals the details; summary hides them", async ({ page }) => {

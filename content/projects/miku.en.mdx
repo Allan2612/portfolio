@@ -1,3 +1,9 @@
+import resources from "../images/miku/resources.webp";
+import quota from "../images/miku/quota.webp";
+import tools from "../images/miku/tools.webp";
+import panel from "../images/miku/panel.webp";
+import avatar from "../images/miku/avatar.webp";
+
 ## Context
 
 Miku Assistant is a voice assistant for Windows, with an animated character that lives on the desktop. You call it with a keyboard shortcut or a wake word and talk to it: it opens apps, switches windows and tabs, controls music and volume, sets timers and reminders, takes notes and answers questions. Before doing anything destructive, it asks.
@@ -11,6 +17,12 @@ I built it on my own as an open-source project, around two goals: answer in **un
 - **The character’s own voice**, converted on the GPU only while it is needed; when idle, video memory goes back to zero.
 - **Safety by design:** the assistant can only use a closed list of tools, never runs arbitrary commands, and asks before anything destructive.
 - **An optional browser extension** so it knows which tabs are open and can act on them.
+
+<FigurePair
+  wide={{ src: panel, alt: "Miku Assistant's control panel, in Spanish: Miku is on and waiting for her wake word, every part shows its state (backend, voice on the GPU, wake word, browser extension, Gemini), and today's requests are listed as local or Gemini." }}
+  narrow={{ src: avatar, alt: "Miku on the desktop in her transparent window, with the subtitle of her answer above her: a timer is set." }}
+  caption="The launcher, a control panel that shows each part and the day's requests, and Miku on the desktop with her answer as a subtitle. Sample status and requests."
+/>
 
 <PhotoSlot>A short clip or GIF of the assistant at work: activation, the spoken answer with subtitles, and an action on the PC.</PhotoSlot>
 
@@ -59,9 +71,19 @@ A request goes like this:
 
 On Windows, initializing CUDA leaves a few hundred megabytes resident that are never given back. So the main process never loads PyTorch: the voice runs in a subprocess that can be killed, and Whisper runs on the CPU with 8-bit weights and stays in RAM. Killing the process is the only reliable way to free that GPU memory.
 
+<Figure
+  image={{ src: resources, alt: "The Resources page of the control panel, in Spanish: Miku's CPU, memory and VRAM, her processes, and two charts where VRAM drops to 0 once the voice is released." }}
+  caption="The launcher's Resources page: while she speaks the voice uses the GPU; once it is released, VRAM goes back to 0. Sample data."
+/>
+
 ### A closed list of tools
 
 The model can only call tools from a registered list: apps, windows, files, media, notes, memory, routines, system settings, timers and the web. It never runs arbitrary shell commands, and anything destructive needs the user’s confirmation. That limits what prompt injection can do: nothing destructive runs without confirmation. A web page could still steer a harmless tool, such as opening a link or saving a note, but if it tells the assistant to “close everything”, the worst it can do is ask.
+
+<Figure
+  image={{ src: tools, alt: "The Tools page of the control panel, in Spanish: the 46 tools by group, which ones run locally and which ask for confirmation, each with its switch." }}
+  caption="Every tool she can use, by group: which run locally without the model, which ask for confirmation, and a switch to turn any of them off."
+/>
 
 ### Windows and tabs as numbered objects
 
@@ -70,6 +92,11 @@ The model sees a numbered list of what is open and acts on a specific number, in
 ### Only unambiguous commands skip the model
 
 Volume, media, timers and notes are matched locally and run immediately, without a round trip to the model. Anything that depends on what is open goes to Gemini with the PC state, because a local rule would guess wrong.
+
+<Figure
+  image={{ src: quota, alt: "The Quota page of the control panel, in Spanish: today's Gemini requests out of the free daily limit, the backup model, and the last seven days." }}
+  caption="Gemini requests on the free plan: today, the backup model and the last week. Local commands do not count. Sample data."
+/>
 
 ### One voice, and it never hangs
 

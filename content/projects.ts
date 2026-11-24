@@ -5,10 +5,15 @@ import tytHomeEn from "./images/tyt/home-en.webp";
 import tytHomeEnDark from "./images/tyt/home-en-dark.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
 import tytHomeEsDark from "./images/tyt/home-es-dark.webp";
+import agujaSale from "./images/aguja/sale.webp";
+import agujaSaleDark from "./images/aguja/sale-dark.webp";
+import agujaHome from "./images/aguja/home.webp";
+import agujaHomeDark from "./images/aguja/home-dark.webp";
 import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
 import InvoicingEs from "./projects/e-invoicing.es.mdx";
+import mikuPanel from "./images/miku/panel.webp";
 import MikuEn from "./projects/miku.en.mdx";
 import MikuEs from "./projects/miku.es.mdx";
 import RuticaEn from "./projects/rutica.en.mdx";
@@ -50,7 +55,7 @@ export type Project = {
   body: Record<Locale, MDXContent>;
 };
 
-/** Featured projects, in the order they appear on the home page: work real people use first. */
+/** Featured projects, in the order they appear on the home page (Allan's order). */
 export const projects: Project[] = [
   {
     slug: "tyt",
@@ -101,40 +106,52 @@ export const projects: Project[] = [
     body: { en: TytEn, es: TytEs },
   },
   {
-    slug: "e-invoicing",
-    kind: "internship",
-    start: "2026-07",
-    end: "2026-08",
-    stack: ["TypeScript", "NestJS", "React", "PostgreSQL (row-level security)", "XAdES-EPES", "AES-256-GCM", "Argon2id", "JWT and API keys", "Webhooks", "pnpm + Turborepo"],
-    cardStack: ["NestJS", "React", "PostgreSQL (RLS)"],
-    links: {},
-    text: {
-      en: {
-        title: "E-invoicing SaaS",
-        summary: "Wrote the pre-launch audit of a multi-tenant e-invoicing platform and fixed all 17 findings.",
-        role: "Software development intern (full stack)",
-        team: "Product team at Argana",
-        keyPoints: [
-          "Wrote the pre-launch audit and fixed all 17 findings",
-          "Tenant isolation with PostgreSQL row-level security, tested on all 20 tables in CI",
-          "Idempotent invoicing: a retry never issues the same invoice twice",
-        ],
-        highlight: { value: "17", label: "audit findings fixed before launch: 8 tax-compliance defects and 9 business-logic bugs" },
-      },
-      es: {
-        title: "SaaS de facturación electrónica",
-        summary: "Auditoría previa al lanzamiento de una plataforma de facturación electrónica multiempresa, con sus 17 hallazgos corregidos.",
-        role: "Practicante de desarrollo de software (full stack)",
-        team: "Equipo de producto de Argana",
-        keyPoints: [
-          "Escribí la auditoría previa al lanzamiento y corregí sus 17 hallazgos",
-          "Aislamiento entre empresas con RLS de PostgreSQL, probado en las 20 tablas en CI",
-          "Emisión idempotente: un reintento nunca emite dos veces el mismo comprobante",
-        ],
-        highlight: { value: "17", label: "hallazgos de la auditoría corregidos antes del lanzamiento: 8 fiscales y 9 de lógica de negocio" },
+    slug: "aguja-de-oro",
+    kind: "live",
+    start: "2024-09",
+    end: null,
+    stack: ["Odoo 17", "Python", "XML/QWeb", "PostgreSQL", "Docker Compose (development)", "Ubuntu", "Nginx", "Let’s Encrypt", "DigitalOcean"],
+    cardStack: ["Odoo 17", "Python", "PostgreSQL", "Nginx"],
+    links: { live: "https://agujadeoro.org" },
+    cover: {
+      en: { src: agujaSale, dark: agujaSaleDark, alt: "A sale in the La Aguja de Oro system, in Spanish: a sewing machine and thread with tax per line, the sale status bar and the totals. Test data." },
+      es: { src: agujaSale, dark: agujaSaleDark, alt: "Una venta en el sistema de La Aguja de Oro: una máquina de coser e hilo con el IVA por línea, la barra de estados de la venta y los totales. Datos de prueba." },
+    },
+    thumb: {
+      src: agujaHome,
+      dark: agujaHomeDark,
+      alt: {
+        en: "The La Aguja de Oro system's home screen: the shop's apps, such as Quick service, Workshop, Sales and Reports.",
+        es: "El inicio del sistema de La Aguja de Oro: las aplicaciones del taller, como Servicio Rápido, Taller, Ventas y Reportes.",
       },
     },
-    body: { en: InvoicingEn, es: InvoicingEs },
+    text: {
+      en: {
+        title: "La Aguja de Oro",
+        summary: "Odoo 17 ERP for a tailoring shop, built with a partner. I set up and run its production server.",
+        role: "Full stack developer: sales, quick-service and reporting modules, and the production server",
+        team: "With a partner",
+        keyPoints: [
+          "Sales, quick-service and reporting modules, built with a partner",
+          "A production server I set up: HTTPS, hardened SSH, firewall and daily backups",
+          "The business has run on it every day since December 2025",
+        ],
+        highlight: { value: "Dec 2025", label: "the business has run its day-to-day on it since then" },
+      },
+      es: {
+        title: "La Aguja de Oro",
+        summary: "ERP en Odoo 17 para un taller de costura, desarrollado en pareja. Monté y administro su servidor de producción.",
+        role: "Desarrollador full stack: módulos de ventas, servicio rápido y reportes, y el servidor de producción",
+        team: "En pareja",
+        keyPoints: [
+          "Módulos de ventas, servicio rápido y reportes, desarrollados en pareja",
+          "Un servidor de producción que monté yo: HTTPS, SSH reforzado, firewall y respaldos diarios",
+          "El negocio lo usa a diario desde diciembre de 2025",
+        ],
+        highlight: { value: "dic. 2025", label: "desde entonces el negocio opera su día a día en el sistema" },
+      },
+    },
+    body: { en: AgujaEn, es: AgujaEs },
   },
   {
     slug: "rutica",
@@ -173,40 +190,47 @@ export const projects: Project[] = [
     body: { en: RuticaEn, es: RuticaEs },
   },
   {
-    slug: "aguja-de-oro",
-    kind: "live",
-    start: "2024-09",
+    slug: "miku",
+    kind: "open-source",
+    start: "2026-10",
     end: null,
-    stack: ["Odoo 17", "Python", "XML/QWeb", "PostgreSQL", "Docker Compose (development)", "Ubuntu", "Nginx", "Let’s Encrypt", "DigitalOcean"],
-    cardStack: ["Odoo 17", "Python", "PostgreSQL", "Nginx"],
-    links: { live: "https://agujadeoro.org" },
-    text: {
-      en: {
-        title: "La Aguja de Oro",
-        summary: "Odoo 17 ERP for a tailoring shop, built with a partner. I set up and run its production server.",
-        role: "Full stack developer: sales, quick-service and reporting modules, and the production server",
-        team: "With a partner",
-        keyPoints: [
-          "Sales, quick-service and reporting modules, built with a partner",
-          "A production server I set up: HTTPS, hardened SSH, firewall and daily backups",
-          "The business has run on it every day since December 2025",
-        ],
-        highlight: { value: "Dec 2025", label: "the business has run its day-to-day on it since then" },
-      },
-      es: {
-        title: "La Aguja de Oro",
-        summary: "ERP en Odoo 17 para un taller de costura, desarrollado en pareja. Monté y administro su servidor de producción.",
-        role: "Desarrollador full stack: módulos de ventas, servicio rápido y reportes, y el servidor de producción",
-        team: "En pareja",
-        keyPoints: [
-          "Módulos de ventas, servicio rápido y reportes, desarrollados en pareja",
-          "Un servidor de producción que monté yo: HTTPS, SSH reforzado, firewall y respaldos diarios",
-          "El negocio lo usa a diario desde diciembre de 2025",
-        ],
-        highlight: { value: "dic. 2025", label: "desde entonces el negocio opera su día a día en el sistema" },
+    stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
+    cardStack: ["Tauri", "TypeScript", "Python asyncio"],
+    links: { repo: "https://github.com/Allan2612/miku-assistant" },
+    thumb: {
+      src: mikuPanel,
+      alt: {
+        en: "Miku Assistant's control panel: Miku on and waiting, the state of each part and the day's requests.",
+        es: "El panel de control de Miku Assistant: Miku encendida y esperando, el estado de cada pieza y las peticiones del día.",
       },
     },
-    body: { en: AgujaEn, es: AgujaEs },
+    text: {
+      en: {
+        title: "Miku Assistant",
+        summary: "A voice assistant for Windows with an animated character: you talk to it and it handles apps, tabs, music and reminders, asking before anything destructive.",
+        role: "Personal project",
+        team: "Solo",
+        keyPoints: [
+          "Designed to answer in under 3 seconds",
+          "0 MB of GPU memory in use while idle",
+          "A closed list of tools, with confirmation for anything destructive",
+        ],
+        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
+      },
+      es: {
+        title: "Miku Assistant",
+        summary: "Asistente de voz para Windows con un personaje animado: se le habla y maneja aplicaciones, pestañas, música y recordatorios; pregunta antes de lo destructivo.",
+        role: "Proyecto personal",
+        team: "Individual",
+        keyPoints: [
+          "Diseñado para responder en menos de 3 segundos",
+          "0 MB de memoria de GPU en uso en reposo",
+          "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
+        ],
+        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
+      },
+    },
+    body: { en: MikuEn, es: MikuEs },
   },
   {
     slug: "modular-erp",
@@ -245,40 +269,40 @@ export const projects: Project[] = [
     body: { en: ErpEn, es: ErpEs },
   },
   {
-    slug: "miku",
-    kind: "open-source",
-    start: "2026-10",
-    end: null,
-    stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
-    cardStack: ["Tauri", "TypeScript", "Python asyncio"],
-    links: { repo: "https://github.com/Allan2612/miku-assistant" },
+    slug: "e-invoicing",
+    kind: "internship",
+    start: "2026-07",
+    end: "2026-08",
+    stack: ["TypeScript", "NestJS", "React", "PostgreSQL (row-level security)", "XAdES-EPES", "AES-256-GCM", "Argon2id", "JWT and API keys", "Webhooks", "pnpm + Turborepo"],
+    cardStack: ["NestJS", "React", "PostgreSQL (RLS)"],
+    links: {},
     text: {
       en: {
-        title: "Miku Assistant",
-        summary: "A voice assistant for Windows with an animated character: you talk to it and it handles apps, tabs, music and reminders, asking before anything destructive.",
-        role: "Personal project",
-        team: "Solo",
+        title: "E-invoicing SaaS",
+        summary: "Wrote the pre-launch audit of a multi-tenant e-invoicing platform and fixed all 17 findings.",
+        role: "Software development intern (full stack)",
+        team: "Product team at Argana",
         keyPoints: [
-          "Designed to answer in under 3 seconds",
-          "0 MB of GPU memory in use while idle",
-          "A closed list of tools, with confirmation for anything destructive",
+          "Wrote the pre-launch audit and fixed all 17 findings",
+          "Tenant isolation with PostgreSQL row-level security, tested on all 20 tables in CI",
+          "Idempotent invoicing: a retry never issues the same invoice twice",
         ],
-        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
+        highlight: { value: "17", label: "audit findings fixed before launch: 8 tax-compliance defects and 9 business-logic bugs" },
       },
       es: {
-        title: "Miku Assistant",
-        summary: "Asistente de voz para Windows con un personaje animado: se le habla y maneja aplicaciones, pestañas, música y recordatorios; pregunta antes de lo destructivo.",
-        role: "Proyecto personal",
-        team: "Individual",
+        title: "SaaS de facturación electrónica",
+        summary: "Auditoría previa al lanzamiento de una plataforma de facturación electrónica multiempresa, con sus 17 hallazgos corregidos.",
+        role: "Practicante de desarrollo de software (full stack)",
+        team: "Equipo de producto de Argana",
         keyPoints: [
-          "Diseñado para responder en menos de 3 segundos",
-          "0 MB de memoria de GPU en uso en reposo",
-          "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
+          "Escribí la auditoría previa al lanzamiento y corregí sus 17 hallazgos",
+          "Aislamiento entre empresas con RLS de PostgreSQL, probado en las 20 tablas en CI",
+          "Emisión idempotente: un reintento nunca emite dos veces el mismo comprobante",
         ],
-        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
+        highlight: { value: "17", label: "hallazgos de la auditoría corregidos antes del lanzamiento: 8 fiscales y 9 de lógica de negocio" },
       },
     },
-    body: { en: MikuEn, es: MikuEs },
+    body: { en: InvoicingEn, es: InvoicingEs },
   },
 ];
 

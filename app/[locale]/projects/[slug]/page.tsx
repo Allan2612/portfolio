@@ -48,8 +48,9 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
   const t = project.text[locale];
   const Body = project.body[locale];
   const index = projects.indexOf(project);
-  const prev = projects[index - 1];
-  const next = projects[index + 1];
+  // The pager wraps around, so every case has both neighbours and the two buttons always pair up.
+  const prev = projects[(index - 1 + projects.length) % projects.length];
+  const next = projects[(index + 1) % projects.length];
   const cs = site.caseStudy;
   const outline = caseOutline(slug, locale);
 
