@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+
+# private content guard list (must never be committed)
+banned-terms.txt
 
 # next.js
 /.next/
