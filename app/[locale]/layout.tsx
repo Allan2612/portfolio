@@ -3,6 +3,7 @@ import { STIX_Two_Text } from "next/font/google";
 import { getSite, isLocale, locales } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
 import { themeScript } from "@/lib/theme";
+import { Motion } from "@/components/motion";
 import "../globals.css";
 
 // Self-hosted at build time by next/font, so the CSP can keep font-src 'self'.
@@ -47,7 +48,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Motion />
+      </body>
     </html>
   );
 }

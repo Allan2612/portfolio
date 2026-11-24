@@ -1,4 +1,5 @@
 import Image, { type StaticImageData } from "next/image";
+import type { CSSProperties } from "react";
 
 type Img = { src: StaticImageData; alt: string };
 
@@ -22,8 +23,8 @@ export function FlowDiagram({ label, steps, caption }: { label: string; steps: S
   return (
     <figure className="diagram" aria-label={label}>
       <ol className="diagram-flow">
-        {steps.map(([title, note]) => (
-          <li key={title}>
+        {steps.map(([title, note], n) => (
+          <li key={title} data-reveal style={{ "--i": n } as CSSProperties}>
             <strong>{title}</strong>
             {note && <span>{note}</span>}
           </li>

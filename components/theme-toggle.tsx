@@ -7,7 +7,13 @@ export function ThemeToggle({ label }: { label: string }) {
     const current =
       root.dataset.theme ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     const next = current === "dark" ? "light" : "dark";
-    root.dataset.theme = next;
+    const apply = () => {
+      root.dataset.theme = next;
+    };
+    // A short crossfade between themes where the browser supports view transitions; instant otherwise.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (document.startViewTransition && !reduced) document.startViewTransition(apply);
+    else apply();
     try {
       localStorage.setItem("theme", next);
     } catch {
