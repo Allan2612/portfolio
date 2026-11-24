@@ -119,6 +119,12 @@ const site: SiteCopy = {
     heading: "Otros proyectos",
     items: [
       {
+        name: "Rutica",
+        short: "App móvil de comercios, eventos y promociones cercanos en Costa Rica; desarrollada en pareja, después auditada y corregida.",
+        text: "App con Expo, React Native y Supabase para descubrir comercios, atracciones, eventos y promociones cercanos, con mapa, reseñas y un panel para los dueños de comercios. La desarrollé con otro estudiante; después hice la auditoría completa del proyecto (seguridad, base de datos, rendimiento y cumplimiento legal) y corregí lo que encontró, incluida una migración de la base de datos que se prueba contra 28 reglas de seguridad.",
+        href: "https://github.com/Allan2612/app-rutica",
+      },
+      {
         name: "PlanTica",
         short: "Identificación de plantas por foto, con un filtro previo en el celular y un LLM de visión.",
         text: "Identificación de plantas a partir de una foto: filtro previo en el celular (TensorFlow.js, COCO-SSD) e identificación con un LLM de visión (Llama 4 Scout vía Groq) detrás de un backend en FastAPI. Proyecto individual.",
@@ -194,6 +200,13 @@ const site: SiteCopy = {
         note: "Código abierto (MIT)",
         text: "Asistente de voz de escritorio: Whisper local, Gemini con function calling sobre un conjunto cerrado de herramientas y avatar Live2D. Diseñado para responder en menos de 3 s y liberar la GPU en reposo.",
         href: "https://github.com/Allan2612/miku-assistant",
+      },
+      {
+        name: "Rutica",
+        stack: "Expo, React Native, Supabase, TanStack Query",
+        note: "Proyecto de curso, en pareja",
+        text: "Aplicación móvil de comercios, eventos y promociones cercanas, desarrollada con otro estudiante.",
+        href: "https://github.com/Allan2612/app-rutica",
       },
       {
         name: "PlanTica",

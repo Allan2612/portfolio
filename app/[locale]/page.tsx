@@ -249,6 +249,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                   <p className="mt-2 text-small">
                     <a href={m.href} className="link">
                       {site.more.code}
+                      <span className="sr-only" translate="no"> ({m.name})</span>
                     </a>
                   </p>
                 )}

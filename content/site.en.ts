@@ -117,6 +117,12 @@ const site = {
     heading: "More projects",
     items: [
       {
+        name: "Rutica",
+        short: "Mobile app for nearby businesses, events and deals in Costa Rica; co-developed, then audited and fixed.",
+        text: "Expo, React Native and Supabase app to discover nearby businesses, attractions, events and promotions, with a map, reviews and a panel for business owners. Co-developed with another student; I then audited the whole project (security, database, performance, legal) and fixed what it found, including a database migration tested against 28 security rules.",
+        href: "https://github.com/Allan2612/app-rutica",
+      },
+      {
         name: "PlanTica",
         short: "Plant identification from a photo, with an on-device pre-check and a vision LLM.",
         text: "Plant identification from a photo: an on-device pre-check (TensorFlow.js, COCO-SSD) and a vision LLM (Llama 4 Scout via Groq) behind a FastAPI backend. Solo project.",
@@ -192,6 +198,13 @@ const site = {
         note: "Open source (MIT)",
         text: "Desktop voice assistant: local Whisper, Gemini function calling over a closed tool set, and a Live2D avatar. Designed to respond in under 3 s and to release the GPU when idle.",
         href: "https://github.com/Allan2612/miku-assistant",
+      },
+      {
+        name: "Rutica",
+        stack: "Expo, React Native, Supabase, TanStack Query",
+        note: "Course project, pair work",
+        text: "Mobile app for nearby businesses, events and deals, co-developed with another student.",
+        href: "https://github.com/Allan2612/app-rutica",
       },
       {
         name: "PlanTica",
