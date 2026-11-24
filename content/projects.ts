@@ -3,6 +3,14 @@ import type { StaticImageData } from "next/image";
 import type { Locale } from "@/lib/i18n";
 import tytHomeEn from "./images/tyt/home-en.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
+import AgujaEn from "./projects/aguja-de-oro.en.mdx";
+import AgujaEs from "./projects/aguja-de-oro.es.mdx";
+import InvoicingEn from "./projects/e-invoicing.en.mdx";
+import InvoicingEs from "./projects/e-invoicing.es.mdx";
+import MikuEn from "./projects/miku.en.mdx";
+import MikuEs from "./projects/miku.es.mdx";
+import ErpEn from "./projects/modular-erp.en.mdx";
+import ErpEs from "./projects/modular-erp.es.mdx";
 import TytEn from "./projects/tyt.en.mdx";
 import TytEs from "./projects/tyt.es.mdx";
 
@@ -29,8 +37,8 @@ export type Project = {
   links: { live?: string; repo?: string };
   cover?: Record<Locale, { src: StaticImageData; alt: string }>;
   text: Record<Locale, Text>;
-  /** The case study. Projects without one are listed on the home page without a link. */
-  body?: Record<Locale, MDXContent>;
+  /** The case study, one MDX file per language. */
+  body: Record<Locale, MDXContent>;
 };
 
 /** Featured projects, in the order they appear on the home page (ranked by impact). */
@@ -89,6 +97,7 @@ export const projects: Project[] = [
         detail: "Auditoría completa del repositorio con 8 defectos fiscales y 9 de lógica de negocio, todos corregidos; aislamiento entre empresas con RLS de PostgreSQL probado en las 20 tablas en CI.",
       },
     },
+    body: { en: InvoicingEn, es: InvoicingEs },
   },
   {
     slug: "miku",
@@ -114,6 +123,7 @@ export const projects: Project[] = [
         detail: "Dos procesos sobre un WebSocket local y un proceso de GPU que solo existe mientras hace falta. Diseñado para responder en menos de 3 segundos y liberar la GPU en reposo. Licencia MIT.",
       },
     },
+    body: { en: MikuEn, es: MikuEs },
   },
   {
     slug: "modular-erp",
@@ -139,6 +149,7 @@ export const projects: Project[] = [
         detail: "Convertí una norma contable en 311 requisitos verificables, revisé cada uno contra el código y el sistema en ejecución, y construí con TDD buena parte de lo que faltaba. Más de 3500 pruebas en el proyecto.",
       },
     },
+    body: { en: ErpEn, es: ErpEs },
   },
   {
     slug: "aguja-de-oro",
@@ -164,10 +175,8 @@ export const projects: Project[] = [
         detail: "Módulos de ventas, servicio rápido y reportes con impresos en formato de Costa Rica. Servidor de producción en DigitalOcean con HTTPS, SSH reforzado, firewall y respaldos diarios.",
       },
     },
+    body: { en: AgujaEn, es: AgujaEs },
   },
 ];
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
-
-/** Projects that have a case study, in home-page order (used for routes and previous/next links). */
-export const caseStudies = projects.filter((p) => p.body);

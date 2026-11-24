@@ -13,6 +13,7 @@ const site = {
     work: "Projects",
     experience: "Experience",
     about: "About",
+    cv: "CV",
     contact: "Contact",
     switchLocale: "Español",
     skip: "Skip to content",
@@ -39,7 +40,6 @@ const site = {
   work: {
     heading: "Selected work",
     readCase: "Read the case study",
-    caseSoon: "Case study coming soon",
   },
   experience: {
     heading: "Experience",
@@ -155,6 +155,66 @@ const site = {
     cta: "Want to hear more about this project? I'm happy to walk through it in an interview.",
     ctaButton: "Get in touch",
     back: "All projects",
+  },
+  cvPage: {
+    title: "CV",
+    description: "Experience, projects, skills and education of Allan Vargas Torres, full stack developer. PDF in English and Spanish.",
+    intro: "The same information as my PDF CV, on one page.",
+    downloadEn: "Download PDF (English)",
+    downloadEs: "Download PDF (Spanish)",
+    phone: "Phone number available on request.",
+    profileHeading: "Profile",
+    profile:
+      "Information Systems Engineering student (coursework complete; graduating May 2027) and full stack developer with two client systems in production. Completed a software development internship at a software company on a modular ERP and an e-invoicing platform. Experienced in TypeScript (Next.js, NestJS, React Native) and Python, automated testing and CI.",
+    projectsHeading: "Projects",
+    projects: [
+      {
+        name: "Miku Assistant",
+        stack: "Tauri, TypeScript, Python asyncio, Whisper, Gemini",
+        note: "Open source (MIT)",
+        text: "Desktop voice assistant: local Whisper, Gemini function calling over a closed tool set, and a Live2D avatar. Designed to respond in under 3 s and to release the GPU when idle.",
+        href: "https://github.com/Allan2612/miku-assistant",
+      },
+      {
+        name: "PlanTica",
+        stack: "Expo, TensorFlow.js, FastAPI, Firebase",
+        note: "Solo project",
+        text: "Plant identification from a photo: on-device pre-check plus a hosted vision LLM behind a custom FastAPI backend.",
+        href: "https://github.com/Allan2612/plantApp",
+      },
+      {
+        name: "Quimera",
+        stack: "C, Python, PyQt5",
+        note: "Course project, pair work",
+        text: "Designed and built a programming language: EBNF grammar, lexer, parser, AST and interpreter in C, plus a PyQt5 editor.",
+        href: null,
+      },
+      {
+        name: "Digital Kids",
+        stack: "Next.js, NestJS, Prisma, PostgreSQL",
+        note: "Course project, team of about 30",
+        text: "Assessment and reporting system for a daycare. Top contributor to the frontend and co-top contributor to the backend.",
+        href: null,
+      },
+    ],
+    skillsHeading: "Skills",
+    educationHeading: "Education",
+    education: [
+      {
+        title: "Bachelor's Degree in Information Systems Engineering",
+        place: "Universidad Nacional de Costa Rica, Brunca Regional Campus",
+        when: "2021 – May 2027 (expected)",
+        note: "Coursework complete. Electives: AI, Information Security, Linux Server Administration and Educational Software.",
+      },
+      {
+        title: "IT Support Technician Diploma",
+        place: "Colegio Técnico Profesional de Pejibaye (technical high school)",
+        when: "2020",
+        note: null,
+      },
+    ],
+    languagesHeading: "Languages",
+    languages: "Spanish (native) · English (B2)",
   },
   notFound: {
     heading: "Page not found",

@@ -1,0 +1,62 @@
+## El problema
+
+El ERP es un núcleo con servicios transversales y un conjunto de módulos de negocio: contabilidad, tesorería, presupuesto, inventario y otros. Los módulos funcionaban, pero nadie podía decir **con evidencia** qué partes de la norma contable cumplía el sistema y cuáles no. Sin eso no había forma de planificar el trabajo ni de responder las preguntas del área contable.
+
+## Qué hice
+
+### El análisis de brechas
+
+- Convertí la norma contable en **311 requisitos verificables**, cada uno con la página y el párrafo de donde sale.
+- Revisé cada requisito contra el sistema de dos formas: **leyendo el código**, archivo por archivo, y **con el sistema en ejecución**, haciendo operaciones reales y revisando lo que quedaba en la base de datos.
+- Entregué un informe para el área contable y un **plan de trabajo organizado en paquetes**.
+
+Por primera vez, el cumplimiento del sistema quedó medido requisito por requisito, con un plan para cerrar las brechas.
+
+### Agentes de IA como verificadores
+
+Una sola persona que lee 311 requisitos va a pasar cosas por alto, así que diseñé y supervisé agentes de IA con instrucciones adversariales:
+
+- un agente verificaba cada requisito contra el texto de la norma;
+- otro intentaba **desmentir** cada veredicto de "falta" o "incorrecto" antes de aceptarlo.
+
+Yo integré sus resultados y validé cada conclusión. Los agentes hicieron el análisis más exhaustivo; los veredictos siguen siendo míos.
+
+### Construir lo que faltaba, con TDD
+
+Cada regla empezó como una prueba que la enunciaba, escrita antes del código. Lo principal:
+
+- **Catálogo de cuentas** y el mapeo de cada concepto de negocio a su cuenta.
+- **Devengos en la fecha correcta**, y una estimación de cuentas incobrables por antigüedad en cada cierre.
+- **Activos fijos:** depreciación, pruebas de deterioro y bajas que llegan al mayor, además de arrendamientos financieros y subarrendamientos.
+- **Estados financieros:** consolidación de entidades controladas con eliminaciones, información por segmentos y reclasificación de la porción corriente de deudas y provisiones.
+- **Revelaciones:** partes relacionadas, pasivos y activos contingentes, provisiones descontadas y cambios de política contable.
+- **Liquidación presupuestaria**, en la que el superávit libre cubre primero cualquier déficit.
+
+## La arquitectura en la que trabajé
+
+Estas decisiones ya existían cuando llegué; mi trabajo fue construir dentro de ellas, y son buena parte de la razón por la que las reglas se podían probar de forma aislada.
+
+- **Un núcleo común** ofrece numeración, bitácora de auditoría, permisos y operaciones atómicas entre módulos, y todos los módulos las heredan.
+- **Un esquema de base de datos por módulo.** Ningún módulo importa las tablas de otro; se comunican por comandos y eventos, entregados con un **outbox transaccional**, así que un evento solo se publica si el cambio que lo causó se confirmó.
+- **Nada se borra: se sella.** Los registros financieros conservan su trazabilidad completa, y el dinero se guarda siempre en céntimos.
+- **Las pruebas corren contra infraestructura real:** PostgreSQL, Redis y MongoDB, sin mocks.
+
+<ModulesDiagram
+  label="El núcleo común y los módulos de negocio del ERP"
+  modules={["Contabilidad", "Tesorería", "Presupuesto", "Inventario", "Otros módulos"]}
+  link="Comandos y eventos, a través de un outbox transaccional"
+  core="Núcleo común"
+  coreNote="Numeración, bitácora de auditoría, permisos y operaciones atómicas entre módulos"
+  caption="Cada módulo tiene su propio esquema y nunca importa las tablas de otro."
+/>
+
+## Resultado
+
+- El cumplimiento del sistema frente a la norma quedó **medido con evidencia por primera vez**, con un plan para cerrar las brechas.
+- Fui el **principal contribuidor de un equipo de cinco**, sobre todo en contabilidad, activos fijos, presupuesto y tesorería.
+- **Más de 3500 pruebas** en el proyecto, todas en verde al terminar mi práctica.
+- Documentación del dominio contable que el equipo usa como referencia.
+
+## Qué me llevo
+
+Leer el código no alcanzaba. Confirmé cada hallazgo ejecutando la operación y mirando las filas que escribía. Desde entonces, "verificado" significa que lo vi pasar en un sistema en ejecución.

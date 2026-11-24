@@ -19,6 +19,7 @@ export function Header({ locale, switchPath }: { locale: Locale; switchPath: str
           <li><a href={`${home}#work`}>{site.nav.work}</a></li>
           <li><a href={`${home}#experience`}>{site.nav.experience}</a></li>
           <li><a href={`${home}#about`}>{site.nav.about}</a></li>
+          <li><Link href={`${home}/cv`}>{site.nav.cv}</Link></li>
           <li><a href={`${home}#contact`}>{site.nav.contact}</a></li>
           <li>
             <Link href={switchPath} hrefLang={other} lang={other}>

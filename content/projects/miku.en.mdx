@@ -1,0 +1,72 @@
+## The problem
+
+A speech model, a voice model and an animated avatar can easily keep a GPU busy and hold hundreds of megabytes of memory all day, on a machine that is also used for everything else. And an assistant that can control the PC is only useful if it knows what is actually open, and only safe if it cannot do just anything.
+
+I set two goals for the design: **near-zero resource use while idle**, and an answer in **under three seconds** from the moment it is activated.
+
+## How it works
+
+Two processes talk over a local WebSocket, plus a GPU worker for the voice and an optional browser extension:
+
+- **The app** (Tauri v2 and TypeScript): a transparent window with the Live2D avatar, animations, lip sync and subtitles.
+- **The core** (Python, asyncio): activation, microphone and voice detection, speech-to-text, the agent loop with Gemini, PC tools and text-to-speech.
+- **The voice worker:** converts the base voice into the character's voice on the GPU, in its own process.
+- **The browser extension** (Opera): exposes open tabs and search results to the core.
+
+<FlowDiagram
+  label="Miku Assistant: what runs where"
+  steps={[
+    ["App · Tauri and TypeScript", "Live2D avatar, lip sync and subtitles"],
+    ["Core · Python asyncio", "Wake word, Whisper on the CPU, the Gemini agent and the closed tool list"],
+    ["Voice worker · GPU", "Exists only while it is needed; killed when idle, back to 0 MB of video memory"],
+  ]}
+  caption="The app and the core talk over a local WebSocket; the core starts and stops the voice worker."
+/>
+
+A request goes like this:
+
+1. It is activated with a keyboard shortcut or a wake word. In parallel, Whisper checks the wake-word audio, so a clearly false activation is dropped without spending a request.
+2. At that moment the voice worker starts loading, **while the user is still speaking**.
+3. Recording stops on silence and Whisper transcribes on the CPU. Unambiguous commands (volume, pause, timers, notes) are handled locally, without the model.
+4. Everything else goes to Gemini together with the **current state of the PC**: open windows and tabs, each with a number, the volume, reminders and to-dos. Gemini acts as an agent: it calls tools, sees their results, and answers or takes another step. Destructive actions ask for confirmation.
+5. edge-tts produces the base voice and RVC converts it.
+6. The app plays it with lip sync, an expression and a subtitle, and keeps listening for a few seconds in case the conversation continues.
+7. After a while without use, the avatar hides and stops rendering. Later the voice worker is killed and GPU memory goes back to zero, while a standby worker waits in RAM with its libraries loaded, so the voice comes back in a few seconds.
+
+## Technical decisions
+
+### No GPU framework in the main process
+
+On Windows, initializing CUDA leaves a few hundred megabytes resident that are never given back. So the main process never loads PyTorch: the voice runs in a subprocess that can be killed, and Whisper runs on the CPU with 8-bit weights and stays in RAM. Killing the process is the only reliable way to free that GPU memory.
+
+### A closed list of tools
+
+The model can only call tools from a registered list: apps, windows, files, media, notes, memory, routines, system settings, timers and the web. It never runs arbitrary shell commands, and anything destructive needs the user's confirmation. That is the defense against prompt injection: if a web page tells the assistant to "close everything", the worst it can do is ask.
+
+### Windows and tabs as numbered objects
+
+The model sees a numbered list of what is open and acts on a specific number, instead of guessing from a title or simulating key presses. "Close the second tab" becomes a precise call, not a fragile shortcut.
+
+### Only unambiguous commands skip the model
+
+Volume, media, timers and notes are matched locally and run immediately, without a round trip to the model. Anything that depends on what is open goes to Gemini with the PC state, because a local rule would guess wrong.
+
+### One voice, and it never hangs
+
+The character has a single voice. If the voice worker is still loading, the answer waits; if it fails, the answer comes as a subtitle only, never in a different voice. No component can leave the assistant stuck.
+
+### No UI framework
+
+The app is plain TypeScript with Vite. The WebView already costs memory; a UI framework would add more for a window that shows one character.
+
+## Result
+
+- **Designed to respond in under 3 seconds** after activation, by loading the voice while the user is still speaking.
+- **Releases the GPU when idle**: 0 MB of video memory, with the voice back in a few seconds when needed.
+- Open source under the MIT license, with architecture notes, a tool reference, a changelog and its own audit plan.
+
+## Next
+
+Measure the latency of each stage end to end (speech-to-text, the model, speech synthesis and voice conversion) instead of relying on the design target.
+
+*Hatsune Miku is © Crypton Future Media. The Live2D model and the RVC voice are not part of the repository.*

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { STIX_Two_Text } from "next/font/google";
-import { notFound } from "next/navigation";
 import { getSite, isLocale, locales } from "@/lib/i18n";
+import { siteUrl } from "@/lib/site-url";
 import "../globals.css";
 
 // Self-hosted at build time by next/font, so the CSP can keep font-src 'self'.
@@ -16,12 +16,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   if (!isLocale(locale)) return {};
   const site = getSite(locale);
   return {
-    // Vercel sets this to the production domain, so a custom domain needs no code change.
-    metadataBase: new URL(
-      process.env.VERCEL_PROJECT_PRODUCTION_URL
-        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-        : "http://localhost:3000",
-    ),
+    metadataBase: new URL(siteUrl),
     title: site.meta.title,
     description: site.meta.description,
     alternates: {
@@ -32,12 +27,13 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   };
 }
 
+// Unknown locales are rejected by each page's notFound(), not here: a notFound() thrown by this root
+// layout skips [locale]/not-found.tsx and shows Next's bare default 404 instead of the site's own.
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
   const { locale } = await params;
-  if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale} className={stix.variable}>
+    <html lang={isLocale(locale) ? locale : "en"} className={stix.variable}>
       <body>{children}</body>
     </html>
   );

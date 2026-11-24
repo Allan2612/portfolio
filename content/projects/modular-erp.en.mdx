@@ -1,0 +1,62 @@
+## The problem
+
+The ERP is a core with cross-cutting services and a set of business modules: accounting, treasury, budgeting, inventory and more. The modules worked, but nobody could say **with evidence** which parts of the accounting standard the system met and which it did not. Without that, there was no way to plan the work or to answer the accountants' questions.
+
+## What I did
+
+### The gap analysis
+
+- I turned the accounting standard into **311 verifiable requirements**, each citing the page and paragraph it comes from.
+- I checked every requirement against the system in two ways: **reading the code**, file by file, and **running the system**, carrying out real operations and inspecting what ended up in the database.
+- I delivered a report for the accounting team and a **remediation plan organized into work packages**.
+
+For the first time, the system's compliance was measured requirement by requirement, with a plan to close the gaps.
+
+### AI agents as cross-checkers
+
+A single reviewer reading 311 requirements will miss things, so I designed and supervised AI agents with adversarial instructions:
+
+- one agent verified each requirement against the text of the standard;
+- another tried to **disprove** every "missing" or "incorrect" verdict before it was accepted.
+
+I integrated their results and validated every conclusion myself. The agents made the analysis more thorough; the verdicts are still mine.
+
+### Building what was missing, test-first
+
+Each rule started as a test that stated it, written before the code. The main pieces:
+
+- **Chart of accounts** and the mapping of every business concept to its account.
+- **Accruals on the right date**, and an allowance for doubtful accounts by age at each close.
+- **Fixed assets:** depreciation, impairment tests and disposals that reach the general ledger, plus finance leases and subleases.
+- **Financial statements:** consolidation of controlled entities with eliminations, segment reporting, and reclassification of the current portion of debt and provisions.
+- **Disclosures:** related parties, contingent liabilities and assets, discounted provisions, and changes in accounting policy.
+- **Budget close-out**, where the unrestricted surplus covers any deficit first.
+
+## The architecture I worked in
+
+These decisions were already in place when I joined; my work was to build inside them, and they are a big part of why the rules could be tested in isolation.
+
+- **A shared core** provides numbering, the audit trail, permissions and atomic operations across modules, and every module inherits them.
+- **One database schema per module.** No module imports another module's tables; they talk through commands and events, delivered with a **transactional outbox** so an event is published only if the change that caused it was committed.
+- **Nothing is deleted; it is sealed.** Financial records keep a full trail, and money is always stored in cents.
+- **Tests run against real infrastructure:** PostgreSQL, Redis and MongoDB, not mocks.
+
+<ModulesDiagram
+  label="The ERP's shared core and business modules"
+  modules={["Accounting", "Treasury", "Budgeting", "Inventory", "More modules"]}
+  link="Commands and events, through a transactional outbox"
+  core="Shared core"
+  coreNote="Numbering, audit trail, permissions and atomic operations across modules"
+  caption="Each module owns its schema and never imports another module's tables."
+/>
+
+## Result
+
+- The system's compliance with the standard was **measured with evidence for the first time**, with a plan to close the gaps.
+- I was the **top contributor on a team of five**, mostly in accounting, fixed assets, budgeting and treasury.
+- **More than 3,500 tests** in the project, all green when my internship ended.
+- Documentation of the accounting domain that the team uses as a reference.
+
+## What I took from it
+
+Reading the code was not enough. I confirmed each finding by running the operation and looking at the rows it wrote. Since then, "verified" means I have seen it happen in a running system.

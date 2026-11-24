@@ -61,34 +61,21 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           <ul className="ledger mt-8 max-w-measure">
             {projects.map((p) => {
               const t = p.text[locale];
-              const href = p.body ? `/${locale}/projects/${p.slug}` : null;
-              const head = (
-                <>
-                  <span className="ledger-name">{t.title}</span>
-                  <span className="ledger-kind">{site.kinds[p.kind]}</span>
-                  <span className="ledger-year">{p.start.slice(0, 4)}</span>
-                </>
-              );
+              const href = `/${locale}/projects/${p.slug}`;
               return (
                 <li key={p.slug}>
-                  {href ? (
-                    <Link href={href} className="ledger-row">
-                      {head}
-                    </Link>
-                  ) : (
-                    <div className="ledger-row">{head}</div>
-                  )}
+                  <Link href={href} className="ledger-row">
+                    <span className="ledger-name">{t.title}</span>
+                    <span className="ledger-kind">{site.kinds[p.kind]}</span>
+                    <span className="ledger-year">{p.start.slice(0, 4)}</span>
+                  </Link>
                   <p className="ledger-summary">{t.summary}</p>
                   <div className="detail ledger-detail">
                     <p>{t.detail}</p>
                     <p className="text-soft">{p.cardStack.join(" · ")}</p>
-                    {href ? (
-                      <p>
-                        <Link href={href}>{site.work.readCase}</Link>
-                      </p>
-                    ) : (
-                      <p className="text-soft">{site.work.caseSoon}</p>
-                    )}
+                    <p>
+                      <Link href={href}>{site.work.readCase}</Link>
+                    </p>
                   </div>
                   {p.cover && (
                     <Image

@@ -1,6 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+const slugs = ["tyt", "e-invoicing", "miku", "modular-erp", "aguja-de-oro"];
+const pages = ["", "/cv", ...slugs.map((s) => `/projects/${s}`)];
+
 test("root redirects to English", async ({ request }) => {
   const res = await request.get("/", { maxRedirects: 0 });
   expect(res.status()).toBe(307);
@@ -11,40 +14,39 @@ for (const [locale, other] of [
   ["en", "es"],
   ["es", "en"],
 ] as const) {
-  test(`/${locale} renders, is accessible and links to /${other}`, async ({ page }) => {
-    await page.goto(`/${locale}`);
-    await expect(page.locator("html")).toHaveAttribute("lang", locale);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Allan Vargas Torres");
+  for (const path of pages) {
+    test(`/${locale}${path} renders, is accessible and switches to /${other}${path}`, async ({ page, browserName }) => {
+      await page.goto(`/${locale}${path}`);
+      await expect(page.locator("html")).toHaveAttribute("lang", locale);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await expect(page.locator(`link[rel="alternate"][hreflang="${other}"]`)).toHaveAttribute(
+        "href",
+        new RegExp(`/${other}${path}$`),
+      );
 
-    const axe = await new AxeBuilder({ page }).analyze();
-    expect(axe.violations).toEqual([]);
+      // axe checks the DOM, so one engine is enough; in Playwright's Firefox, navigating after axe ran can crash the page.
+      if (browserName === "chromium") {
+        const axe = await new AxeBuilder({ page }).analyze();
+        expect(axe.violations).toEqual([]);
+      }
 
-    await page.locator(`header a[hreflang="${other}"]`).click();
-    await expect(page).toHaveURL(`/${other}`);
-  });
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow).toBeLessThanOrEqual(0);
 
-  test(`/${locale}/projects/tyt renders, is accessible and keeps the project when switching language`, async ({
-    page,
-  }) => {
-    await page.goto(`/${locale}/projects/tyt`);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("TyT Tecnología");
-    await expect(page.locator(`link[rel="alternate"][hreflang="${other}"]`)).toHaveAttribute(
-      "href",
-      new RegExp(`/${other}/projects/tyt$`),
-    );
-
-    const axe = await new AxeBuilder({ page }).analyze();
-    expect(axe.violations).toEqual([]);
-
-    await page.locator(`header a[hreflang="${other}"]`).click();
-    await expect(page).toHaveURL(`/${other}/projects/tyt`);
-  });
+      await page.locator(`header a[hreflang="${other}"]`).click();
+      await expect(page).toHaveURL(`/${other}${path}`);
+    });
+  }
 }
 
-test("the home page links to the TyT case study", async ({ page }) => {
+test("every case study links to the next one, and the home page links to every case study", async ({ page }) => {
   await page.goto("/en");
-  await page.locator("#work").getByRole("link", { name: /TyT Tecnología/ }).first().click();
-  await expect(page).toHaveURL("/en/projects/tyt");
+  for (const slug of slugs) {
+    await expect(page.locator(`#work a[href="/en/projects/${slug}"]`).first()).toBeVisible();
+  }
+  await page.goto("/en/projects/tyt");
+  await page.locator('a[rel="next"]').click();
+  await expect(page).toHaveURL(`/en/projects/${slugs[1]}`);
 });
 
 test("reading for 5 minutes reveals the details; 1 minute hides them", async ({ page }) => {
@@ -57,6 +59,22 @@ test("reading for 5 minutes reveals the details; 1 minute hides them", async ({ 
   await expect(detail).toBeHidden();
 });
 
+test("every internal link and image answers 200", async ({ page, request }) => {
+  const seen = new Set<string>();
+  for (const locale of ["en", "es"]) {
+    for (const path of pages) {
+      await page.goto(`/${locale}${path}`);
+      const urls = await page.$$eval("a[href^='/'], img[src^='/']", (els) =>
+        els.map((el) => (el as HTMLAnchorElement).getAttribute("href") ?? (el as HTMLImageElement).getAttribute("src")!),
+      );
+      for (const url of urls) seen.add(url.split("#")[0]);
+    }
+  }
+  for (const url of seen) {
+    expect((await request.get(url)).status(), url).toBe(200);
+  }
+});
+
 test("the CV links serve PDFs", async ({ request }) => {
   for (const lang of ["EN", "ES"]) {
     const res = await request.get(`/cv/Allan-Vargas-Torres-CV-${lang}.pdf`);
@@ -65,16 +83,27 @@ test("the CV links serve PDFs", async ({ request }) => {
   }
 });
 
-test("unknown locale and unknown project are 404", async ({ request }) => {
-  expect((await request.get("/fr")).status()).toBe(404);
-  expect((await request.get("/en/projects/nope")).status()).toBe(404);
+test("sitemap, robots and share images are served", async ({ request }) => {
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  for (const path of pages) expect(sitemap).toContain(`/es${path}</loc>`);
+  expect(await (await request.get("/robots.txt")).text()).toContain("Sitemap:");
+  for (const url of ["/en/opengraph-image", "/es/projects/miku/opengraph-image"]) {
+    const res = await request.get(url);
+    expect(res.status(), url).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
+  }
 });
 
-test("no page scrolls sideways", async ({ page }) => {
-  for (const path of ["/en", "/es", "/en/projects/tyt"]) {
-    await page.goto(path);
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-    expect(overflow, path).toBeLessThanOrEqual(0);
+test("unknown pages are a 404 with links back, in both languages", async ({ page, request, browserName }) => {
+  for (const url of ["/fr", "/xyz", "/fr/cv", "/en/projects/nope", "/xyz/abc"]) {
+    expect((await request.get(url)).status(), url).toBe(404);
+    await page.goto(url);
+    await expect(page.getByRole("heading", { name: "Page not found" }), url).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Página no encontrada" }), url).toBeVisible();
+  }
+  if (browserName === "chromium") {
+    const axe = await new AxeBuilder({ page }).analyze();
+    expect(axe.violations).toEqual([]);
   }
 });
 
