@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const slugs = ["tyt", "e-invoicing", "rutica", "aguja-de-oro", "modular-erp", "miku"];
+const slugs = ["tyt", "aguja-de-oro", "rutica", "modular-erp", "miku", "e-invoicing"];
 const pages = ["", "/cv", ...slugs.map((s) => `/projects/${s}`)];
 
 test("root redirects to English", async ({ request }) => {
