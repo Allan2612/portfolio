@@ -2,7 +2,9 @@ import type { MDXContent } from "mdx/types";
 import type { StaticImageData } from "next/image";
 import type { Locale } from "@/lib/i18n";
 import tytHomeEn from "./images/tyt/home-en.webp";
+import tytHomeEnDark from "./images/tyt/home-en-dark.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
+import tytHomeEsDark from "./images/tyt/home-es-dark.webp";
 import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
@@ -39,15 +41,16 @@ export type Project = {
   stack: string[];
   cardStack: string[];
   links: { live?: string; repo?: string };
-  cover?: Record<Locale, { src: StaticImageData; alt: string }>;
+  /** dark: the same screenshot in the dark theme, shown when the site is dark (components/themed-image.tsx). */
+  cover?: Record<Locale, { src: StaticImageData; dark?: StaticImageData; alt: string }>;
   /** Home-page picture for the project row (the cover is used in the intro instead). */
-  thumb?: { src: StaticImageData; alt: Record<Locale, string> };
+  thumb?: { src: StaticImageData; dark?: StaticImageData; alt: Record<Locale, string> };
   text: Record<Locale, Text>;
   /** The case study, one MDX file per language. */
   body: Record<Locale, MDXContent>;
 };
 
-/** Featured projects, in the order they appear on the home page (ranked by impact). */
+/** Featured projects, in the order they appear on the home page: work real people use first. */
 export const projects: Project[] = [
   {
     slug: "tyt",
@@ -58,11 +61,12 @@ export const projects: Project[] = [
     cardStack: ["Next.js", "Prisma", "PostgreSQL", "Playwright"],
     links: { live: "https://www.tytsoluciones.net" },
     cover: {
-      en: { src: tytHomeEn, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand’s shapes." },
-      es: { src: tytHomeEs, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
+      en: { src: tytHomeEn, dark: tytHomeEnDark, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand’s shapes." },
+      es: { src: tytHomeEs, dark: tytHomeEsDark, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
     },
     thumb: {
       src: tytHomeEn,
+      dark: tytHomeEnDark,
       alt: {
         en: "TyT Tecnología home page: security cameras and computers, with the services as four blocks built from the brand’s shapes.",
         es: "Inicio de TyT Tecnología: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca.",
@@ -133,42 +137,6 @@ export const projects: Project[] = [
     body: { en: InvoicingEn, es: InvoicingEs },
   },
   {
-    slug: "miku",
-    kind: "open-source",
-    start: "2026-10",
-    end: null,
-    stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
-    cardStack: ["Tauri", "TypeScript", "Python asyncio"],
-    links: { repo: "https://github.com/Allan2612/miku-assistant" },
-    text: {
-      en: {
-        title: "Miku Assistant",
-        summary: "Desktop voice assistant: local Whisper, Gemini function calling over a closed tool set, and a Live2D avatar.",
-        role: "Personal project",
-        team: "Solo",
-        keyPoints: [
-          "Designed to answer in under 3 seconds",
-          "0 MB of GPU memory in use while idle",
-          "A closed list of tools, with confirmation for anything destructive",
-        ],
-        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
-      },
-      es: {
-        title: "Miku Assistant",
-        summary: "Asistente de voz de escritorio: Whisper local, function calling de Gemini sobre una lista cerrada de herramientas y un avatar Live2D.",
-        role: "Proyecto personal",
-        team: "Individual",
-        keyPoints: [
-          "Diseñado para responder en menos de 3 segundos",
-          "0 MB de memoria de GPU en uso en reposo",
-          "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
-        ],
-        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
-      },
-    },
-    body: { en: MikuEn, es: MikuEs },
-  },
-  {
     slug: "rutica",
     kind: "course",
     start: "2026-01",
@@ -205,42 +173,6 @@ export const projects: Project[] = [
     body: { en: RuticaEn, es: RuticaEs },
   },
   {
-    slug: "modular-erp",
-    kind: "internship",
-    start: "2026-08",
-    end: "2026-11",
-    stack: ["TypeScript", "NestJS", "Drizzle ORM", "PostgreSQL", "Redis", "MongoDB", "pnpm + Turborepo", "Vitest"],
-    cardStack: ["NestJS", "Drizzle", "PostgreSQL", "Vitest"],
-    links: {},
-    text: {
-      en: {
-        title: "Modular ERP",
-        summary: "Accounting rules built test-first, and a gap analysis of 311 requirements against an international accounting standard.",
-        role: "Software development intern (backend)",
-        team: "Team of five; top contributor",
-        keyPoints: [
-          "311 requirements checked against the code and the running system",
-          "AI agents I designed cross-checked every verdict",
-          "Accounting rules built test-first; top contributor on a team of five",
-        ],
-        highlight: { value: "311", label: "requirements checked against the code and the running system" },
-      },
-      es: {
-        title: "ERP modular",
-        summary: "Reglas contables desarrolladas con TDD y un análisis de brechas de 311 requisitos frente a una norma contable internacional.",
-        role: "Practicante de desarrollo de software (backend)",
-        team: "Equipo de cinco; principal contribuidor",
-        keyPoints: [
-          "311 requisitos contrastados con el código y con el sistema en ejecución",
-          "Agentes de IA que diseñé verificaron cada veredicto",
-          "Reglas contables construidas con TDD; principal contribuidor de un equipo de cinco",
-        ],
-        highlight: { value: "311", label: "requisitos contrastados con el código y con el sistema en ejecución" },
-      },
-    },
-    body: { en: ErpEn, es: ErpEs },
-  },
-  {
     slug: "aguja-de-oro",
     kind: "live",
     start: "2024-09",
@@ -275,6 +207,78 @@ export const projects: Project[] = [
       },
     },
     body: { en: AgujaEn, es: AgujaEs },
+  },
+  {
+    slug: "modular-erp",
+    kind: "internship",
+    start: "2026-08",
+    end: "2026-11",
+    stack: ["TypeScript", "NestJS", "Drizzle ORM", "PostgreSQL", "Redis", "MongoDB", "pnpm + Turborepo", "Vitest"],
+    cardStack: ["NestJS", "Drizzle", "PostgreSQL", "Vitest"],
+    links: {},
+    text: {
+      en: {
+        title: "Modular ERP",
+        summary: "Measured, requirement by requirement, how well a modular ERP met an international accounting standard, and built accounting rules it was missing.",
+        role: "Software development intern (backend)",
+        team: "Team of five; top contributor",
+        keyPoints: [
+          "311 requirements checked against the code and the running system",
+          "AI agents I designed cross-checked every verdict",
+          "Accounting rules built test-first; top contributor on a team of five",
+        ],
+        highlight: { value: "311", label: "requirements checked against the code and the running system" },
+      },
+      es: {
+        title: "ERP modular",
+        summary: "Medí, requisito por requisito, cuánto cumplía un ERP modular una norma contable internacional, y construí reglas contables que le faltaban.",
+        role: "Practicante de desarrollo de software (backend)",
+        team: "Equipo de cinco; principal contribuidor",
+        keyPoints: [
+          "311 requisitos contrastados con el código y con el sistema en ejecución",
+          "Agentes de IA que diseñé verificaron cada veredicto",
+          "Reglas contables construidas con TDD; principal contribuidor de un equipo de cinco",
+        ],
+        highlight: { value: "311", label: "requisitos contrastados con el código y con el sistema en ejecución" },
+      },
+    },
+    body: { en: ErpEn, es: ErpEs },
+  },
+  {
+    slug: "miku",
+    kind: "open-source",
+    start: "2026-10",
+    end: null,
+    stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
+    cardStack: ["Tauri", "TypeScript", "Python asyncio"],
+    links: { repo: "https://github.com/Allan2612/miku-assistant" },
+    text: {
+      en: {
+        title: "Miku Assistant",
+        summary: "A voice assistant for Windows with an animated character: you talk to it and it handles apps, tabs, music and reminders, asking before anything destructive.",
+        role: "Personal project",
+        team: "Solo",
+        keyPoints: [
+          "Designed to answer in under 3 seconds",
+          "0 MB of GPU memory in use while idle",
+          "A closed list of tools, with confirmation for anything destructive",
+        ],
+        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
+      },
+      es: {
+        title: "Miku Assistant",
+        summary: "Asistente de voz para Windows con un personaje animado: se le habla y maneja aplicaciones, pestañas, música y recordatorios; pregunta antes de lo destructivo.",
+        role: "Proyecto personal",
+        team: "Individual",
+        keyPoints: [
+          "Diseñado para responder en menos de 3 segundos",
+          "0 MB de memoria de GPU en uso en reposo",
+          "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
+        ],
+        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
+      },
+    },
+    body: { en: MikuEn, es: MikuEs },
   },
 ];
 

@@ -1,15 +1,16 @@
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import type { CSSProperties } from "react";
+import { ThemedImage } from "@/components/themed-image";
 
-type Img = { src: StaticImageData; alt: string };
+type Img = { src: StaticImageData; dark?: StaticImageData; alt: string };
 
 /** A screenshot next to its phone version; stacks on small screens. */
 export function FigurePair({ wide, narrow, caption }: { wide: Img; narrow: Img; caption: string }) {
   return (
     <figure className="figure-pair">
       <div className="figure-pair-media">
-        <Image src={wide.src} alt={wide.alt} sizes="(min-width: 1024px) 40rem, 100vw" className="h-auto w-full" />
-        <Image src={narrow.src} alt={narrow.alt} sizes="(min-width: 1024px) 12rem, 40vw" className="h-auto w-full" />
+        <ThemedImage zoom src={wide.src} dark={wide.dark} alt={wide.alt} sizes="(min-width: 1024px) 40rem, 100vw" className="h-auto w-full" />
+        <ThemedImage zoom src={narrow.src} dark={narrow.dark} alt={narrow.alt} sizes="(min-width: 1024px) 12rem, 40vw" className="h-auto w-full" />
       </div>
       <figcaption>{caption}</figcaption>
     </figure>
@@ -102,6 +103,31 @@ export function PortsDiagram({
           </li>
         ))}
       </ul>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
+
+/**
+ * A picture that is planned but not ready (missing permission or not taken yet). Locally and on preview
+ * deployments it shows a dashed box saying what goes there; on the production site it renders nothing,
+ * so no public page shows an "image coming soon" gap.
+ */
+export function PhotoSlot({ children }: { children: string }) {
+  if (process.env.VERCEL_ENV === "production") return null;
+  return (
+    <figure className="photo-slot" aria-hidden="true">
+      <span className="photo-slot-mark">Foto pendiente · Planned picture</span>
+      <span>{children}</span>
+    </figure>
+  );
+}
+
+/** One screenshot with its caption, in the light and dark themes when both exist. */
+export function Figure({ image, caption }: { image: Img; caption: string }) {
+  return (
+    <figure className="figure-single">
+      <ThemedImage zoom src={image.src} dark={image.dark} alt={image.alt} sizes="(min-width: 1280px) 52rem, 100vw" className="h-auto w-full" />
       <figcaption>{caption}</figcaption>
     </figure>
   );

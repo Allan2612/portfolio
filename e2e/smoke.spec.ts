@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const slugs = ["tyt", "e-invoicing", "miku", "rutica", "modular-erp", "aguja-de-oro"];
+const slugs = ["tyt", "e-invoicing", "rutica", "aguja-de-oro", "modular-erp", "miku"];
 const pages = ["", "/cv", ...slugs.map((s) => `/projects/${s}`)];
 
 test("root redirects to English", async ({ request }) => {
@@ -202,4 +202,37 @@ test("security headers are set", async ({ request }) => {
   expect(h["permissions-policy"]).not.toContain("interest-cohort");
   expect(h["cross-origin-opener-policy"]).toBe("same-origin");
   expect(h["x-powered-by"]).toBeUndefined();
+});
+
+test("screenshots follow the site's theme", async ({ page }) => {
+  const shown = () =>
+    page.locator(".themed").first().evaluate((t) =>
+      ["light", "dark"].find((k) => getComputedStyle(t.querySelector(`.themed-${k}`)!).opacity === "1"),
+    );
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/en/projects/tyt");
+  expect(await shown()).toBe("light");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect.poll(shown).toBe("dark");
+  // The theme button wins over the system preference.
+  await page.locator(".theme-toggle").click();
+  await expect.poll(shown).toBe("light");
+});
+
+test("a screenshot opens full screen, zooms to full size and closes", async ({ page }) => {
+  await page.goto("/en/projects/tyt");
+  const trigger = page.locator("figure .zoom-trigger").first();
+  const viewer = page.locator("dialog.lightbox");
+  // From the keyboard, so it also proves the screenshot is reachable without a mouse; retried until hydrated.
+  await expect(async () => {
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    await expect(viewer).toBeVisible({ timeout: 1000 });
+  }).toPass();
+  await expect(viewer.locator("img")).toHaveAttribute("alt", /TyT/);
+  await viewer.locator("img").click();
+  await expect(viewer).toHaveAttribute("data-zoomed", "true");
+  await page.keyboard.press("Escape");
+  await expect(viewer).toBeHidden();
+  await expect(trigger).toBeFocused();
 });

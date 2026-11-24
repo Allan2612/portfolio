@@ -1098,15 +1098,154 @@ figcaption {
   color: var(--soft);
 }
 
+/* Light and dark versions of a screenshot (components/themed-image.tsx): both in one cell, the theme picks. */
+.themed {
+  display: grid;
+}
+.themed > span {
+  grid-area: 1 / 1;
+  display: block;
+}
+.themed-dark {
+  opacity: 0;
+  filter: blur(6px);
+}
+:root[data-theme="dark"] .themed-light {
+  opacity: 0;
+  filter: blur(6px);
+}
+:root[data-theme="dark"] .themed-dark {
+  opacity: 1;
+  filter: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .themed-light {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  :root:not([data-theme="light"]) .themed-dark {
+    opacity: 1;
+    filter: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* On a theme switch the screenshot dissolves into its other version instead of jumping. */
+  .themed > span {
+    transition:
+      opacity 700ms var(--ease-soft),
+      filter 700ms var(--ease-soft);
+  }
+}
+
+/* A screenshot that opens in the viewer (components/lightbox.tsx). */
+.zoom-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.zoom-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 1.5rem;
+  border: 0;
+  background: rgb(10 10 10 / 0.92);
+  overflow: auto;
+}
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+.lightbox::backdrop {
+  background: transparent;
+}
+.lightbox img {
+  max-width: 100%;
+  max-height: calc(100dvh - 3rem);
+  object-fit: contain;
+  cursor: zoom-in;
+}
+/* Full size: the picture keeps its own pixels and the viewer scrolls. */
+.lightbox[data-zoomed] {
+  place-items: start;
+}
+.lightbox[data-zoomed] img {
+  max-width: none;
+  max-height: none;
+  cursor: zoom-out;
+}
+.lightbox-close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  cursor: pointer;
+}
+.lightbox-close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.lightbox-close:hover,
+.lightbox-close:focus-visible {
+  background: rgb(255 255 255 / 0.24);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox[open] {
+    animation: lightbox-in 220ms var(--ease-out);
+  }
+}
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Planned picture (components/mdx.tsx PhotoSlot): never rendered on the production site. */
+.photo-slot {
+  display: grid;
+  gap: 0.5rem;
+  place-content: center;
+  min-height: 14rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 2px dashed var(--soft);
+  color: var(--soft);
+  text-align: center;
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+}
+.photo-slot-mark {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 /* A screenshot beside its phone version; the pair may run wider than the text column. */
 .figure-pair-media {
   display: grid;
-  grid-template-columns: minmax(0, 3.4fr) minmax(0, 1fr);
+  /* Columns in the screenshots' own ratios (desktop 1440 × 900 = 1.6, phone 780 × 1688 ≈ 0.462), so both are equally tall. */
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.462fr);
   gap: 1rem;
   align-items: start;
 }
 @media (min-width: 80rem) {
-  .figure-pair {
+  .figure-pair,
+  .figure-single {
     width: min(var(--container-wide), calc(100vw - var(--spacing-inset) - var(--spacing-gutter)));
   }
 }

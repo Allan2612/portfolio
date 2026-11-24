@@ -1,10 +1,32 @@
-## El problema
+## Contexto
 
-Un modelo de reconocimiento de voz, un modelo de voz y un avatar animado pueden mantener ocupada la GPU y retener cientos de megabytes de memoria todo el día, en una máquina que además se usa para todo lo demás. Y un asistente que controla la PC solo es útil si sabe qué hay abierto, y solo es seguro si no puede hacer cualquier cosa.
+Miku Assistant es un asistente de voz para Windows, con un personaje animado que vive en el escritorio. Se llama con un atajo de teclado o una palabra clave y se le habla: abre aplicaciones, cambia de ventana y de pestaña, controla la música y el volumen, pone temporizadores y recordatorios, toma notas y responde preguntas. Antes de hacer algo destructivo, pregunta.
 
-Le puse dos metas al diseño: **consumo casi nulo en reposo** y una respuesta en **menos de tres segundos** desde que se activa.
+Lo construí por mi cuenta como proyecto de código abierto, con dos metas: responder en **menos de tres segundos** y consumir **casi nada en reposo**, porque corre en una PC que además se usa para todo lo demás.
 
-## Cómo funciona
+## Qué hice
+
+- **Una aplicación de escritorio** con un personaje Live2D, sincronización de labios y subtítulos, en una ventana transparente (Tauri y TypeScript).
+- **Un núcleo en Python** que escucha, transcribe la voz en la CPU con Whisper y usa a Gemini como un agente que sabe qué hay abierto en la PC.
+- **La voz propia del personaje**, convertida en la GPU solo mientras hace falta; en reposo, la memoria de video vuelve a cero.
+- **Seguridad desde el diseño:** el asistente solo puede usar una lista cerrada de herramientas, nunca ejecuta comandos arbitrarios y pregunta antes de cualquier acción destructiva.
+- **Una extensión de navegador opcional** para que sepa qué pestañas hay abiertas y pueda actuar sobre ellas.
+
+<PhotoSlot>Un video corto o GIF del asistente funcionando: la activación, la respuesta hablada con subtítulos y una acción en la PC.</PhotoSlot>
+
+## Resultado
+
+- **Diseñado para responder en menos de 3 segundos** desde la activación, cargando la voz mientras el usuario todavía habla.
+- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
+- Código abierto con licencia MIT, con notas de arquitectura, referencia de herramientas, registro de cambios y su propio plan de auditoría.
+
+## Lo que sigue
+
+Medir la latencia de cada etapa de punta a punta (transcripción, modelo, síntesis y conversión de voz) en lugar de depender de la meta de diseño.
+
+## Decisiones técnicas
+
+### Cómo funciona
 
 Dos procesos se comunican por un WebSocket local, más un proceso de GPU para la voz y una extensión de navegador opcional:
 
@@ -18,7 +40,7 @@ Dos procesos se comunican por un WebSocket local, más un proceso de GPU para la
   steps={[
     ["Aplicación · Tauri y TypeScript", "Avatar Live2D, sincronización de labios y subtítulos"],
     ["Núcleo · Python asyncio", "Palabra clave, Whisper en la CPU, el agente de Gemini y la lista cerrada de herramientas"],
-    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
+    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
   ]}
   caption="La aplicación y el núcleo se comunican por un WebSocket local; el núcleo arranca y detiene el proceso de voz."
 />
@@ -32,8 +54,6 @@ Una petición sigue estos pasos:
 5. edge-tts genera la voz base y RVC la convierte.
 6. La aplicación la reproduce con sincronización de labios, una expresión y un subtítulo, y sigue escuchando unos segundos por si la conversación continúa.
 7. Después de un rato sin uso, el avatar se oculta y deja de dibujarse. Más tarde se cierra el proceso de voz y la memoria de la GPU vuelve a cero, mientras otro proceso espera en RAM con sus bibliotecas cargadas, para que la voz vuelva en unos segundos.
-
-## Decisiones técnicas
 
 ### Nada de frameworks de GPU en el proceso principal
 
@@ -58,15 +78,5 @@ El personaje tiene una sola voz. Si el proceso de voz todavía está cargando, l
 ### Sin framework de interfaz
 
 La aplicación es TypeScript puro con Vite. El WebView ya consume memoria; un framework de interfaz sumaría más para una ventana que muestra un solo personaje.
-
-## Resultado
-
-- **Diseñado para responder en menos de 3 segundos** desde la activación, cargando la voz mientras el usuario todavía habla.
-- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
-- Código abierto con licencia MIT, con notas de arquitectura, referencia de herramientas, registro de cambios y su propio plan de auditoría.
-
-## Lo que sigue
-
-Medir la latencia de cada etapa de punta a punta (transcripción, modelo, síntesis y conversión de voz) en lugar de depender de la meta de diseño.
 
 *Hatsune Miku es © Crypton Future Media. El modelo Live2D y la voz RVC no forman parte del repositorio.*

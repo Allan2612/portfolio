@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { type CSSProperties, Fragment } from "react";
@@ -7,6 +6,7 @@ import { CopyEmail } from "@/components/copy-email";
 import { JsonLd, person } from "@/components/json-ld";
 import { LocalTime } from "@/components/local-time";
 import { TechChip } from "@/components/tech-chip";
+import { ThemedImage } from "@/components/themed-image";
 import { projects } from "@/content/projects";
 import { formatPeriod, getSite, isLocale, otherLocale } from "@/lib/i18n";
 
@@ -140,7 +140,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                   <Link href={href} className="work-visual" tabIndex={-1} aria-hidden="true">
                     {p.thumb ? (
                       <span className="shutter">
-                        <Image src={p.thumb.src} alt={p.thumb.alt[locale]} sizes="(min-width: 64rem) 45vw, 100vw" className="h-auto w-full" />
+                        <ThemedImage src={p.thumb.src} dark={p.thumb.dark} alt={p.thumb.alt[locale]} sizes="(min-width: 64rem) 45vw, 100vw" className="h-auto w-full" />
                       </span>
                     ) : (
                       <span className="tile">

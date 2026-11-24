@@ -1,20 +1,29 @@
-## El problema
+## Contexto
 
 Rutica es una app móvil para descubrir lo que hay cerca en Costa Rica: comercios, atracciones, eventos y promociones, en un mapa, con reseñas y favoritos. Las personas publican sus propios comercios, atracciones y eventos, los dueños anuncian promociones y los planes premium les dan más espacio.
 
-La desarrollé con otro estudiante como proyecto de curso. Meses después, antes de llevarla a producción, había que revisarla a fondo: una app donde cualquiera publica contenido, califica a otros y paga un plan tiene que resistir cuando alguien no la usa como se pensó.
+La desarrollé con otro estudiante como proyecto de curso. Meses después, antes de llevarla a producción, había que revisarla a fondo: una app donde cualquiera publica contenido, califica a otros y paga un plan tiene que resistir cuando alguien no la usa como se pensó. Esa auditoría la hice por mi cuenta, corregí lo que encontró y llevé la app a producción.
 
 ## Qué hice
 
-- **Auditoría completa del repositorio, por mi cuenta:** 8 informes con más de 140 hallazgos sobre consultas y base de datos, UX, rendimiento, errores funcionales, seguridad, arquitectura, cumplimiento legal y calidad de código.
-- **Un plan de 88 tareas en 8 fases** a partir de la auditoría, ejecutado completo, con un registro de cada problema nuevo que apareció en el camino: 13 más, cada uno con su estado.
-- **Las reglas pasaron a la base de datos.** Quién puede aprobar una suscripción, qué rol recibe una cuenta nueva, qué pasa al editar contenido ya aprobado, cuánto puede publicar un dueño: ahora lo hacen cumplir triggers y políticas RLS de PostgreSQL, no solo la app.
-- **Huecos del cliente cerrados:** el contenido de los usuarios se escapa dentro de los mapas, los enlaces se validan antes de abrirlos o guardarlos, todas las rutas de administración están protegidas y las funciones de correo exigen una sesión.
-- **Lo básico en lo legal:** consentimiento explícito al registrarse, un borrador de política de privacidad según la ley costarricense de protección de datos y eliminación de la cuenta desde la app, que exigen las tiendas.
-- **Rendimiento y errores:** una política de caché global para las consultas, reseñas cargadas bajo demanda, conteos con consultas agregadas y la corrección de un cierre inesperado en el panel premium y de sesiones que no se guardaban completas.
-- **Un camino seguro a producción:** CI en cada push y pull request, ramas `main` y `develop` en Vercel y la migración ensayada sobre una copia de la base de producción antes de aplicarla de verdad.
+- **Auditoría completa del repositorio:** 8 informes con más de 140 hallazgos, de la base de datos y la seguridad a la UX, el rendimiento y el cumplimiento legal.
+- **Un plan de 88 tareas en 8 fases** a partir de la auditoría, ejecutado completo, con un registro de los 13 problemas nuevos que aparecieron en el camino.
+- **Las reglas que protegen la app pasaron a la base de datos**, para que nadie se las pueda saltar hablando directo con ella.
+- **Lo básico en lo legal:** consentimiento explícito al registrarse, un borrador de política de privacidad según la ley costarricense de protección de datos y eliminación de la cuenta desde la app.
+- **Un paso a producción seguro:** CI en cada push, la migración de la base ensayada sobre una copia de producción y un orden de publicación documentado.
 
-## Cómo funciona ahora
+<PhotoSlot>Pantallas de la app en un celular con datos inventados: explorar lo cercano, el mapa, la página de un evento y el panel del dueño de un comercio.</PhotoSlot>
+
+## Resultado
+
+- **Rutica está en producción**, con CI, despliegues de prueba para `develop` y cada pull request, y un orden de publicación documentado.
+- 87 de las 88 tareas del plan están hechas. La última quedó parcial: los tipos `any` bajaron de 617 a 455, con un tope en CI para que no vuelvan a subir. Algunos detalles legales (impuestos, reembolsos, edad mínima) quedaron redactados y marcados para que los confirme un abogado.
+
+## Qué me llevo
+
+Auditar código que ayudé a escribir fue una lección de humildad. Los problemas más serios no estaban en las pantallas que recordaba, sino en lo que la base de datos permitía cuando nadie pasaba por la app. Desde entonces pongo las reglas que protegen los datos de las personas donde no se pueden saltar, y escribo la prueba que demuestra que se cumplen.
+
+## Decisiones técnicas
 
 <FlowDiagram
   label="De la auditoría a producción"
@@ -28,19 +37,17 @@ La desarrollé con otro estudiante como proyecto de curso. Meses después, antes
   caption="El código de la app funciona antes y después de la migración, así que el orden de publicación no la rompe."
 />
 
+### Reglas de seguridad donde no se pueden saltar
+
+Una regla que vive solo en la app la puede saltar cualquiera que hable directo con la API de la base de datos. Por eso las reglas importantes las revisa la propia base, con triggers y políticas RLS de PostgreSQL: quién puede aprobar una suscripción, qué rol recibe una cuenta nueva, qué pasa al editar contenido ya aprobado y cuánto puede publicar un dueño. Una prueba aplica la migración sobre un PostgreSQL en memoria (PGlite) y revisa 28 de esas reglas en cada push; si alguna deja de cumplirse, el CI falla.
+
 ### Una migración que se puede correr dos veces
 
 Todos los cambios del modelo viven en un solo script. Es idempotente, así que correrlo una segunda vez no cambia nada, y va dentro de una transacción, así que si algo falla la base queda como estaba. Eso permitió ensayarlo sobre una copia de producción y después aplicar el mismo archivo con tranquilidad.
 
-### Reglas de seguridad donde no se pueden saltar
+### Otros cambios
 
-Una regla que vive solo en la app la puede saltar cualquiera que hable directo con la API de la base de datos. Por eso las reglas importantes (suscripciones, roles, moderación, límites de publicación) las revisa la propia base. Una prueba aplica la migración sobre un PostgreSQL en memoria (PGlite) y revisa 28 de esas reglas en cada push; si alguna deja de cumplirse, el CI falla.
-
-## Resultado
-
-- **Rutica está en producción**, con CI, despliegues de prueba para `develop` y cada pull request, y un orden de publicación documentado.
-- 87 de las 88 tareas del plan están hechas. La última quedó parcial: los tipos `any` bajaron de 617 a 455, con un tope en CI para que no vuelvan a subir. Algunos detalles legales (impuestos, reembolsos, edad mínima) quedaron redactados y marcados para que los confirme un abogado.
-
-## Qué me llevo
-
-Auditar código que ayudé a escribir fue una lección de humildad. Los problemas más serios no estaban en las pantallas que recordaba, sino en lo que la base de datos permitía cuando nadie pasaba por la app. Desde entonces pongo las reglas que protegen los datos de las personas donde no se pueden saltar, y escribo la prueba que demuestra que se cumplen.
+- **Seguridad del cliente:** el contenido de los usuarios se escapa dentro de los mapas, los enlaces se validan antes de abrirlos o guardarlos, todas las rutas de administración están protegidas y las funciones de correo exigen una sesión.
+- **Rendimiento:** una política de caché global para las consultas, reseñas cargadas bajo demanda y conteos con consultas agregadas.
+- **Errores:** un cierre inesperado en el panel premium y sesiones que no se guardaban completas.
+- **Ramas:** `main` y `develop` en Vercel, integradas mediante pull requests con el CI en verde.

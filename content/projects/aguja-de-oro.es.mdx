@@ -1,24 +1,34 @@
-## El problema
+## Contexto
 
-El taller llevaba sus ventas, reparaciones, garantías e inventario a mano o en hojas sueltas. Necesitaba:
+La Aguja de Oro es un taller de costura. Llevaba sus ventas, reparaciones, garantías e inventario a mano o en hojas sueltas. Necesitaba un sistema que se adaptara a su forma de trabajar, impresos con los datos fiscales de Costa Rica (facturas, proformas, boletas de reparación y certificados de garantía) y algo que el personal pudiera usar desde el celular.
 
-- un sistema que se adaptara a su forma de trabajar, y no al revés;
-- impresos (facturas, proformas, boletas de reparación y certificados de garantía) con los datos fiscales de Costa Rica;
-- algo que el personal pudiera usar desde el celular.
+En pareja le construimos un ERP en Odoo 17, y yo monté y mantengo el servidor donde corre. El taller opera su día a día con el sistema desde diciembre de 2025.
 
-## Qué construí
+## Qué hice
 
 El proyecto se hizo en pareja, y la división importa:
 
 - **Ventas** (desarrollador principal): ventas con el IVA incluido en el precio, estados por pestaña, adelantos y vencimientos.
 - **Servicio rápido** (lo creé yo): un módulo nuevo para trabajos cortos que no necesitan todo el flujo de reparación.
-- **Reportes** (míos).
-- **Reparaciones** (lo creó mi compañero; yo aporté): boletas de ingreso, estados de reparación ligados a la factura e historial en el inventario.
-- **Garantías:** personalicé un módulo de terceros, con un certificado rediseñado y vista previa en PDF.
-- **Impresos con formato de Costa Rica:** facturas, proformas con nota de vigencia, boletas de reparación y certificados de garantía, con la dirección en el formato local, tildes correctas y un encabezado que el taller configura desde Ajustes.
-- **Celular:** un tema adaptable de terceros, instalado y ajustado para que el sistema funcione desde el teléfono.
+- **Reportes** (míos), además de aportes en **reparaciones**, un módulo que creó mi compañero, y un módulo de **garantías** personalizado, con un certificado rediseñado.
+- **Impresos con formato de Costa Rica:** facturas, proformas, boletas de reparación y certificados de garantía, con un encabezado que el taller configura por su cuenta; y un tema adaptable para que el sistema funcione desde el celular.
+- **El servidor de producción:** lo monté, lo aseguré y lo mantengo, con respaldos diarios.
 
-## Infraestructura de producción
+<PhotoSlot>Pantallas del sistema con datos de prueba (una venta, una boleta de reparación y una factura impresa), cuando el taller dé el permiso por escrito.</PhotoSlot>
+
+## Resultado
+
+- El negocio opera su día a día en el sistema **desde diciembre de 2025**.
+- Costo de infraestructura mínimo, con HTTPS, un servidor reforzado y respaldos diarios.
+- Empezó como proyecto de curso en 2024 y sigue en producción; lo sigo manteniendo.
+
+## Qué me llevo
+
+Un proyecto de curso termina cuando se califica; un sistema del que depende un negocio, no. Desde que el taller empezó a operar con él, cada cambio tenía que poder desplegarse sin riesgo en un día de trabajo, cada pedido necesitaba una respuesta y el servidor pasó a ser mi responsabilidad. Ahí aprendí a tratar los respaldos, los accesos y las actualizaciones como parte del producto, no como algo para después.
+
+## Decisiones técnicas
+
+### Infraestructura de producción
 
 Monté y documenté el servidor, y lo mantengo:
 
@@ -40,8 +50,6 @@ Monté y documenté el servidor, y lo mantengo:
   caption="Un servidor pequeño en la nube, detrás de un firewall que solo deja pasar el tráfico web y SSH."
 />
 
-## Decisiones técnicas
-
 ### Extender Odoo en lugar de pelear con él
 
 Cada cambio vive en un módulo propio que hereda de los modelos y las vistas de Odoo, así que el código estándar nunca se edita y el sistema se puede actualizar sin perder los cambios del taller.
@@ -53,13 +61,3 @@ El negocio es pequeño, y el presupuesto también. En lugar de una máquina más
 ### Salir a producción fue el comienzo, no el final
 
 El sistema siguió creciendo después de salir a producción. Desde entonces construí el módulo de servicio rápido, rehíce las ventas para que el estado de la reparación y los adelantos queden ligados a la factura, agregué un encabezado de proforma que el taller configura desde Ajustes y rediseñé las facturas y el certificado de garantía. A la par llegaron las correcciones que solo revela el uso diario: precios con IVA que se actualizan mientras se escriben, logos bien recortados en los impresos, fechas en hora local y PDF que se descargan en cualquier celular. Detalles así deciden si la gente sigue usando un sistema.
-
-## Resultado
-
-- El negocio opera su día a día en el sistema **desde diciembre de 2025**.
-- Costo de infraestructura mínimo, con HTTPS, un servidor reforzado y respaldos diarios.
-- Empezó como proyecto de curso en 2024 y sigue en producción; lo sigo manteniendo.
-
-## Qué me llevo
-
-Un proyecto de curso termina cuando se califica; un sistema del que depende un negocio, no. Desde que el taller empezó a operar con él, cada cambio tenía que poder desplegarse sin riesgo en un día de trabajo, cada pedido necesitaba una respuesta y el servidor pasó a ser mi responsabilidad. Ahí aprendí a tratar los respaldos, los accesos y las actualizaciones como parte del producto, no como algo para después.
