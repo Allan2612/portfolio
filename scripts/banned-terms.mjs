@@ -7,6 +7,8 @@
 // Usage:
 //   node scripts/banned-terms.mjs --staged        scan the staged version of staged files
 //   node scripts/banned-terms.mjs <path>...       scan files / directories recursively
+//
+// PDFs (the public CV) are scanned by their extracted text: their content streams are compressed.
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -50,6 +52,13 @@ export function findBanned(text, compiled) {
 
 const isBinary = (buf) => buf.subarray(0, 8000).includes(0);
 
+/** The text a reader sees in a PDF, all pages joined. */
+export async function pdfText(buf) {
+  const { extractText, getDocumentProxy } = await import("unpdf");
+  const { text } = await extractText(await getDocumentProxy(new Uint8Array(buf)), { mergePages: true });
+  return text;
+}
+
 function* walk(path) {
   const st = statSync(path);
   if (st.isFile()) return yield path;
@@ -68,7 +77,7 @@ function stagedFiles() {
   }));
 }
 
-function main(args) {
+async function main(args) {
   const terms = loadTerms();
   if (terms.length === 0) {
     console.error(
@@ -84,8 +93,9 @@ function main(args) {
   let hits = 0;
   for (const { file, read } of targets) {
     const buf = read();
-    if (isBinary(buf)) continue;
-    for (const term of findBanned(buf.toString("utf8"), compiled)) {
+    const text = file.toLowerCase().endsWith(".pdf") ? await pdfText(buf) : isBinary(buf) ? null : buf.toString("utf8");
+    if (text === null) continue;
+    for (const term of findBanned(text, compiled)) {
       hits++;
       console.error(`banned-terms: "${term}" in ${file}`);
     }
@@ -95,5 +105,5 @@ function main(args) {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  process.exit(main(process.argv.slice(2)));
+  process.exit(await main(process.argv.slice(2)));
 }
