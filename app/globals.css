@@ -20,16 +20,84 @@
   --accent-ink: #181715;
 }
 
+/* Dark follows the system unless the theme button set data-theme on <html>; both blocks hold the same values. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --paper: #161614;
-    --surface: #201f1c;
-    --surface-2: #2a2925;
+    --paper: #121212;
+    --surface: #1e1e1e;
+    --surface-2: #2a2a2a;
     --ink: #e8e8e3;
-    --soft: #a3a29a;
+    --soft: #a6a6a1;
     --accent: #cfc23a;
-    --accent-ink: #161614;
+    --accent-ink: #121212;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #121212;
+  --surface: #1e1e1e;
+  --surface-2: #2a2a2a;
+  --ink: #e8e8e3;
+  --soft: #a6a6a1;
+  --accent: #cfc23a;
+  --accent-ink: #121212;
+}
+
+/* Header controls: language (EN | ES, the current one filled) and the theme button. */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.lang-switch {
+  display: inline-flex;
+  background: var(--surface);
+  padding: 0.2rem;
+  gap: 0.2rem;
+  font-size: var(--text-small);
+  line-height: 1;
+}
+.lang-switch > * {
+  padding: 0.35rem 0.55rem;
+}
+.lang-switch [aria-current] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.lang-switch a:hover {
+  background: var(--surface-2);
+}
+
+/* Theme button: the moon offers dark, the sun offers light. */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: -0.4rem 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.theme-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+.theme-toggle .sun,
+:root[data-theme="dark"] .theme-toggle .moon {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .sun {
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .moon {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .theme-toggle .sun {
+    display: block;
   }
 }
 
@@ -63,7 +131,8 @@
   /* Layout: one column that starts at ~22% of the viewport on wide screens and at the margin on phones. */
   --spacing-gutter: clamp(1.25rem, 4vw, 3rem);
   /* Left edge of the column, from the page edge: the gutter on phones, about 22% of the width on desktops. */
-  --spacing-inset: max(clamp(1.25rem, 4vw, 3rem), calc(22vw - 4rem));
+  /* On very wide monitors the page centres instead of drifting left (72rem of content). */
+  --spacing-inset: max(clamp(1.25rem, 4vw, 3rem), calc(22vw - 4rem), calc((100vw - 72rem) / 2));
   --spacing-section: clamp(6rem, 4rem + 6vw, 9rem);
   --container-measure: 36rem;
   --container-wide: 52rem;
@@ -129,6 +198,9 @@ h3 {
   .split-side {
     grid-column: 1;
     padding-right: 2.5rem;
+    /* Next to the text it describes, not at the screen's edge. */
+    justify-self: end;
+    width: min(100%, 16rem);
     position: sticky;
     top: 2rem;
     align-self: start;
@@ -299,13 +371,16 @@ footer a:hover,
 .intro-grid > :first-child {
   max-width: var(--container-measure);
 }
-.intro-shot img {
-  background: var(--surface);
+.intro-statement {
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  max-width: 34rem;
 }
 @media (min-width: 64rem) {
   .intro-grid {
-    grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
-    gap: 4rem;
+    grid-template-columns: minmax(0, 34rem) minmax(0, 24rem);
+    gap: 5rem;
   }
 }
 .proof {
@@ -339,6 +414,8 @@ footer a:hover,
   margin-top: 3rem;
   display: grid;
   gap: 1.5rem;
+  /* Capped so the blocks do not stretch across very wide monitors. */
+  max-width: 72rem;
 }
 /* Each project is one filled block, so it is clear where a project starts and ends. */
 .work-row {
@@ -363,14 +440,12 @@ footer a:hover,
 .work-visual {
   display: block;
 }
+/* The strongest fact sits straight on the project's block: no box inside the box. */
 .tile {
   display: grid;
-  align-content: end;
+  align-content: center;
   gap: 0.75rem;
-  min-height: 15rem;
   height: 100%;
-  padding: 1.75rem;
-  background: var(--paper);
 }
 .tile-value {
   font-size: clamp(2.75rem, 1rem + 5vw, 5.5rem);
@@ -385,13 +460,6 @@ footer a:hover,
     grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
     gap: 4rem;
     align-items: stretch;
-  }
-  /* Alternate sides so the list does not read as a stack of identical rows. */
-  .work-row:nth-child(even) .work-visual {
-    order: -1;
-  }
-  .work-row:nth-child(even) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
   }
 }
 

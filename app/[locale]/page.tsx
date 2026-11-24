@@ -9,23 +9,22 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const site = getSite(locale);
-  const lead = projects[0];
 
   return (
     <>
       <Header locale={locale} switchPath={`/${otherLocale(locale)}`} />
       <main id="main">
-        {/* Intro: the name set large, then who/what/where beside the first project's live site. */}
+        {/* Intro: the presentation first. Name, role, what I do, then where, how to reach me and the reading length. */}
         <section className="col intro" aria-labelledby="intro-title">
           <h1 id="intro-title" className="intro-name rise">
             {site.name}
             <span className="intro-role">{site.role}</span>
           </h1>
           <div className="intro-grid">
-            <div className="rise rise-2">
-              <p className="text-lead">{site.hero.statement}</p>
-              <p className="mt-5">{site.hero.location}</p>
-              <p className="text-soft">{site.hero.education}</p>
+            <p className="intro-statement rise rise-2">{site.hero.statement}</p>
+            <div className="rise rise-3">
+              <p>{site.hero.location}</p>
+              <p className="mt-2 text-soft">{site.hero.education}</p>
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <a href="#work" className="button">
                   {site.hero.primary}
@@ -51,23 +50,6 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                 </div>
               </fieldset>
             </div>
-            {lead.cover && (
-              <figure className="intro-shot rise rise-3">
-                <Image
-                  src={lead.cover[locale].src}
-                  alt={lead.cover[locale].alt}
-                  priority
-                  sizes="(min-width: 64rem) 50vw, 100vw"
-                  className="h-auto w-full"
-                />
-                <figcaption>
-                  {lead.text[locale].title} · {site.kinds[lead.kind]} ·{" "}
-                  <a href={lead.links.live} className="link">
-                    {lead.links.live?.replace(/^https:\/\/(www\.)?/, "")}
-                  </a>
-                </figcaption>
-              </figure>
-            )}
           </div>
           <ul className="proof">
             {site.hero.proof.map((p) => (

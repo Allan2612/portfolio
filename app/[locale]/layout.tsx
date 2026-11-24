@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { STIX_Two_Text } from "next/font/google";
 import { getSite, isLocale, locales } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
+import { themeScript } from "@/lib/theme";
 import "../globals.css";
 
 // Self-hosted at build time by next/font, so the CSP can keep font-src 'self'.
@@ -33,7 +34,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
 
   return (
-    <html lang={isLocale(locale) ? locale : "en"} className={stix.variable}>
+    // suppressHydrationWarning: themeScript may set data-theme on <html> before React hydrates.
+    <html lang={isLocale(locale) ? locale : "en"} className={stix.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );
