@@ -5,6 +5,8 @@ import tytHomeEn from "./images/tyt/home-en.webp";
 import tytHomeEnDark from "./images/tyt/home-en-dark.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
 import tytHomeEsDark from "./images/tyt/home-es-dark.webp";
+import agujaSale from "./images/aguja/sale.webp";
+import agujaSaleDark from "./images/aguja/sale-dark.webp";
 import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
@@ -180,6 +182,18 @@ export const projects: Project[] = [
     stack: ["Odoo 17", "Python", "XML/QWeb", "PostgreSQL", "Docker Compose (development)", "Ubuntu", "Nginx", "Let’s Encrypt", "DigitalOcean"],
     cardStack: ["Odoo 17", "Python", "PostgreSQL", "Nginx"],
     links: { live: "https://agujadeoro.org" },
+    cover: {
+      en: { src: agujaSale, dark: agujaSaleDark, alt: "A sale in the La Aguja de Oro system, in Spanish: a sewing machine and thread with tax per line, the sale status bar and the totals. Test data." },
+      es: { src: agujaSale, dark: agujaSaleDark, alt: "Una venta en el sistema de La Aguja de Oro: una máquina de coser e hilo con el IVA por línea, la barra de estados de la venta y los totales. Datos de prueba." },
+    },
+    thumb: {
+      src: agujaSale,
+      dark: agujaSaleDark,
+      alt: {
+        en: "A sale in the La Aguja de Oro system: products with tax per line, the sale status bar and the totals.",
+        es: "Una venta en el sistema de La Aguja de Oro: productos con el IVA por línea, la barra de estados de la venta y los totales.",
+      },
+    },
     text: {
       en: {
         title: "La Aguja de Oro",
