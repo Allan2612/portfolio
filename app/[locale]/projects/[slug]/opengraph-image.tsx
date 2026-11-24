@@ -3,9 +3,11 @@ import { ogImage, ogSize } from "@/components/og";
 import { getProject, projects } from "@/content/projects";
 import { getSite, isLocale } from "@/lib/i18n";
 
-export const size = ogSize;
-export const contentType = "image/png";
-export const alt = "Case study by Allan Vargas Torres";
+export function generateImageMetadata({ params }: { params: { locale: string; slug: string } }) {
+  const project = getProject(params.slug);
+  const alt = isLocale(params.locale) && project ? `${project.text[params.locale].title} · ${getSite(params.locale).name}` : "";
+  return [{ id: "card", alt, size: ogSize, contentType: "image/png" }];
+}
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));

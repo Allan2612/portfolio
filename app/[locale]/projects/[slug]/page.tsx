@@ -3,9 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer, Header } from "@/components/chrome";
+import { JsonLd, person } from "@/components/json-ld";
 import { getProject, projects } from "@/content/projects";
 import { caseOutline } from "@/lib/case-outline";
-import { formatPeriod, getSite, isLocale, otherLocale } from "@/lib/i18n";
+import { formatPeriod, getSite, isLocale, ogLocale, otherLocale } from "@/lib/i18n";
+import { siteUrl } from "@/lib/site-url";
 
 // Nested under [locale]: called once per locale. With cacheComponents there is no dynamicParams;
 // unknown slugs fall through to notFound() below.
@@ -26,7 +28,14 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projects
       canonical: `/${locale}${path}`,
       languages: { en: `/en${path}`, es: `/es${path}`, "x-default": `/en${path}` },
     },
-    openGraph: { title: t.title, description: t.summary, type: "article" },
+    openGraph: {
+      title: t.title,
+      description: t.summary,
+      locale: ogLocale[locale],
+      alternateLocale: ogLocale[otherLocale(locale)],
+      siteName: getSite(locale).name,
+      type: "article",
+    },
   };
 }
 
@@ -46,6 +55,16 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@type": "Article",
+          headline: t.title,
+          description: t.summary,
+          inLanguage: locale,
+          url: `${siteUrl}/${locale}/projects/${slug}`,
+          author: person(locale),
+        }}
+      />
       <Header locale={locale} switchPath={`/${otherLocale(locale)}/projects/${slug}`} />
       {/* Reading progress for a long case study (scroll-driven CSS; absent where unsupported). */}
       <div className="read-progress" aria-hidden="true" />

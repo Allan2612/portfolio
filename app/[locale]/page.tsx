@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { type CSSProperties, Fragment } from "react";
 import { Footer, Header } from "@/components/chrome";
 import { CopyEmail } from "@/components/copy-email";
+import { JsonLd, person } from "@/components/json-ld";
 import { LocalTime } from "@/components/local-time";
 import { TechChip } from "@/components/tech-chip";
 import { projects } from "@/content/projects";
@@ -19,6 +20,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
+      <JsonLd data={{ "@type": "ProfilePage", inLanguage: locale, mainEntity: person(locale) }} />
       <Header locale={locale} switchPath={`/${otherLocale(locale)}`} home />
       <main id="main">
         {/* Intro: the presentation first. The name rises word by word from behind its baseline (the signature move). */}
