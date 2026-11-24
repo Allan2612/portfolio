@@ -13,6 +13,7 @@ import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
 import InvoicingEs from "./projects/e-invoicing.es.mdx";
+import mikuPanel from "./images/miku/panel.webp";
 import MikuEn from "./projects/miku.en.mdx";
 import MikuEs from "./projects/miku.es.mdx";
 import RuticaEn from "./projects/rutica.en.mdx";
@@ -232,6 +233,13 @@ export const projects: Project[] = [
     stack: ["Tauri v2", "TypeScript", "Vite", "PixiJS (Live2D)", "Python (asyncio)", "WebSocket", "Whisper", "Gemini", "edge-tts", "RVC"],
     cardStack: ["Tauri", "TypeScript", "Python asyncio"],
     links: { repo: "https://github.com/Allan2612/miku-assistant" },
+    thumb: {
+      src: mikuPanel,
+      alt: {
+        en: "Miku Assistant's control panel: Miku on and waiting, the state of each part and the day's requests.",
+        es: "El panel de control de Miku Assistant: Miku encendida y esperando, el estado de cada pieza y las peticiones del día.",
+      },
+    },
     text: {
       en: {
         title: "Miku Assistant",

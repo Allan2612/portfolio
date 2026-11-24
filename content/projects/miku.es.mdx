@@ -1,3 +1,6 @@
+import panel from "../images/miku/panel.webp";
+import avatar from "../images/miku/avatar.webp";
+
 ## Contexto
 
 Miku Assistant es un asistente de voz para Windows, con un personaje animado que vive en el escritorio. Se llama con un atajo de teclado o una palabra clave y se le habla: abre aplicaciones, cambia de ventana y de pestaña, controla la música y el volumen, pone temporizadores y recordatorios, toma notas y responde preguntas. Antes de hacer algo destructivo, pregunta.
@@ -11,6 +14,12 @@ Lo construí por mi cuenta como proyecto de código abierto, con dos metas: resp
 - **La voz propia del personaje**, convertida en la GPU solo mientras hace falta; en reposo, la memoria de video vuelve a cero.
 - **Seguridad desde el diseño:** el asistente solo puede usar una lista cerrada de herramientas, nunca ejecuta comandos arbitrarios y pregunta antes de cualquier acción destructiva.
 - **Una extensión de navegador opcional** para que sepa qué pestañas hay abiertas y pueda actuar sobre ellas.
+
+<FigurePair
+  wide={{ src: panel, alt: "Panel de control de Miku Assistant: Miku encendida y esperando su palabra clave, el estado de cada pieza (backend, voz en la GPU, palabra clave, extensión del navegador, Gemini) y las peticiones del día, marcadas como locales o de Gemini." }}
+  narrow={{ src: avatar, alt: "Miku en el escritorio, en su ventana transparente, con el subtítulo de su respuesta encima: un temporizador puesto." }}
+  caption="El launcher, un panel de control con el estado de cada pieza y las peticiones del día, y Miku en el escritorio con su respuesta como subtítulo. Estado y peticiones de ejemplo."
+/>
 
 <PhotoSlot>Un video corto o GIF del asistente funcionando: la activación, la respuesta hablada con subtítulos y una acción en la PC.</PhotoSlot>
 
