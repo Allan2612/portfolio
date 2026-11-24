@@ -17,7 +17,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         {/* Intro: the presentation first. Name, role, what I do, then where, how to reach me and the reading length. */}
         <section className="col intro" aria-labelledby="intro-title">
           <h1 id="intro-title" className="intro-name rise">
-            {site.name}
+            <span translate="no">{site.name}</span>
             <span className="intro-role">{site.role}</span>
           </h1>
           <div className="intro-grid">
@@ -70,7 +70,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                 <li key={p.slug} className="work-row">
                   <div className="work-text">
                     <h3 className="work-title">
-                      <Link href={href}>{t.title}</Link>
+                      <Link href={href} translate="no">{t.title}</Link>
                     </h3>
                     <p className="text-small text-soft">
                       {site.kinds[p.kind]} · {formatPeriod(p.start, p.end, locale)}
@@ -170,7 +170,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           <ul className="more mt-10">
             {site.more.items.map((m) => (
               <li key={m.name}>
-                <h3 className="text-lead">{m.name}</h3>
+                <h3 className="text-lead" translate="no">{m.name}</h3>
                 <p className="mt-2">{m.short}</p>
                 <p className="detail mt-2">{m.text}</p>
                 {m.href && (

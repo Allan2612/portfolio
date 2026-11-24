@@ -18,7 +18,7 @@ Dos procesos se comunican por un WebSocket local, más un proceso de GPU para la
   steps={[
     ["Aplicación · Tauri y TypeScript", "Avatar Live2D, sincronización de labios y subtítulos"],
     ["Núcleo · Python asyncio", "Palabra clave, Whisper en la CPU, el agente de Gemini y la lista cerrada de herramientas"],
-    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
+    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
   ]}
   caption="La aplicación y el núcleo se comunican por un WebSocket local; el núcleo arranca y detiene el proceso de voz."
 />
@@ -41,11 +41,11 @@ En Windows, inicializar CUDA deja unos cientos de megabytes residentes que nunca
 
 ### Una lista cerrada de herramientas
 
-El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Esa es la defensa contra el *prompt injection*: si una página web le dice al asistente que "cierre todo", lo peor que puede hacer es preguntar.
+El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Esa es la defensa contra el *prompt injection*: si una página web le dice al asistente que “cierre todo”, lo peor que puede hacer es preguntar.
 
 ### Ventanas y pestañas como objetos numerados
 
-El modelo ve una lista numerada de lo que está abierto y actúa sobre un número concreto, en lugar de adivinar por el título o simular teclas. "Cierra la segunda pestaña" se vuelve una llamada precisa, no un atajo frágil.
+El modelo ve una lista numerada de lo que está abierto y actúa sobre un número concreto, en lugar de adivinar por el título o simular teclas. “Cierra la segunda pestaña” se vuelve una llamada precisa, no un atajo frágil.
 
 ### Solo las órdenes inequívocas se saltan el modelo
 
@@ -62,7 +62,7 @@ La aplicación es TypeScript puro con Vite. El WebView ya consume memoria; un fr
 ## Resultado
 
 - **Diseñado para responder en menos de 3 segundos** desde la activación, cargando la voz mientras el usuario todavía habla.
-- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
+- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
 - Código abierto con licencia MIT, con notas de arquitectura, referencia de herramientas, registro de cambios y su propio plan de auditoría.
 
 ## Lo que sigue

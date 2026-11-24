@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { STIX_Two_Text } from "next/font/google";
 import { getSite, isLocale, locales } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
@@ -7,6 +7,14 @@ import "../globals.css";
 
 // Self-hosted at build time by next/font, so the CSP can keep font-src 'self'.
 const stix = STIX_Two_Text({ subsets: ["latin", "latin-ext"], style: ["normal", "italic"], variable: "--font-stix" });
+
+// Browser chrome on phones matches the page ground (follows the system; the manual toggle cannot change it statically).
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e8e8e3" },
+    { media: "(prefers-color-scheme: dark)", color: "#121212" },
+  ],
+};
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

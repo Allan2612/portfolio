@@ -147,10 +147,10 @@ export const projects: Project[] = [
         team: "Solo",
         keyPoints: [
           "Designed to answer in under 3 seconds",
-          "0 MB of GPU memory in use while idle",
+          "0 MB of GPU memory in use while idle",
           "A closed list of tools, with confirmation for anything destructive",
         ],
-        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
+        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
       },
       es: {
         title: "Miku Assistant",
@@ -159,10 +159,10 @@ export const projects: Project[] = [
         team: "Individual",
         keyPoints: [
           "Diseñado para responder en menos de 3 segundos",
-          "0 MB de memoria de GPU en uso en reposo",
+          "0 MB de memoria de GPU en uso en reposo",
           "Una lista cerrada de herramientas, con confirmación para todo lo destructivo",
         ],
-        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
+        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
       },
     },
     body: { en: MikuEn, es: MikuEs },

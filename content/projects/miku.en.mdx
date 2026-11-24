@@ -18,7 +18,7 @@ Two processes talk over a local WebSocket, plus a GPU worker for the voice and a
   steps={[
     ["App · Tauri and TypeScript", "Live2D avatar, lip sync and subtitles"],
     ["Core · Python asyncio", "Wake word, Whisper on the CPU, the Gemini agent and the closed tool list"],
-    ["Voice worker · GPU", "Exists only while it is needed; killed when idle, back to 0 MB of video memory"],
+    ["Voice worker · GPU", "Exists only while it is needed; killed when idle, back to 0 MB of video memory"],
   ]}
   caption="The app and the core talk over a local WebSocket; the core starts and stops the voice worker."
 />
@@ -41,11 +41,11 @@ On Windows, initializing CUDA leaves a few hundred megabytes resident that are n
 
 ### A closed list of tools
 
-The model can only call tools from a registered list: apps, windows, files, media, notes, memory, routines, system settings, timers and the web. It never runs arbitrary shell commands, and anything destructive needs the user's confirmation. That is the defense against prompt injection: if a web page tells the assistant to "close everything", the worst it can do is ask.
+The model can only call tools from a registered list: apps, windows, files, media, notes, memory, routines, system settings, timers and the web. It never runs arbitrary shell commands, and anything destructive needs the user's confirmation. That is the defense against prompt injection: if a web page tells the assistant to “close everything”, the worst it can do is ask.
 
 ### Windows and tabs as numbered objects
 
-The model sees a numbered list of what is open and acts on a specific number, instead of guessing from a title or simulating key presses. "Close the second tab" becomes a precise call, not a fragile shortcut.
+The model sees a numbered list of what is open and acts on a specific number, instead of guessing from a title or simulating key presses. “Close the second tab” becomes a precise call, not a fragile shortcut.
 
 ### Only unambiguous commands skip the model
 
@@ -62,7 +62,7 @@ The app is plain TypeScript with Vite. The WebView already costs memory; a UI fr
 ## Result
 
 - **Designed to respond in under 3 seconds** after activation, by loading the voice while the user is still speaking.
-- **Releases the GPU when idle**: 0 MB of video memory, with the voice back in a few seconds when needed.
+- **Releases the GPU when idle**: 0 MB of video memory, with the voice back in a few seconds when needed.
 - Open source under the MIT license, with architecture notes, a tool reference, a changelog and its own audit plan.
 
 ## Next
