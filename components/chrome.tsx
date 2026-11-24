@@ -52,7 +52,8 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="col grid gap-2 pt-section pb-24 text-small text-soft md:grid-cols-[1fr_auto_1fr] md:items-baseline">
       {/* Fixed in place; appears once the page title has scrolled away (html.past-intro, components/motion.tsx). */}
-      <a href="#main" className="icon-button to-top" aria-label={site.nav.top} title={site.nav.top}>
+      <a href="#main" className="icon-button to-top" title={site.nav.top}>
+        <span className="sr-only">{site.nav.top}</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>

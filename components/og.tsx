@@ -32,3 +32,4 @@ export function ogImage({ title, text, label, footer }: { title: string; text: s
     ogSize,
   );
 }
+

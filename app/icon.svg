@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -724 786 786">
+<!-- The "A" of STIX Two Text Bold (SIL Open Font License), the site typeface; ink on light tabs, paper on dark ones. -->
+<style>path{fill:#181715}@media (prefers-color-scheme:dark){path{fill:#e8e8e3}}</style>
+<path transform="scale(1 -1)" d="M2 0V43Q21 43 35.0 47.0Q49 51 60.0 62.0Q71 73 81.0 91.5Q91 110 103 140L320 662H425L641 138Q661 90 683.0 66.5Q705 43 740 43V0H419V43Q428 43 438.5 44.0Q449 45 458.0 48.0Q467 51 472.5 57.5Q478 64 478 75Q478 86 472.0 108.0Q466 130 458 151L435 211H205L176 138Q171 125 166.5 109.0Q162 93 162 80Q162 56 177.0 49.5Q192 43 230 43V0ZM223 263H417L328 512H324Z"/>
+</svg>
