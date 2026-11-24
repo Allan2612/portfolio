@@ -1,10 +1,109 @@
 @import "tailwindcss";
 
-/* Design tokens arrive in Phase 2 (visual direction). Until then: system colors, light and dark. */
+/*
+ * Design tokens. Direction "quiet instrument": one serif family, paper and ink, a brass accent used
+ * on one element per screen, a narrow column that starts left of centre, and space instead of lines.
+ * Components use these tokens only (Tailwind utilities such as bg-paper, text-soft, text-lead).
+ * Light and dark follow the system setting; there is no theme toggle (no client JavaScript).
+ */
+
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
+  --paper: #e8e8e3;
+  --surface: #dcdcd6;
+  --surface-2: #cfcfc8;
+  --ink: #181715;
+  --soft: #63625c;
+  /* Brass is a fill with ink on top; as text on paper it fails contrast, so never use it for text in light mode. */
+  --accent: #bfb21a;
+  --accent-ink: #181715;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #161614;
+    --surface: #201f1c;
+    --surface-2: #2a2925;
+    --ink: #e8e8e3;
+    --soft: #a3a29a;
+    --accent: #cfc23a;
+    --accent-ink: #161614;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-soft: var(--soft);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+
+  --font-serif: var(--font-stix), ui-serif, Georgia, "Times New Roman", serif;
+}
+
+@theme {
+  /* Four type steps, fluid between a 360px phone and a 1440px desktop. Body never drops below 16px. */
+  --text-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --text-small--line-height: 1.45;
+  --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-body--line-height: 1.5;
+  --text-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-lead--line-height: 1.35;
+  --text-head: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+  --text-head--line-height: 1.12;
+  --text-head--letter-spacing: -0.026em;
+
+  /* Layout: one column that starts at ~22% of the viewport on wide screens and at the margin on phones. */
+  --spacing-gutter: clamp(1.25rem, 4vw, 3rem);
+  /* Left edge of the column, from the page edge: the gutter on phones, about 22% of the width on desktops. */
+  --spacing-inset: max(clamp(1.25rem, 4vw, 3rem), calc(22vw - 4rem));
+  --spacing-section: clamp(6rem, 4rem + 6vw, 9rem);
+  --container-measure: 36rem;
+  --container-wide: 52rem;
+
+  --radius-none: 0;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

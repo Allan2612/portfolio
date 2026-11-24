@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import { STIX_Two_Text } from "next/font/google";
 import { notFound } from "next/navigation";
 import { getSite, isLocale, locales } from "@/lib/i18n";
 import "../globals.css";
+
+// Self-hosted at build time by next/font, so the CSP can keep font-src 'self'.
+const stix = STIX_Two_Text({ subsets: ["latin", "latin-ext"], style: ["normal", "italic"], variable: "--font-stix" });
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -23,7 +27,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={stix.variable}>
       <body>{children}</body>
     </html>
   );
