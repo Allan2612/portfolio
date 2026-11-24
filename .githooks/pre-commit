@@ -1,0 +1,4 @@
+#!/bin/sh
+# Blocks the commit if a staged file contains a banned term (private list, see README).
+# It runs before the commit, not only in CI: in a public repo, history is forever.
+exec node scripts/banned-terms.mjs --staged
