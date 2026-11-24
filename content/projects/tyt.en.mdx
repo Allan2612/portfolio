@@ -7,7 +7,7 @@ TyT Tecnología repairs computers, installs security cameras and sells equipment
 
 Three constraints shaped the project:
 
-- **People buy over WhatsApp.** The shop's customers already close every sale in a chat, so the site had to hand them over to WhatsApp, not replace it with a payment gateway.
+- **People buy over WhatsApp.** The shop’s customers already close every sale in a chat, so the site had to hand them over to WhatsApp, not replace it with a payment gateway.
 - **The owners keep it up to date.** Products, prices, photos, services and promotions change often, and none of that could depend on a developer.
 - **Prices in colones, with a dollar reference.** Equipment is often priced against the dollar, so the site shows both, with an exchange rate that updates itself.
 
@@ -28,7 +28,7 @@ Three constraints shaped the project:
 
 The domain defines interfaces and knows nothing about the database or outside services. WhatsApp, file storage and the exchange-rate source are adapters behind those interfaces.
 
-That paid off when product images moved from Vercel Blob to Cloudflare R2: the change was **one new adapter**, with no edits to the business logic.
+That paid off when product images moved from Vercel Blob to Cloudflare R2: the code change was **one new adapter**, with no edits to the business logic, plus a one-off copy of the existing images.
 
 <PortsDiagram
   label="Ports and adapters in the TyT application"
@@ -47,10 +47,10 @@ That paid off when product images moved from Vercel Blob to Cloudflare R2: the c
 
 The shop had a logo and nothing else: no professional photography, no illustrations, no brand guide. Stock photos would have made it look like any other store, so the design is built from what the brand does have:
 
-- **The home hero is built from TyT's own isotype**, and its shapes carry down the whole home page instead of a generic banner image.
+- **The home hero is built from TyT’s own isotype**, and its shapes carry down the whole home page instead of a generic banner image.
 - **The workshop ticket as the design language.** Product, service and contact cards look like repair tickets, with a reference code and a tear-off cut, and product specs read like a data sheet.
 - **A type system instead of imagery:** an expanded typeface for headings, a neutral one for body text and a monospace for workshop data such as codes, specs and labels, on a dark palette where one color is reserved for actions and another for status.
-- **Consistent product photos:** AI puts the shop's own photos on the same studio background (see the next section), so the catalog looks like one collection.
+- **Consistent product photos:** AI puts the shop’s own photos on the same studio background (see the next section), so the catalog looks like one collection.
 
 <FigurePair
   wide={{ src: services, alt: "TyT services page in Spanish: a large heading, filters by area and service cards with photos." }}
@@ -82,11 +82,11 @@ Every admin screen and every server action checks the administrator role itself.
 
 ## Result
 
-- **Live at [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingual, on the shop's own domain.
+- **Live at [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingual, on the shop’s own domain.
 - Built so the owners manage the catalog, services and promotions from the dashboard, without a developer.
 - 19 data models and 119 test files, by one developer, in about five months.
 - The app is containerized, and a move to self-managed infrastructure to lower hosting costs is in progress.
 
 ## What I took from it
 
-The hardest part was not the code: it was making a small shop look established with no professional assets, just a logo and a clear idea of how the workshop works. A design system built from the brand's own shapes and type held up better than stock images would have, and it scales as the catalog grows.
+The hardest part was not the code: it was making a small shop look established with no professional assets, just a logo and a clear idea of how the workshop works. A design system built from the brand’s own shapes and type held up better than stock images would have, and it scales as the catalog grows.

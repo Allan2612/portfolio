@@ -13,8 +13,8 @@ Tres condiciones definieron el proyecto:
 
 ## Qué construí
 
-- **Sitio público en español e inglés:** una página de servicios con una página por servicio, catálogo con filtros y páginas por categoría, fichas de producto, casos de éxito, contacto con mapa y páginas legales.
-- **Carrito con checkout por WhatsApp.** El carrito vive en el navegador y, cuando el cliente inicia sesión, en su cuenta; los dos se combinan sin perder artículos. Al finalizar, el carrito se convierte en un mensaje de WhatsApp para el taller.
+- **Sitio público en español e inglés:** una portada de servicios con una página para cada uno, catálogo con filtros y páginas por categoría, fichas de producto, casos de éxito, contacto con mapa y páginas legales.
+- **Carrito con cierre del pedido por WhatsApp.** El carrito vive en el navegador y, cuando el cliente inicia sesión, en su cuenta; los dos se combinan sin perder artículos. Al finalizar, el carrito se convierte en un mensaje de WhatsApp para el taller.
 - **Cuentas de cliente** con consultas en forma de conversación, para que el cliente elija entre la web y WhatsApp.
 - **Panel de administración** para productos y fotos, servicios, categorías, casos de éxito, consultas y configuración del sitio (número de WhatsApp, horario, ubicación y redes), para que nada de lo que los dueños necesitan cambiar quede fijo en el código.
 - **Tipo de cambio diario:** una tarea programada lo actualiza, y cada precio se muestra en colones con su referencia en dólares.
@@ -28,7 +28,7 @@ Tres condiciones definieron el proyecto:
 
 El dominio define interfaces y no conoce ni la base de datos ni los servicios externos. WhatsApp, el almacenamiento de archivos y la fuente del tipo de cambio son adaptadores detrás de esas interfaces.
 
-Eso rindió cuando las imágenes de los productos pasaron de Vercel Blob a Cloudflare R2: el cambio fue **un adaptador nuevo**, sin tocar la lógica del negocio.
+Eso rindió cuando las imágenes de los productos pasaron de Vercel Blob a Cloudflare R2: el cambio de código fue **un adaptador nuevo**, sin tocar la lógica del negocio, más una copia única de las imágenes que ya existían.
 
 <PortsDiagram
   label="Puertos y adaptadores en la aplicación de TyT"
@@ -36,7 +36,7 @@ Eso rindió cuando las imágenes de los productos pasaron de Vercel Blob a Cloud
   coreNote="Catálogo, carrito, promociones y consultas. Solo conoce interfaces."
   rows={[
     ["Almacenamiento de archivos", "Cloudflare R2", "Reemplazó a Vercel Blob cambiando este adaptador"],
-    ["Checkout", "Mensaje de WhatsApp", null],
+    ["Cierre del pedido", "Mensaje de WhatsApp", null],
     ["Tipo de cambio", "Fuente diaria del tipo de cambio", null],
     ["Datos", "Prisma y PostgreSQL", null],
   ]}
@@ -60,12 +60,12 @@ El taller tenía un logo y nada más: ni fotografía profesional, ni ilustracion
 
 ### La IA propone, una persona aprueba
 
-Las promociones son donde la IA más ayuda y donde más daño puede hacer, porque un precio equivocado en un flyer es una promesa a un cliente. Por eso el flujo reparte el trabajo:
+Las promociones son donde la IA más ayuda y donde más daño puede hacer, porque un precio equivocado en un volante es una promesa a un cliente. Por eso el flujo reparte el trabajo:
 
 1. El administrador elige un producto.
 2. Gemini prepara fotos con fondo de estudio y el texto de la promoción.
 3. El administrador revisa **foto por foto** y aprueba o descarta cada una.
-4. **El flyer lo dibuja el código**, en 4:5 y 9:16 para redes, con el precio y los datos tomados de la base de datos.
+4. **El volante lo dibuja el código**, en 4:5 y 9:16 para redes, con el precio y los datos tomados de la base de datos.
 
 Nada se publica sin aprobación, y el modelo nunca escribe un precio.
 
@@ -77,8 +77,8 @@ Cada pantalla y cada acción del servidor del panel verifica por sí misma el ro
 
 - **119 archivos de pruebas**: 105 unitarios con Vitest y 14 end-to-end con Playwright, unas 635 pruebas.
 - CI en cada push: lint, formato, pruebas, build y end-to-end.
-- `develop` para el trabajo diario y `main` para las versiones, unidas por pull request, con un despliegue de prueba para cada rama.
-- Notas de traspaso, un roadmap y una lista de verificación para cada despliegue, para que otra persona pueda retomar el proyecto.
+- `develop` para el trabajo diario y `main` para las versiones, integradas mediante pull requests, con un despliegue de prueba por rama.
+- Notas de traspaso, una hoja de ruta y una lista de verificación para cada despliegue, para que otra persona pueda retomar el proyecto.
 
 ## Resultado
 

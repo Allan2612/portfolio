@@ -23,9 +23,9 @@ type Text = {
   summary: string;
   role: string;
   team: string;
-  /** Three short points: the case study's "In short" box and the home page's 5-minute mode. */
+  /** Three short points: the case study’s "In short" box and the home page’s 5-minute mode. */
   keyPoints: [string, string, string];
-  /** The project's strongest fact, set large on the home page when there is no screenshot. */
+  /** The project’s strongest fact, set large on the home page when there is no screenshot. */
   highlight: { value: string; label: string };
 };
 
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     cardStack: ["Next.js", "Prisma", "PostgreSQL", "Playwright"],
     links: { live: "https://www.tytsoluciones.net" },
     cover: {
-      en: { src: tytHomeEn, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand's shapes." },
+      en: { src: tytHomeEn, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand’s shapes." },
       es: { src: tytHomeEs, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
     },
     thumb: {
@@ -72,7 +72,7 @@ export const projects: Project[] = [
         title: "TyT Tecnología",
         summary: "Website, product catalog and admin dashboard for a tech repair and security camera shop. Sole developer.",
         role: "Sole developer: requirements, design, development, testing, deployment and support",
-        team: "Sole developer",
+        team: "Sole developer, part-time",
         keyPoints: [
           "Sole developer, from the first requirements to deployment",
           "WhatsApp checkout and an admin dashboard the owners run themselves",
@@ -84,10 +84,10 @@ export const projects: Project[] = [
         title: "TyT Tecnología",
         summary: "Sitio web, catálogo y panel de administración para un taller de tecnología y cámaras de seguridad. Único desarrollador.",
         role: "Único desarrollador: requerimientos, diseño, desarrollo, pruebas, despliegue y soporte",
-        team: "Único desarrollador",
+        team: "Único desarrollador, tiempo parcial",
         keyPoints: [
           "Único desarrollador, desde los requerimientos hasta el despliegue",
-          "Checkout por WhatsApp y un panel que los dueños manejan solos",
+          "Pedidos por WhatsApp y un panel que los dueños manejan solos",
           "119 archivos de pruebas en CI; imágenes migradas a Cloudflare R2 cambiando un adaptador",
         ],
         highlight: { value: "119", label: "archivos de pruebas en CI, como único desarrollador" },
@@ -108,7 +108,7 @@ export const projects: Project[] = [
         title: "E-invoicing SaaS",
         summary: "Wrote the pre-launch audit of a multi-tenant e-invoicing platform and fixed all 17 findings.",
         role: "Software development intern (full stack)",
-        team: "Product team at a software company",
+        team: "Product team at Argana",
         keyPoints: [
           "Wrote the pre-launch audit and fixed all 17 findings",
           "Tenant isolation with PostgreSQL row-level security, tested on all 20 tables in CI",
@@ -120,7 +120,7 @@ export const projects: Project[] = [
         title: "SaaS de facturación electrónica",
         summary: "Auditoría previa al lanzamiento de una plataforma de facturación electrónica multiempresa, con sus 17 hallazgos corregidos.",
         role: "Practicante de desarrollo de software (full stack)",
-        team: "Equipo de producto de una empresa de software",
+        team: "Equipo de producto de Argana",
         keyPoints: [
           "Escribí la auditoría previa al lanzamiento y corregí sus 17 hallazgos",
           "Aislamiento entre empresas con RLS de PostgreSQL, probado en las 20 tablas en CI",
@@ -208,7 +208,7 @@ export const projects: Project[] = [
     kind: "live",
     start: "2024-09",
     end: null,
-    stack: ["Odoo 17", "Python", "XML/QWeb", "PostgreSQL", "Docker Compose", "Ubuntu", "Nginx", "Let's Encrypt", "DigitalOcean"],
+    stack: ["Odoo 17", "Python", "XML/QWeb", "PostgreSQL", "Docker Compose (development)", "Ubuntu", "Nginx", "Let’s Encrypt", "DigitalOcean"],
     cardStack: ["Odoo 17", "Python", "PostgreSQL", "Nginx"],
     links: { live: "https://agujadeoro.org" },
     text: {

@@ -48,7 +48,7 @@ const site = {
     items: [
       {
         role: "Software Development Intern",
-        org: "Software company",
+        org: "Argana",
         start: "2026-07",
         end: "2026-11",
         line: "Modular ERP and e-invoicing platform; university-supervised internship.",
@@ -140,7 +140,7 @@ const site = {
   contactSection: {
     heading: "Contact",
     prompt: "Open to full-time roles, remote or in Costa Rica.",
-    lead: "Let's talk.",
+    lead: "Let’s talk.",
     cvLabel: "CV (PDF)",
     cvEn: "English",
     cvEs: "Spanish",
@@ -158,7 +158,7 @@ const site = {
     private: "The code is private, so this case study describes the work instead of linking to it.",
     previous: "Previous project",
     next: "Next project",
-    cta: "Want to hear more about this project? I'm happy to walk through it in an interview.",
+    cta: "Want to hear more about this project? I’m happy to walk through it in an interview.",
     ctaButton: "Get in touch",
     back: "All projects",
     inShort: "In short",
@@ -172,7 +172,7 @@ const site = {
     phone: "Phone number available on request.",
     profileHeading: "Profile",
     profile:
-      "Information Systems Engineering student (coursework complete; graduating May 2027) and full stack developer with two client systems in production. Completed a software development internship at a software company on a modular ERP and an e-invoicing platform. Experienced in TypeScript (Next.js, NestJS, React Native) and Python, automated testing and CI.",
+      "Information Systems Engineering student (coursework complete; graduating May 2027) and full stack developer with two client systems in production. Completed a software development internship at Argana on a modular ERP and an e-invoicing platform. Experienced in TypeScript (Next.js, NestJS, React Native) and Python, automated testing and CI.",
     projectsHeading: "Projects",
     projects: [
       {
@@ -208,7 +208,7 @@ const site = {
     educationHeading: "Education",
     education: [
       {
-        title: "Bachelor's Degree in Information Systems Engineering",
+        title: "Bachelor’s Degree in Information Systems Engineering",
         place: "Universidad Nacional de Costa Rica, Brunca Regional Campus",
         when: "2021 – May 2027 (expected)",
         note: "Coursework complete. Electives: AI, Information Security, Linux Server Administration and Educational Software.",
@@ -225,7 +225,7 @@ const site = {
   },
   notFound: {
     heading: "Page not found",
-    text: "The page you're looking for doesn't exist or has moved.",
+    text: "The page you’re looking for doesn’t exist or has moved.",
     home: "Go to the home page",
     projects: "See the projects",
     cv: "Download the CV",

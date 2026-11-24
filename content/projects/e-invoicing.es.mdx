@@ -15,20 +15,20 @@ Antes del lanzamiento tenía que resistir de dos formas:
 - **Hice idempotente la emisión**: una huella por solicitud garantiza que un reintento nunca emita dos veces el mismo comprobante.
 - **Seguridad de las cuentas:** un cambio de rol ya no puede dejar a una empresa sin administrador, y los usuarios nuevos necesitan un correo confirmado y entran por un enlace de invitación en lugar de una contraseña compartida.
 - **API y webhooks:** paginación en todas las colecciones, eventos más útiles y pruebas end-to-end de las API keys.
-- **Cobro de suscripciones por SINPE:** el cliente sube el comprobante de su transferencia y el personal de la plataforma lo revisa desde un BackOffice.
-- **Un arranque limpio:** el repositorio compila y arranca desde un checkout nuevo, con datos de demostración y una cuenta por rol, y la compuerta de conformidad end-to-end corre de verdad en CI.
+- **Cobro de suscripciones por SINPE:** el cliente sube el comprobante de su transferencia y el personal de la plataforma lo revisa desde un panel interno.
+- **Un arranque limpio:** el repositorio compila y arranca desde un checkout nuevo, con datos de demostración y una cuenta por rol, y la verificación de conformidad de extremo a extremo se ejecuta de verdad en CI.
 - **Dependencias:** sin vulnerabilidades altas ni críticas conocidas al cierre de mi etapa.
 
 ## Cómo funciona ahora
 
-Tres partes de la plataforma, y por qué están construidas así.
+Tres partes de la plataforma en las que trabajé, y por qué están construidas así.
 
 <FlowDiagram
   label="Cómo avanza un comprobante en la plataforma"
   steps={[
-    ["Crear el comprobante", "Su consecutivo sale de un contador atómico, en la misma transacción"],
+    ["Crear el comprobante", "Su consecutivo sale de un contador atómico; un reintento recibe el mismo comprobante"],
     ["Firmarlo", "Firma digital XAdES-EPES"],
-    ["Enviarlo a Hacienda", "Una huella por solicitud, así un reintento nunca lo emite dos veces"],
+    ["Enviarlo a Hacienda", "Reintentos con espera creciente; el XML firmado queda en almacenamiento permanente"],
     ["Aceptado o rechazado", "¿Sin respuesta? Se consulta el estado por su clave; nunca se reenvía"],
   ]}
   caption="Cada paso corre dentro de la sesión de la propia empresa, aislada con seguridad a nivel de fila."
@@ -38,15 +38,15 @@ Tres partes de la plataforma, y por qué están construidas así.
 
 Cada comprobante necesita un consecutivo por empresa, sucursal, terminal y tipo de documento, sin saltos ni repetidos. Contar los comprobantes existentes y sumar uno falla en cuanto llegan dos solicitudes al mismo tiempo: las dos ven el mismo conteo.
 
-El número sale de una fila contadora que se bloquea y se incrementa de forma atómica, **dentro de la misma transacción que crea el comprobante**. Si el comprobante falla, la transacción se revierte y el número no se pierde.
+El número sale de una fila contadora que se bloquea y se incrementa de forma atómica, **dentro de la misma transacción que crea el comprobante**. Si el comprobante falla, la transacción se revierte y el número no se pierde. Pasé todos los consecutivos a este contador, y con eso desapareció cualquier posibilidad de que un número duplicado llegara a Hacienda.
 
 ### Cuando Hacienda no responde
 
-Cada comprobante pasa por estados explícitos, desde la firma hasta la respuesta final de Hacienda. Si Hacienda no responde a tiempo, la plataforma no vuelve a enviar el comprobante: **consulta el estado** del documento por su clave, con reintentos y espera creciente. Junto con la huella por solicitud, una falla de red nunca se convierte en un comprobante duplicado.
+Cada comprobante pasa por estados explícitos, desde la firma hasta la respuesta final de Hacienda. Si Hacienda no responde a tiempo, la plataforma no vuelve a enviar el comprobante: **consulta el estado** del documento por su clave, con reintentos y espera creciente. Construí esos reintentos y la consulta de estado, además de un proceso que rescata los comprobantes que, si nunca llega respuesta, quedarían en trámite para siempre. Y si la conexión se corta mientras se emite un comprobante, reintentar devuelve el mismo comprobante en lugar de uno nuevo.
 
 ### Aislamiento entre empresas en la base de datos
 
-El aislamiento no depende de que cada consulta recuerde un `WHERE company_id = …`. La empresa se fija en la sesión de PostgreSQL con `SET LOCAL` dentro de cada transacción, para que nunca pase a la siguiente solicitud que reutiliza la conexión del pool, y las tablas usan `FORCE ROW LEVEL SECURITY`, para que ni siquiera el dueño de la tabla se salte las políticas. Las pruebas de CI verifican las dos direcciones: cada empresa ve todos sus datos y ninguno de las demás.
+El aislamiento no depende de que cada consulta recuerde un `WHERE company_id = …`. La empresa se fija en la sesión de PostgreSQL con `SET LOCAL` dentro de cada transacción, para que nunca pase a la siguiente solicitud que reutiliza la conexión del pool, y las tablas usan `FORCE ROW LEVEL SECURITY`, para que ni siquiera el dueño de la tabla se salte las políticas. Escribí la prueba de CI que revisa cada tabla en las dos direcciones: cada empresa ve todos sus datos y ninguno de las demás.
 
 ## Resultado
 
@@ -55,4 +55,4 @@ El aislamiento no depende de que cada consulta recuerde un `WHERE company_id = �
 
 ## Qué me llevo
 
-Una auditoría vale lo que vale lo que la cierra. Cada hallazgo terminó con una corrección y una prueba que fallaría si el problema volviera, así que quien venga después no tiene que confiar en mi informe: lo puede correr.
+Una auditoría vale tanto como las correcciones que la cierran. Cada hallazgo terminó con una corrección y una prueba que fallaría si el problema volviera, así que quien venga después no tiene que confiar en mi informe: puede ejecutar las pruebas.

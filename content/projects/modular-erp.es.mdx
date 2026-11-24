@@ -8,7 +8,7 @@ El ERP es un núcleo con servicios transversales y un conjunto de módulos de ne
 
 - Convertí la norma contable en **311 requisitos verificables**, cada uno con la página y el párrafo de donde sale.
 - Revisé cada requisito contra el sistema de dos formas: **leyendo el código**, archivo por archivo, y **con el sistema en ejecución**, haciendo operaciones reales y revisando lo que quedaba en la base de datos.
-- Entregué un informe para el área contable y un **plan de trabajo organizado en paquetes**.
+- Entregué un informe para el área contable y un **plan de corrección organizado en paquetes de trabajo**.
 
 Por primera vez, el cumplimiento del sistema quedó medido requisito por requisito, con un plan para cerrar las brechas.
 
@@ -32,6 +32,10 @@ Cada regla empezó como una prueba que la enunciaba, escrita antes del código. 
 - **Revelaciones:** partes relacionadas, pasivos y activos contingentes, provisiones descontadas y cambios de política contable.
 - **Liquidación presupuestaria**, en la que el superávit libre cubre primero cualquier déficit.
 
+### Decisiones que necesitaban una contadora
+
+Varias preguntas eran para una contadora: cuándo reconocer un tipo de ingreso, a qué cuenta va cada movimiento, cómo tratar un pago adelantado. Esperar habría detenido el trabajo, así que decidí cada una con base en las fuentes oficiales, la dejé escrita con su fuente y con mi grado de confianza, y la marqué para confirmarla después con una contadora. Las cuentas viven en la configuración: si la respuesta cambia, nadie tiene que tocar el código.
+
 ## La arquitectura en la que trabajé
 
 Estas decisiones ya existían cuando llegué; mi trabajo fue construir dentro de ellas, y son buena parte de la razón por la que las reglas se podían probar de forma aislada.
@@ -54,7 +58,8 @@ Estas decisiones ya existían cuando llegué; mi trabajo fue construir dentro de
 
 - El cumplimiento del sistema frente a la norma quedó **medido con evidencia por primera vez**, con un plan para cerrar las brechas.
 - Fui el **principal contribuidor de un equipo de cinco**, sobre todo en contabilidad, activos fijos, presupuesto y tesorería.
-- **Más de 3500 pruebas** en el proyecto, todas en verde al terminar mi práctica.
+- **3528 pruebas** en el proyecto y **321 pruebas de interfaz**, todas en verde en la última corrida completa antes de terminar mi práctica.
+- Buena parte de lo que el análisis marcaba como faltante se construyó en las semanas siguientes, así que necesita una segunda pasada contra el sistema de hoy.
 - Documentación del dominio contable que el equipo usa como referencia.
 
 ## Qué me llevo
