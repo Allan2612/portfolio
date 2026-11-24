@@ -6,6 +6,12 @@ import servicesDark from "../images/tyt/services-es-dark.webp";
 import phoneHomeDark from "../images/tyt/phone-home-es-dark.webp";
 import catalogDark from "../images/tyt/catalog-es-dark.webp";
 import phoneProductDark from "../images/tyt/phone-product-es-dark.webp";
+import adminDashboard from "../images/tyt/admin-dashboard-es.webp";
+import adminDashboardDark from "../images/tyt/admin-dashboard-es-dark.webp";
+import adminPromotion from "../images/tyt/admin-promotion-es.webp";
+import adminPromotionDark from "../images/tyt/admin-promotion-es-dark.webp";
+import adminAutofill from "../images/tyt/admin-autofill-es.webp";
+import adminAutofillDark from "../images/tyt/admin-autofill-es-dark.webp";
 
 ## Contexto
 
@@ -39,7 +45,10 @@ Tres condiciones del negocio marcaron cada decisión:
   caption="La página de servicios en una computadora y el inicio en un celular."
 />
 
-<PhotoSlot>El panel de administración (editor de productos o revisión de promociones), cuando TyT dé el permiso por escrito.</PhotoSlot>
+<Figure
+  image={{ src: adminDashboard, dark: adminDashboardDark, alt: "Panel de administración de TyT en español: productos publicados, servicios activos, consultas abiertas y destacados, una lista de lo que requiere atención y las últimas consultas." }}
+  caption="El panel de administración: lo publicado, lo que espera respuesta y lo que conviene revisar. Datos de prueba."
+/>
 
 ## Resultado
 
@@ -91,7 +100,17 @@ Las promociones son donde la IA más ayuda y donde más daño puede hacer, porqu
 3. El administrador revisa **foto por foto** y aprueba o descarta cada una.
 4. **El volante lo dibuja el código**, en 4:5 y 9:16 para redes, con el precio y los datos tomados de la base de datos.
 
+<Figure
+  image={{ src: adminPromotion, dark: adminPromotionDark, alt: "Revisión de una promoción de TyT: dos fotos del producto, cada una con la opción Original o Con IA, junto al volante 4:5 para redes con el nombre, las especificaciones y el precio." }}
+  caption="Revisión de una promoción: cada foto se elige una por una, original o con IA, junto al volante que dibuja el código. Datos de prueba."
+/>
+
 Nada se publica sin aprobación, y el modelo nunca escribe un precio. La misma idea guía la carga de productos: el administrador pega la ficha de otra tienda y Gemini llena el formulario para que lo revise.
+
+<Figure
+  image={{ src: adminAutofill, dark: adminAutofillDark, alt: "Formulario de producto nuevo en el panel de TyT: un recuadro Autocompletar con IA para pegar la ficha de otra tienda, sobre los datos básicos en español e inglés." }}
+  caption="Autocompletar con IA: se pega la ficha de otra tienda y el formulario se llena solo, para que el administrador lo revise antes de guardar."
+/>
 
 ### Autorización en cada acción
 

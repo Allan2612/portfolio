@@ -6,6 +6,12 @@ import servicesDark from "../images/tyt/services-en-dark.webp";
 import phoneHomeDark from "../images/tyt/phone-home-en-dark.webp";
 import catalogDark from "../images/tyt/catalog-en-dark.webp";
 import phoneProductDark from "../images/tyt/phone-product-en-dark.webp";
+import adminDashboard from "../images/tyt/admin-dashboard-en.webp";
+import adminDashboardDark from "../images/tyt/admin-dashboard-en-dark.webp";
+import adminPromotion from "../images/tyt/admin-promotion-en.webp";
+import adminPromotionDark from "../images/tyt/admin-promotion-en-dark.webp";
+import adminAutofill from "../images/tyt/admin-autofill-en.webp";
+import adminAutofillDark from "../images/tyt/admin-autofill-en-dark.webp";
 
 ## Context
 
@@ -39,7 +45,10 @@ Three facts about the business shaped every decision:
   caption="The services page on a desktop, and the home page on a phone."
 />
 
-<PhotoSlot>The admin dashboard (product editor or promotion review), once TyT gives written permission.</PhotoSlot>
+<Figure
+  image={{ src: adminDashboard, dark: adminDashboardDark, alt: "TyT admin dashboard in English: published products, active services, open inquiries and featured slots, a list of what needs attention and the latest inquiries." }}
+  caption="The admin dashboard: what is published, what is waiting for an answer and what needs a look. Test data."
+/>
 
 ## Result
 
@@ -91,7 +100,17 @@ Promotions are where AI helps the most and can hurt the most, because a wrong pr
 3. The admin reviews **photo by photo** and approves or discards each one.
 4. **The code draws the flyer**, in 4:5 and 9:16 for social media, with the price and details taken from the database.
 
+<Figure
+  image={{ src: adminPromotion, dark: adminPromotionDark, alt: "Reviewing a TyT promotion: two product photos, each with an Original or With AI choice, next to the 4:5 social flyer with the product name, specs and price." }}
+  caption="Reviewing a promotion: each photo is chosen one by one, original or with AI, next to the flyer the code draws. Test data."
+/>
+
 Nothing is published without approval, and the model never writes a price. The same idea runs product entry: the admin pastes a product sheet from another store, and Gemini fills in the form for review.
+
+<Figure
+  image={{ src: adminAutofill, dark: adminAutofillDark, alt: "The new-product form in the TyT admin: an Autofill with AI box to paste a product sheet, above the basic fields in Spanish and English." }}
+  caption="Autofill with AI: paste a product sheet from another store and the form fills itself, for the admin to review before saving."
+/>
 
 ### Authorization on every action
 

@@ -122,3 +122,13 @@ export function PhotoSlot({ children }: { children: string }) {
     </figure>
   );
 }
+
+/** One screenshot with its caption, in the light and dark themes when both exist. */
+export function Figure({ image, caption }: { image: Img; caption: string }) {
+  return (
+    <figure className="figure-single">
+      <ThemedImage src={image.src} dark={image.dark} alt={image.alt} sizes="(min-width: 1024px) 40rem, 100vw" className="h-auto w-full" />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
