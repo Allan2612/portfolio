@@ -42,7 +42,7 @@ const site: SiteCopy = {
     localTime: "hora local",
     reading: { legend: "Nivel de detalle", short: "Resumen", full: "Completo" },
   },
-  kinds: { live: "En producción", internship: "Práctica profesional", "open-source": "Código abierto" },
+  kinds: { live: "En producción", internship: "Práctica profesional", "open-source": "Código abierto", course: "Proyecto de curso" },
   months: ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."],
   present: "actualidad",
   work: {
@@ -118,12 +118,6 @@ const site: SiteCopy = {
   more: {
     heading: "Otros proyectos",
     items: [
-      {
-        name: "Rutica",
-        short: "App móvil de comercios, eventos y promociones cercanos en Costa Rica; desarrollada en pareja, después auditada y corregida.",
-        text: "App con Expo, React Native y Supabase para descubrir comercios, atracciones, eventos y promociones cercanos, con mapa, reseñas y un panel para los dueños de comercios. La desarrollé con otro estudiante; después hice la auditoría completa del proyecto (seguridad, base de datos, rendimiento y cumplimiento legal) y corregí lo que encontró, incluida una migración de la base de datos que se prueba contra 28 reglas de seguridad.",
-        href: "https://github.com/Allan2612/app-rutica",
-      },
       {
         name: "PlanTica",
         short: "Identificación de plantas por foto, con un filtro previo en el celular y un LLM de visión.",

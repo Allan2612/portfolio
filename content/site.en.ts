@@ -40,7 +40,7 @@ const site = {
     localTime: "local time",
     reading: { legend: "Detail level", short: "Summary", full: "Full detail" },
   },
-  kinds: { live: "Live", internship: "Internship", "open-source": "Open source" },
+  kinds: { live: "Live", internship: "Internship", "open-source": "Open source", course: "Course project" },
   months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   present: "Present",
   work: {
@@ -116,12 +116,6 @@ const site = {
   more: {
     heading: "More projects",
     items: [
-      {
-        name: "Rutica",
-        short: "Mobile app for nearby businesses, events and deals in Costa Rica; co-developed, then audited and fixed.",
-        text: "Expo, React Native and Supabase app to discover nearby businesses, attractions, events and promotions, with a map, reviews and a panel for business owners. Co-developed with another student; I then audited the whole project (security, database, performance, legal) and fixed what it found, including a database migration tested against 28 security rules.",
-        href: "https://github.com/Allan2612/app-rutica",
-      },
       {
         name: "PlanTica",
         short: "Plant identification from a photo, with an on-device pre-check and a vision LLM.",
