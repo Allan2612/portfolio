@@ -1,3 +1,6 @@
+import resources from "../images/miku/resources.webp";
+import quota from "../images/miku/quota.webp";
+import tools from "../images/miku/tools.webp";
 import panel from "../images/miku/panel.webp";
 import avatar from "../images/miku/avatar.webp";
 
@@ -68,9 +71,19 @@ Una petición sigue estos pasos:
 
 En Windows, inicializar CUDA deja unos cientos de megabytes residentes que nunca se devuelven. Por eso el proceso principal nunca carga PyTorch: la voz corre en un subproceso que se puede cerrar, y Whisper corre en la CPU con pesos de 8 bits y se queda en RAM. Cerrar el proceso es la única forma confiable de liberar esa memoria de la GPU.
 
+<Figure
+  image={{ src: resources, alt: "La página de Recursos del panel de control: CPU, memoria y VRAM de Miku, sus procesos y dos gráficos donde la VRAM baja a 0 al liberar la voz." }}
+  caption="La página de Recursos del launcher: mientras habla, la voz usa la GPU; al liberarla, la VRAM vuelve a 0. Datos de ejemplo."
+/>
+
 ### Una lista cerrada de herramientas
 
 El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Eso limita lo que puede lograr un *prompt injection*: nada destructivo se ejecuta sin confirmación. Una página web todavía podría dirigir una herramienta inofensiva, como abrir un enlace o guardar una nota, pero si le dice al asistente que “cierre todo”, lo peor que puede hacer es preguntar.
+
+<Figure
+  image={{ src: tools, alt: "La página de Herramientas del panel de control: las 46 herramientas por grupo, cuáles corren en local y cuáles piden confirmación, cada una con su interruptor." }}
+  caption="Todas las herramientas que puede usar, por grupo: cuáles corren en local sin el modelo, cuáles piden confirmación y un interruptor para apagar cualquiera."
+/>
 
 ### Ventanas y pestañas como objetos numerados
 
@@ -79,6 +92,11 @@ El modelo ve una lista numerada de lo que está abierto y actúa sobre un númer
 ### Solo las órdenes inequívocas se saltan el modelo
 
 El volumen, la multimedia, los temporizadores y las notas se reconocen en local y se ejecutan al instante, sin ir y volver del modelo. Lo que depende de qué hay abierto va a Gemini con el estado de la PC, porque una regla local adivinaría mal.
+
+<Figure
+  image={{ src: quota, alt: "La página de Cuotas del panel de control: las peticiones a Gemini de hoy frente al límite diario gratuito, el modelo de respaldo y los últimos siete días." }}
+  caption="Las peticiones a Gemini en el plan gratuito: hoy, el modelo de respaldo y la última semana. Las órdenes locales no cuentan. Datos de ejemplo."
+/>
 
 ### Una sola voz, y nunca se cuelga
 
