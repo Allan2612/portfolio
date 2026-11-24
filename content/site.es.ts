@@ -94,7 +94,7 @@ const site: SiteCopy = {
   about: {
     heading: "Sobre mí",
     paragraphs: [
-      "Construyo software de punta a punta: el modelo de datos, la API, la interfaz, las pruebas y el servidor donde corre. En TyT eso significó definir con los dueños lo que el negocio necesitaba, diseñar el modelo de datos, construir el sitio y su panel, y desplegarlo. En La Aguja de Oro significó aprender Odoo lo suficiente para adaptarlo a la forma en que trabaja un taller de costura, y después montar y mantener el servidor donde corre.",
+      "Soy Allan Vargas Torres, desarrollador full stack en Costa Rica. Construyo software de punta a punta: el modelo de datos, la API, la interfaz, las pruebas y el servidor donde corre. En TyT eso significó definir con los dueños lo que el negocio necesitaba, diseñar el modelo de datos, construir el sitio y su panel, y desplegarlo. En La Aguja de Oro significó aprender Odoo lo suficiente para adaptarlo a la forma en que trabaja un taller de costura, y después montar y mantener el servidor donde corre.",
       "Mis hábitos: pruebas primero cuando las reglas importan, CI en cada push y documentación que otra persona pueda retomar. En la práctica profesional eso fue escribir reglas contables con TDD en un equipo de cinco y auditar una plataforma de facturación electrónica antes de su lanzamiento.",
       "Uso asistentes de IA para programar todos los días. Cada cambio pasa igual por las pruebas y por mi revisión, y puedo explicar cualquier línea que entrego. En el análisis de brechas del ERP diseñé los agentes de IA que verificaban cada requisito, incluido uno cuya única tarea era intentar desmentir cada veredicto de “falta”; yo integré y validé lo que encontraron.",
     ],
