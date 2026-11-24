@@ -21,6 +21,7 @@ const site: SiteCopy = {
     languageName: "Español",
     theme: "Cambiar entre claro y oscuro",
     top: "Volver arriba",
+    close: "Cerrar",
     skip: "Saltar al contenido",
     home: "Inicio",
   },
@@ -42,7 +43,7 @@ const site: SiteCopy = {
     localTime: "hora local",
     reading: { legend: "Nivel de detalle", short: "Resumen", full: "Completo" },
   },
-  kinds: { live: "En producción", internship: "Práctica profesional", "open-source": "Código abierto" },
+  kinds: { live: "En producción", internship: "Práctica profesional", "open-source": "Código abierto", course: "Proyecto de curso" },
   months: ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "set.", "oct.", "nov.", "dic."],
   present: "actualidad",
   work: {
@@ -194,6 +195,13 @@ const site: SiteCopy = {
         note: "Código abierto (MIT)",
         text: "Asistente de voz de escritorio: Whisper local, Gemini con function calling sobre un conjunto cerrado de herramientas y avatar Live2D. Diseñado para responder en menos de 3 s y liberar la GPU en reposo.",
         href: "https://github.com/Allan2612/miku-assistant",
+      },
+      {
+        name: "Rutica",
+        stack: "Expo, React Native, Supabase, TanStack Query",
+        note: "Proyecto de curso, en pareja",
+        text: "Aplicación móvil de comercios, eventos y promociones cercanas, desarrollada con otro estudiante.",
+        href: "https://github.com/Allan2612/app-rutica",
       },
       {
         name: "PlanTica",

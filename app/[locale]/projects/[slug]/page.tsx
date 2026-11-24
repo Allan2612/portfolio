@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer, Header } from "@/components/chrome";
 import { JsonLd, person } from "@/components/json-ld";
+import { ThemedImage } from "@/components/themed-image";
 import { getProject, projects } from "@/content/projects";
 import { caseOutline } from "@/lib/case-outline";
 import { formatPeriod, getSite, isLocale, ogLocale, otherLocale } from "@/lib/i18n";
@@ -86,8 +86,10 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
 
           {project.cover && (
             <div className="col mt-12">
-              <Image
+              <ThemedImage
+                zoom
                 src={project.cover[locale].src}
+                dark={project.cover[locale].dark}
                 alt={project.cover[locale].alt}
                 loading="eager"
                 fetchPriority="high"

@@ -17,4 +17,12 @@ describe("caseOutline", () => {
       expect(minutes).toBeGreaterThan(0);
     }
   });
+
+  it("opens every case with the context and leaves the technical detail for last", () => {
+    for (const [, slug, locale] of cases) {
+      const ids = caseOutline(slug, locale).headings.map((h) => h.id);
+      expect(ids[0], `${slug}.${locale}`).toBe(locale === "en" ? "context" : "contexto");
+      expect(ids.at(-1), `${slug}.${locale}`).toBe(locale === "en" ? "technical-decisions" : "decisiones-tecnicas");
+    }
+  });
 });

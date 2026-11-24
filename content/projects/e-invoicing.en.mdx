@@ -1,25 +1,27 @@
-## The problem
+## Context
 
-In Costa Rica every invoice is an electronic document: it is signed, sent to the Ministry of Finance (Hacienda) and accepted or rejected. The platform already did that, through a web app and an API for other systems.
+In Costa Rica every invoice is an electronic document: it is signed, sent to the Ministry of Finance (Hacienda) and accepted or rejected. During my internship at Argana I worked on a platform that does this for many companies at once, through a web app and an API for other systems, in the weeks before its launch.
 
-Before launch it had to hold up in two ways:
-
-- **In the cases real businesses hit:** concurrent requests, foreign currencies, documents that need to be voided, and a tax authority that does not always answer.
-- **With many companies in one database**, each seeing all of its own data and nothing from anyone else.
+My job was to make sure it would hold up. First, in the situations real businesses run into: concurrent requests, foreign currencies, invoices that have to be voided, and a tax authority that does not always answer. Second, with many companies sharing one database, each seeing all of its own data and nothing from anyone else.
 
 ## What I did
 
 - **Wrote the full-repository audit and fixed all 17 findings**: 8 tax-compliance defects and 9 business-logic bugs.
 - **Fixed row-level security policies that locked each company out of its own data**, and proved tenant isolation on all 20 tables with tests that run in CI.
-- **Hardened file uploads and outbound requests.** Uploaded files are checked by their content signature, not by the type they claim to be.
-- **Made invoice creation idempotent**: a fingerprint per request means a retried call never issues the same invoice twice.
-- **Account safety:** role changes can no longer leave a company without an administrator; new users need a confirmed email and join by invitation link instead of a shared password.
-- **API and webhooks:** pagination on every collection, more useful events, and end-to-end tests for API keys.
-- **Subscription payments by bank transfer (SINPE):** the customer uploads the transfer receipt and the platform’s staff review it from a back office.
-- **A clean start:** the repository builds and runs from a fresh checkout, with demo data and one account per role, and the end-to-end conformance gate really runs in CI.
-- **Dependencies:** no known high or critical vulnerabilities by the end of my internship.
+- **Made invoice creation idempotent**: a retried request never issues the same invoice twice.
+- **Hardened accounts, file uploads and outbound requests**, so a company can no longer be left without an administrator and uploaded files are checked by what they really contain.
+- **Left the platform ready for the next person**: a repository that builds and runs from a fresh checkout with demo data, and no known high or critical vulnerabilities by the end of my internship.
 
-## How it works now
+## Result
+
+- The platform was **ready to launch with no known open tax-compliance defects**.
+- No known high or critical security findings or dependency vulnerabilities by the end of my internship.
+
+## What I took from it
+
+An audit is only as good as what closes it. Each finding ended with a fix and a test that would fail if the problem came back, so the next person does not have to trust my report: they can run it.
+
+## Technical decisions
 
 Three parts of the platform I worked on, and why they are built that way.
 
@@ -48,11 +50,11 @@ Each invoice moves through explicit states, from signing to the tax authority’
 
 Isolation does not depend on every query remembering a `WHERE company_id = …`. The company is set on the PostgreSQL session with `SET LOCAL` inside each transaction, so it never leaks to the next request that reuses the pooled connection, and the tables use `FORCE ROW LEVEL SECURITY`, so not even the table owner skips the policies. I wrote the CI test that checks every table in both directions: each company sees all of its data and none of anyone else’s.
 
-## Result
+### Other changes
 
-- The platform was **ready to launch with no known open tax-compliance defects**.
-- No known high or critical security findings or dependency vulnerabilities by the end of my internship.
-
-## What I took from it
-
-An audit is only as good as what closes it. Each finding ended with a fix and a test that would fail if the problem came back, so the next person does not have to trust my report: they can run it.
+- **Idempotency:** a fingerprint per request means a retried call gets the original invoice back.
+- **Accounts:** role changes can no longer leave a company without an administrator; new users need a confirmed email and join by invitation link instead of a shared password.
+- **Uploads:** files are checked by their content signature, not by the type they claim to be.
+- **API and webhooks:** pagination on every collection, more useful events, and end-to-end tests for API keys.
+- **Subscription payments by bank transfer (SINPE):** the customer uploads the transfer receipt and the platform’s staff review it from a back office.
+- **A clean start:** demo data with one account per role, and the end-to-end conformance gate really runs in CI.

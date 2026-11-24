@@ -1,26 +1,68 @@
-import services from "../images/tyt/services.webp";
+import services from "../images/tyt/services-es.webp";
 import phoneHome from "../images/tyt/phone-home-es.webp";
+import catalog from "../images/tyt/catalog-es.webp";
+import phoneProduct from "../images/tyt/phone-product-es.webp";
+import servicesDark from "../images/tyt/services-es-dark.webp";
+import phoneHomeDark from "../images/tyt/phone-home-es-dark.webp";
+import catalogDark from "../images/tyt/catalog-es-dark.webp";
+import phoneProductDark from "../images/tyt/phone-product-es-dark.webp";
+import adminDashboard from "../images/tyt/admin-dashboard-es.webp";
+import adminDashboardDark from "../images/tyt/admin-dashboard-es-dark.webp";
+import adminPhone from "../images/tyt/admin-phone-es.webp";
+import adminPhoneDark from "../images/tyt/admin-phone-es-dark.webp";
+import adminPromotion from "../images/tyt/admin-promotion-es.webp";
+import adminPromotionDark from "../images/tyt/admin-promotion-es-dark.webp";
+import adminAutofill from "../images/tyt/admin-autofill-es.webp";
+import adminAutofillDark from "../images/tyt/admin-autofill-es-dark.webp";
 
-## El problema
+## Contexto
 
-TyT Tecnología repara computadoras, instala cámaras de seguridad y vende equipo en Pérez Zeledón. No tenía un lugar propio en la web: nada aparecía al buscar el negocio, no había dónde ver sus servicios ni un catálogo para recorrer.
+TyT Tecnología es un taller de Pérez Zeledón, Costa Rica, que repara computadoras, instala cámaras de seguridad y vende equipo. No tenía un lugar propio en la web: nada aparecía al buscar el negocio, y no había dónde ver sus servicios ni recorrer lo que vende.
 
-Tres condiciones definieron el proyecto:
+Construí su sitio web, su catálogo y su panel de administración como único desarrollador. Hoy el taller tiene un sitio bilingüe con dominio propio, los clientes envían su pedido al WhatsApp del taller con un toque y los dueños cambian productos, precios y promociones por su cuenta, sin un programador.
 
-- **La gente compra por WhatsApp.** Los clientes del taller ya cierran cada venta en un chat, así que el sitio tenía que llevarlos a WhatsApp, no reemplazarlo con una pasarela de pago.
-- **Los dueños lo mantienen al día.** Productos, precios, fotos, servicios y promociones cambian seguido, y nada de eso podía depender de un programador.
+Tres condiciones del negocio marcaron cada decisión:
+
+- **La gente compra por WhatsApp.** Los clientes del taller ya cierran cada venta en un chat, así que el sitio los lleva a WhatsApp en lugar de reemplazarlo con una pasarela de pago.
+- **Los dueños lo mantienen al día.** Productos, precios, fotos y promociones cambian seguido, y nada de eso podía depender de un programador.
 - **Precios en colones, con referencia en dólares.** El equipo suele cotizarse en dólares, así que el sitio muestra los dos, con un tipo de cambio que se actualiza solo.
 
-## Qué construí
+## Qué hice
 
-- **Sitio público en español e inglés:** una portada de servicios con una página para cada uno, catálogo con filtros y páginas por categoría, fichas de producto, casos de éxito, contacto con mapa y páginas legales.
-- **Carrito con cierre del pedido por WhatsApp.** El carrito vive en el navegador y, cuando el cliente inicia sesión, en su cuenta; los dos se combinan sin perder artículos. Al finalizar, el carrito se convierte en un mensaje de WhatsApp para el taller.
-- **Cuentas de cliente** con consultas en forma de conversación, para que el cliente elija entre la web y WhatsApp.
-- **Panel de administración** para productos y fotos, servicios, categorías, casos de éxito, consultas y configuración del sitio (número de WhatsApp, horario, ubicación y redes), para que nada de lo que los dueños necesitan cambiar quede fijo en el código.
-- **Tipo de cambio diario:** una tarea programada lo actualiza, y cada precio se muestra en colones con su referencia en dólares.
-- **Carga de productos asistida por IA:** el administrador pega la ficha de otra tienda y Gemini llena el formulario para que lo revise.
-- **Promociones para redes sociales**, descritas más abajo.
-- **SEO técnico:** metadatos por página, `hreflang`, sitemap, datos estructurados y páginas generadas de forma estática.
+- **Un sitio público en español e inglés:** servicios, catálogo con filtros, fichas de producto, casos de éxito y contacto con mapa.
+- **Pedidos por WhatsApp:** el carrito se convierte en un mensaje de WhatsApp para el taller, como ya compran sus clientes.
+- **Un panel de administración** donde los dueños manejan productos y fotos, servicios, promociones, consultas y la configuración del sitio.
+- **Una imagen que hace ver establecido a un negocio pequeño**, construida con su propio logo en lugar de fotos de banco.
+- **IA que ayuda pero nunca decide:** propone fichas de producto y fotos de promociones, una persona aprueba cada una y los precios siempre salen de la base de datos.
+
+<FigurePair
+  wide={{ src: catalog, dark: catalogDark, alt: "Catálogo de TyT en español: computadoras en un carrusel, cada tarjeta con sus especificaciones, el precio en colones y un botón para agregar." }}
+  narrow={{ src: phoneProduct, dark: phoneProductDark, alt: "Ficha de un producto de TyT en un celular: nombre, estado, precio y galería de fotos." }}
+  caption="El catálogo en una computadora y una ficha de producto en un celular. Los productos todavía son de ejemplo."
+/>
+
+<FigurePair
+  wide={{ src: services, dark: servicesDark, alt: "Página de servicios de TyT en español: un título grande, filtros por área y tarjetas de servicio con fotos." }}
+  narrow={{ src: phoneHome, dark: phoneHomeDark, alt: "Inicio de TyT en un celular, en español." }}
+  caption="La página de servicios en una computadora y el inicio en un celular."
+/>
+
+<FigurePair
+  wide={{ src: adminDashboard, dark: adminDashboardDark, alt: "Panel de administración de TyT en español: productos publicados, servicios activos, consultas abiertas y destacados, una lista de lo que requiere atención y las últimas consultas." }}
+  narrow={{ src: adminPhone, dark: adminPhoneDark, alt: "El mismo panel de TyT en un celular: las secciones pasan a una barra de pestañas que se desliza y los contadores se apilan." }}
+  caption="El panel de administración en una computadora y en un celular: lo publicado, lo que espera respuesta y lo que conviene revisar. Datos de prueba."
+/>
+
+## Resultado
+
+- **En línea en [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingüe y con el dominio propio del negocio.
+- Hecho para que los dueños administren el catálogo, los servicios y las promociones desde el panel, sin un programador.
+- 19 modelos de datos y 119 archivos de pruebas, por un solo desarrollador, en unos cinco meses.
+- La aplicación está en contenedores, y la migración a infraestructura propia para bajar el costo de hosting está en curso.
+
+## Qué me llevo
+
+Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera establecido sin recursos profesionales, solo con un logo y una idea clara de cómo funciona el taller. Un sistema de diseño construido con las formas y la tipografía de la propia marca funcionó mejor de lo que habrían funcionado las fotos de banco, y crece junto con el catálogo.
 
 ## Decisiones técnicas
 
@@ -50,13 +92,7 @@ El taller tenía un logo y nada más: ni fotografía profesional, ni ilustracion
 - **El hero del inicio está hecho con el isotipo de TyT**, y sus formas recorren toda la página en lugar de una imagen genérica.
 - **La boleta de taller como lenguaje visual.** Las tarjetas de productos, servicios y contacto parecen boletas de reparación, con un código de referencia y un corte desprendible, y las especificaciones se leen como una ficha técnica.
 - **Un sistema tipográfico en lugar de imágenes:** una tipografía expandida para los títulos, una neutra para el texto y una monoespaciada para los datos del taller, como códigos, especificaciones y etiquetas, sobre una paleta oscura con un color reservado para las acciones y otro para los estados.
-- **Fotos de producto uniformes:** la IA lleva las fotos propias del taller al mismo fondo de estudio (ver la sección siguiente), y el catálogo se ve como una sola colección.
-
-<FigurePair
-  wide={{ src: services, alt: "Página de servicios de TyT: un título grande, filtros por área y tarjetas de servicio con fotos." }}
-  narrow={{ src: phoneHome, alt: "Inicio de TyT en un celular, en español." }}
-  caption="La página de servicios en escritorio y el inicio en un celular."
-/>
+- **Fotos de producto uniformes:** la IA lleva las fotos propias del taller al mismo fondo de estudio, y el catálogo se ve como una sola colección.
 
 ### La IA propone, una persona aprueba
 
@@ -67,11 +103,28 @@ Las promociones son donde la IA más ayuda y donde más daño puede hacer, porqu
 3. El administrador revisa **foto por foto** y aprueba o descarta cada una.
 4. **El volante lo dibuja el código**, en 4:5 y 9:16 para redes, con el precio y los datos tomados de la base de datos.
 
-Nada se publica sin aprobación, y el modelo nunca escribe un precio.
+<Figure
+  image={{ src: adminPromotion, dark: adminPromotionDark, alt: "Revisión de una promoción de TyT: dos fotos del producto, cada una con la opción Original o Con IA, junto al volante 4:5 para redes con el nombre, las especificaciones y el precio." }}
+  caption="Revisión de una promoción: cada foto se elige una por una, original o con IA, junto al volante que dibuja el código. Datos de prueba."
+/>
+
+Nada se publica sin aprobación, y el modelo nunca escribe un precio. La misma idea guía la carga de productos: el administrador pega la ficha de otra tienda y Gemini llena el formulario para que lo revise.
+
+<Figure
+  image={{ src: adminAutofill, dark: adminAutofillDark, alt: "Formulario de producto nuevo en el panel de TyT: un recuadro Autocompletar con IA para pegar la ficha de otra tienda, sobre los datos básicos en español e inglés." }}
+  caption="Autocompletar con IA: se pega la ficha de otra tienda y el formulario se llena solo, para que el administrador lo revise antes de guardar."
+/>
 
 ### Autorización en cada acción
 
 Cada pantalla y cada acción del servidor del panel verifica por sí misma el rol de administrador. La capa de rutas también bloquea a quien no es administrador, pero no es el único candado: si una petición llega a una acción por otro camino, la acción igual la rechaza.
+
+### El resto del sistema
+
+- **Carrito:** vive en el navegador y, cuando el cliente inicia sesión, en su cuenta; los dos se combinan sin perder artículos.
+- **Cuentas de cliente** con consultas en forma de conversación, para que el cliente elija entre la web y WhatsApp.
+- **Tipo de cambio diario:** una tarea programada lo actualiza, y cada precio se muestra en colones con su referencia en dólares.
+- **SEO técnico:** metadatos por página, `hreflang`, sitemap, datos estructurados y páginas generadas de forma estática.
 
 ### Calidad que corre sola
 
@@ -79,14 +132,3 @@ Cada pantalla y cada acción del servidor del panel verifica por sí misma el ro
 - CI en cada push: lint, formato, pruebas, build y end-to-end.
 - `develop` para el trabajo diario y `main` para las versiones, integradas mediante pull requests, con un despliegue de prueba por rama.
 - Notas de traspaso, una hoja de ruta y una lista de verificación para cada despliegue, para que otra persona pueda retomar el proyecto.
-
-## Resultado
-
-- **En línea en [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingüe y con el dominio propio del negocio.
-- Hecho para que los dueños administren el catálogo, los servicios y las promociones desde el panel, sin un programador.
-- 19 modelos de datos y 119 archivos de pruebas, por un solo desarrollador, en unos cinco meses.
-- La aplicación está en contenedores, y la migración a infraestructura propia para bajar el costo de hosting está en curso.
-
-## Qué me llevo
-
-Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera establecido sin recursos profesionales, solo con un logo y una idea clara de cómo funciona el taller. Un sistema de diseño construido con las formas y la tipografía de la propia marca funcionó mejor de lo que habrían funcionado las fotos de banco, y crece junto con el catálogo.
