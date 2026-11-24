@@ -87,6 +87,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
           {project.cover && (
             <div className="col mt-12">
               <ThemedImage
+                zoom
                 src={project.cover[locale].src}
                 dark={project.cover[locale].dark}
                 alt={project.cover[locale].alt}

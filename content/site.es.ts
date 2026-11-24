@@ -21,6 +21,7 @@ const site: SiteCopy = {
     languageName: "Español",
     theme: "Cambiar entre claro y oscuro",
     top: "Volver arriba",
+    close: "Cerrar",
     skip: "Saltar al contenido",
     home: "Inicio",
   },

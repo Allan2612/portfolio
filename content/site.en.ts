@@ -19,6 +19,7 @@ const site = {
     languageName: "English",
     theme: "Switch between light and dark",
     top: "Back to top",
+    close: "Close",
     skip: "Skip to content",
     home: "Home",
   },

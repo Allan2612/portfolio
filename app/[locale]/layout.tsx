@@ -3,6 +3,7 @@ import { STIX_Two_Text } from "next/font/google";
 import { getSite, isLocale, locales, ogLocale, otherLocale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
 import { themeScript } from "@/lib/theme";
+import { Lightbox } from "@/components/lightbox";
 import { Motion } from "@/components/motion";
 import "../globals.css";
 
@@ -58,6 +59,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body>
         {children}
         <Motion />
+        {isLocale(locale) && <Lightbox close={getSite(locale).nav.close} />}
       </body>
     </html>
   );
