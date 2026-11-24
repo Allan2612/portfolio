@@ -1,6 +1,6 @@
 ## The problem
 
-The ERP is a core with cross-cutting services and a set of business modules: accounting, treasury, budgeting, inventory and more. The modules worked, but nobody could say **with evidence** which parts of the accounting standard the system met and which it did not. Without that, there was no way to plan the work or to answer the accountants' questions.
+The ERP is a core with cross-cutting services and a set of business modules: accounting, treasury, budgeting, inventory and more. The modules worked, but nobody could say **with evidence** which parts of the accounting standard the system met and which it did not. Without that, there was no way to plan the work or to answer the accountants’ questions.
 
 ## What I did
 
@@ -10,7 +10,7 @@ The ERP is a core with cross-cutting services and a set of business modules: acc
 - I checked every requirement against the system in two ways: **reading the code**, file by file, and **running the system**, carrying out real operations and inspecting what ended up in the database.
 - I delivered a report for the accounting team and a **remediation plan organized into work packages**.
 
-For the first time, the system's compliance was measured requirement by requirement, with a plan to close the gaps.
+For the first time, the system’s compliance was measured requirement by requirement, with a plan to close the gaps.
 
 ### AI agents as cross-checkers
 
@@ -32,29 +32,34 @@ Each rule started as a test that stated it, written before the code. The main pi
 - **Disclosures:** related parties, contingent liabilities and assets, discounted provisions, and changes in accounting policy.
 - **Budget close-out**, where the unrestricted surplus covers any deficit first.
 
+### Decisions that needed an accountant
+
+Several questions were for an accountant: when to recognize a type of income, which account a movement belongs to, how to treat a payment made in advance. Waiting would have stopped the work, so I decided each one from the official sources, wrote it down with its source and how confident I was, and marked it to confirm with an accountant later. The accounts live in configuration, so if the answer changes, nobody has to touch the code.
+
 ## The architecture I worked in
 
 These decisions were already in place when I joined; my work was to build inside them, and they are a big part of why the rules could be tested in isolation.
 
 - **A shared core** provides numbering, the audit trail, permissions and atomic operations across modules, and every module inherits them.
-- **One database schema per module.** No module imports another module's tables; they talk through commands and events, delivered with a **transactional outbox** so an event is published only if the change that caused it was committed.
+- **One database schema per module.** No module imports another module’s tables; they talk through commands and events, delivered with a **transactional outbox** so an event is published only if the change that caused it was committed.
 - **Nothing is deleted; it is sealed.** Financial records keep a full trail, and money is always stored in cents.
 - **Tests run against real infrastructure:** PostgreSQL, Redis and MongoDB, not mocks.
 
 <ModulesDiagram
-  label="The ERP's shared core and business modules"
+  label="The ERP’s shared core and business modules"
   modules={["Accounting", "Treasury", "Budgeting", "Inventory", "More modules"]}
   link="Commands and events, through a transactional outbox"
   core="Shared core"
   coreNote="Numbering, audit trail, permissions and atomic operations across modules"
-  caption="Each module owns its schema and never imports another module's tables."
+  caption="Each module owns its schema and never imports another module’s tables."
 />
 
 ## Result
 
-- The system's compliance with the standard was **measured with evidence for the first time**, with a plan to close the gaps.
+- The system’s compliance with the standard was **measured with evidence for the first time**, with a plan to close the gaps.
 - I was the **top contributor on a team of five**, mostly in accounting, fixed assets, budgeting and treasury.
-- **More than 3,500 tests** in the project, all green when my internship ended.
+- **3,528 tests** in the project and **321 interface tests**, all green in the last full run before my internship ended.
+- Much of what the analysis had marked as missing was built in the weeks after it, so it needs a second pass against today’s system.
 - Documentation of the accounting domain that the team uses as a reference.
 
 ## What I took from it

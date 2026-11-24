@@ -50,7 +50,7 @@ const site: SiteCopy = {
     items: [
       {
         role: "Practicante de Desarrollo de Software",
-        org: "Empresa de software",
+        org: "Argana",
         start: "2026-07",
         end: "2026-11",
         line: "ERP modular y facturación electrónica; Práctica Profesional Supervisada (UNA).",
@@ -65,7 +65,7 @@ const site: SiteCopy = {
         org: "TyT Tecnología",
         start: "2026-07",
         end: null,
-        line: "Diseño, desarrollo y puesta en producción del sitio web, el catálogo y el panel de administración, como único desarrollador.",
+        line: "Sitio web, catálogo y panel de administración, como único desarrollador.",
         detail: [
           "Diseño, desarrollo y puesta en producción del sitio web, el catálogo y el panel de administración (Next.js, Prisma, PostgreSQL, Auth.js, Cloudflare R2).",
           "Sitio bilingüe con SEO técnico, pedidos por WhatsApp y promociones con IA revisadas antes de publicarse.",
@@ -171,10 +171,10 @@ const site: SiteCopy = {
     intro: "La misma información de mi CV en PDF, en una sola página.",
     downloadEn: "Descargar PDF (inglés)",
     downloadEs: "Descargar PDF (español)",
-    phone: "Teléfono a pedido.",
+    phone: "Teléfono disponible a pedido.",
     profileHeading: "Perfil",
     profile:
-      "Egresado de Ingeniería en Sistemas de Información (UNA, graduación en mayo de 2027) y desarrollador full stack con dos sistemas en producción para clientes. Práctica profesional en una empresa de software, en un ERP modular y una plataforma de facturación electrónica. Experiencia en TypeScript (Next.js, NestJS, React Native) y Python, pruebas automatizadas e integración continua.",
+      "Egresado de Ingeniería en Sistemas de Información (UNA, graduación en mayo de 2027) y desarrollador full stack con dos sistemas en producción para clientes. Práctica profesional en Argana, en un ERP modular y una plataforma de facturación electrónica. Experiencia en TypeScript (Next.js, NestJS, React Native) y Python, pruebas automatizadas e integración continua.",
     projectsHeading: "Proyectos",
     projects: [
       {

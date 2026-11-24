@@ -10,7 +10,7 @@ Two processes talk over a local WebSocket, plus a GPU worker for the voice and a
 
 - **The app** (Tauri v2 and TypeScript): a transparent window with the Live2D avatar, animations, lip sync and subtitles.
 - **The core** (Python, asyncio): activation, microphone and voice detection, speech-to-text, the agent loop with Gemini, PC tools and text-to-speech.
-- **The voice worker:** converts the base voice into the character's voice on the GPU, in its own process.
+- **The voice worker:** converts the base voice into the character’s voice on the GPU, in its own process.
 - **The browser extension** (Opera): exposes open tabs and search results to the core.
 
 <FlowDiagram
@@ -41,7 +41,7 @@ On Windows, initializing CUDA leaves a few hundred megabytes resident that are n
 
 ### A closed list of tools
 
-The model can only call tools from a registered list: apps, windows, files, media, notes, memory, routines, system settings, timers and the web. It never runs arbitrary shell commands, and anything destructive needs the user's confirmation. That is the defense against prompt injection: if a web page tells the assistant to “close everything”, the worst it can do is ask.
+The model can only call tools from a registered list: apps, windows, files, media, notes, memory, routines, system settings, timers and the web. It never runs arbitrary shell commands, and anything destructive needs the user’s confirmation. That limits what prompt injection can do: nothing destructive runs without confirmation. A web page could still steer a harmless tool, such as opening a link or saving a note, but if it tells the assistant to “close everything”, the worst it can do is ask.
 
 ### Windows and tabs as numbered objects
 

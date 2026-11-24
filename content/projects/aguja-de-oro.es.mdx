@@ -24,7 +24,7 @@ Monté y documenté el servidor, y lo mantengo:
 
 - **Un servidor pequeño en la nube**, en DigitalOcean con Ubuntu LTS, con swap para que se mantenga estable con un presupuesto mínimo.
 - **Nginx como proxy inverso**, con HTTPS de Let's Encrypt que se renueva solo, en el dominio propio del negocio.
-- **Acceso restringido:** SSH solo con llave, sin login de root ni contraseñas; un firewall que solo deja pasar el tráfico web y SSH; Odoo no es accesible desde afuera.
+- **Acceso restringido:** SSH solo con llave, sin inicio de sesión como root ni contraseñas; un firewall que solo deja pasar el tráfico web y SSH; Odoo no es accesible desde afuera.
 - **Odoo como servicio del sistema**, con su propio usuario.
 - **Respaldos diarios** de la base de datos y de los archivos, con rotación.
 - **Despliegues desde GitHub** con una llave de solo lectura.

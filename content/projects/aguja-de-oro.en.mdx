@@ -3,7 +3,7 @@
 The shop kept its sales, repairs, warranties and inventory by hand or on loose sheets. It needed:
 
 - a system that fit the way it already worked, not the other way around;
-- printed documents (invoices, quotes, repair tickets and warranty certificates) with Costa Rica's tax details;
+- printed documents (invoices, quotes, repair tickets and warranty certificates) with Costa Rica’s tax details;
 - something the staff could use from a phone.
 
 ## What I built
@@ -23,7 +23,7 @@ The project was built with a partner, and the split matters:
 I set up and documented the server, and I maintain it:
 
 - **A small cloud server** on DigitalOcean running Ubuntu LTS, with swap so it stays stable on a minimal budget.
-- **Nginx as a reverse proxy**, with HTTPS from Let's Encrypt that renews itself, on the shop's own domain.
+- **Nginx as a reverse proxy**, with HTTPS from Let’s Encrypt that renews itself, on the shop’s own domain.
 - **Locked down:** SSH with keys only, no root login and no passwords; a firewall that only lets web and SSH traffic through; Odoo is not reachable from outside.
 - **Odoo as a system service**, running under its own user.
 - **Daily backups** of the database and the file store, with rotation.
@@ -32,8 +32,8 @@ I set up and documented the server, and I maintain it:
 <FlowDiagram
   label="La Aguja de Oro production setup"
   steps={[
-    ["Staff, on a phone or a computer", "The shop's own domain, over HTTPS"],
-    ["Nginx", "Reverse proxy; HTTPS from Let's Encrypt that renews itself"],
+    ["Staff, on a phone or a computer", "The shop’s own domain, over HTTPS"],
+    ["Nginx", "Reverse proxy; HTTPS from Let’s Encrypt that renews itself"],
     ["Odoo 17", "Custom modules; a system service under its own user, closed to the outside"],
     ["PostgreSQL", "Daily backups of the database and the file store, rotated"],
   ]}
@@ -44,7 +44,7 @@ I set up and documented the server, and I maintain it:
 
 ### Extend Odoo instead of fighting it
 
-Every change lives in a custom module that inherits from Odoo's own models and views, so the standard code is never edited and the system can be updated without losing the shop's changes.
+Every change lives in a custom module that inherits from Odoo’s own models and views, so the standard code is never edited and the system can be updated without losing the shop’s changes.
 
 ### A small server, set up carefully
 

@@ -31,7 +31,7 @@ Una petición sigue estos pasos:
 4. Todo lo demás va a Gemini junto con el **estado actual de la PC**: ventanas y pestañas abiertas, cada una con un número, el volumen, los recordatorios y los pendientes. Gemini actúa como agente: llama herramientas, ve sus resultados y responde o da otro paso. Las acciones destructivas piden confirmación.
 5. edge-tts genera la voz base y RVC la convierte.
 6. La aplicación la reproduce con sincronización de labios, una expresión y un subtítulo, y sigue escuchando unos segundos por si la conversación continúa.
-7. Después de un rato sin uso, el avatar se oculta y deja de dibujarse. Más tarde se cierra el proceso de voz y la memoria de la GPU vuelve a cero, mientras otro proceso espera en RAM con sus librerías cargadas, para que la voz vuelva en unos segundos.
+7. Después de un rato sin uso, el avatar se oculta y deja de dibujarse. Más tarde se cierra el proceso de voz y la memoria de la GPU vuelve a cero, mientras otro proceso espera en RAM con sus bibliotecas cargadas, para que la voz vuelva en unos segundos.
 
 ## Decisiones técnicas
 
@@ -41,7 +41,7 @@ En Windows, inicializar CUDA deja unos cientos de megabytes residentes que nunca
 
 ### Una lista cerrada de herramientas
 
-El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Esa es la defensa contra el *prompt injection*: si una página web le dice al asistente que “cierre todo”, lo peor que puede hacer es preguntar.
+El modelo solo puede llamar herramientas de una lista registrada: aplicaciones, ventanas, archivos, multimedia, notas, memoria, rutinas, configuración del sistema, temporizadores y la web. Nunca ejecuta comandos arbitrarios de la consola, y todo lo destructivo necesita la confirmación del usuario. Eso limita lo que puede lograr un *prompt injection*: nada destructivo se ejecuta sin confirmación. Una página web todavía podría dirigir una herramienta inofensiva, como abrir un enlace o guardar una nota, pero si le dice al asistente que “cierre todo”, lo peor que puede hacer es preguntar.
 
 ### Ventanas y pestañas como objetos numerados
 
