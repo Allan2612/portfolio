@@ -203,3 +203,18 @@ test("security headers are set", async ({ request }) => {
   expect(h["cross-origin-opener-policy"]).toBe("same-origin");
   expect(h["x-powered-by"]).toBeUndefined();
 });
+
+test("screenshots follow the site's theme", async ({ page }) => {
+  const shown = () =>
+    page.locator(".themed").first().evaluate((t) =>
+      ["light", "dark"].find((k) => getComputedStyle(t.querySelector(`.themed-${k}`)!).opacity === "1"),
+    );
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/en/projects/tyt");
+  expect(await shown()).toBe("light");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect.poll(shown).toBe("dark");
+  // The theme button wins over the system preference.
+  await page.locator(".theme-toggle").click();
+  await expect.poll(shown).toBe("light");
+});

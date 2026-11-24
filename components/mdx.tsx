@@ -1,15 +1,16 @@
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import type { CSSProperties } from "react";
+import { ThemedImage } from "@/components/themed-image";
 
-type Img = { src: StaticImageData; alt: string };
+type Img = { src: StaticImageData; dark?: StaticImageData; alt: string };
 
 /** A screenshot next to its phone version; stacks on small screens. */
 export function FigurePair({ wide, narrow, caption }: { wide: Img; narrow: Img; caption: string }) {
   return (
     <figure className="figure-pair">
       <div className="figure-pair-media">
-        <Image src={wide.src} alt={wide.alt} sizes="(min-width: 1024px) 40rem, 100vw" className="h-auto w-full" />
-        <Image src={narrow.src} alt={narrow.alt} sizes="(min-width: 1024px) 12rem, 40vw" className="h-auto w-full" />
+        <ThemedImage src={wide.src} dark={wide.dark} alt={wide.alt} sizes="(min-width: 1024px) 40rem, 100vw" className="h-auto w-full" />
+        <ThemedImage src={narrow.src} dark={narrow.dark} alt={narrow.alt} sizes="(min-width: 1024px) 12rem, 40vw" className="h-auto w-full" />
       </div>
       <figcaption>{caption}</figcaption>
     </figure>

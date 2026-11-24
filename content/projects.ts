@@ -2,7 +2,9 @@ import type { MDXContent } from "mdx/types";
 import type { StaticImageData } from "next/image";
 import type { Locale } from "@/lib/i18n";
 import tytHomeEn from "./images/tyt/home-en.webp";
+import tytHomeEnDark from "./images/tyt/home-en-dark.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
+import tytHomeEsDark from "./images/tyt/home-es-dark.webp";
 import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
@@ -39,9 +41,10 @@ export type Project = {
   stack: string[];
   cardStack: string[];
   links: { live?: string; repo?: string };
-  cover?: Record<Locale, { src: StaticImageData; alt: string }>;
+  /** dark: the same screenshot in the dark theme, shown when the site is dark (components/themed-image.tsx). */
+  cover?: Record<Locale, { src: StaticImageData; dark?: StaticImageData; alt: string }>;
   /** Home-page picture for the project row (the cover is used in the intro instead). */
-  thumb?: { src: StaticImageData; alt: Record<Locale, string> };
+  thumb?: { src: StaticImageData; dark?: StaticImageData; alt: Record<Locale, string> };
   text: Record<Locale, Text>;
   /** The case study, one MDX file per language. */
   body: Record<Locale, MDXContent>;
@@ -58,11 +61,12 @@ export const projects: Project[] = [
     cardStack: ["Next.js", "Prisma", "PostgreSQL", "Playwright"],
     links: { live: "https://www.tytsoluciones.net" },
     cover: {
-      en: { src: tytHomeEn, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand’s shapes." },
-      es: { src: tytHomeEs, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
+      en: { src: tytHomeEn, dark: tytHomeEnDark, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand’s shapes." },
+      es: { src: tytHomeEs, dark: tytHomeEsDark, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
     },
     thumb: {
       src: tytHomeEn,
+      dark: tytHomeEnDark,
       alt: {
         en: "TyT Tecnología home page: security cameras and computers, with the services as four blocks built from the brand’s shapes.",
         es: "Inicio de TyT Tecnología: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca.",

@@ -1098,6 +1098,45 @@ figcaption {
   color: var(--soft);
 }
 
+/* Light and dark versions of a screenshot (components/themed-image.tsx): both in one cell, the theme picks. */
+.themed {
+  display: grid;
+}
+.themed > span {
+  grid-area: 1 / 1;
+  display: block;
+}
+.themed-dark {
+  opacity: 0;
+  filter: blur(6px);
+}
+:root[data-theme="dark"] .themed-light {
+  opacity: 0;
+  filter: blur(6px);
+}
+:root[data-theme="dark"] .themed-dark {
+  opacity: 1;
+  filter: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .themed-light {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  :root:not([data-theme="light"]) .themed-dark {
+    opacity: 1;
+    filter: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* On a theme switch the screenshot dissolves into its other version instead of jumping. */
+  .themed > span {
+    transition:
+      opacity 700ms var(--ease-soft),
+      filter 700ms var(--ease-soft);
+  }
+}
+
 /* Planned picture (components/mdx.tsx PhotoSlot): never rendered on the production site. */
 .photo-slot {
   display: grid;
