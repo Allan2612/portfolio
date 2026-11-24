@@ -161,6 +161,13 @@ test("pages describe themselves for search engines and link previews", async ({ 
   expect(ld(home)).toMatchObject({ "@type": "ProfilePage", mainEntity: { "@type": "Person", name: "Allan Vargas Torres" } });
   expect(meta(home, "og:locale")).toBe("es_CR");
   expect(meta(home, "og:image:alt")).toContain("Desarrollador");
+  for (const rel of ["icon", "apple-touch-icon"]) {
+    const href = home.match(new RegExp(`<link rel="${rel}" href="([^"]+)"`))?.[1];
+    expect(href, rel).toBeTruthy();
+    expect((await request.get(href!)).headers()["content-type"], rel).toMatch(/^image\/(png|svg\+xml)/);
+  }
+  // Every link has text a crawler can read, and every picture a description.
+  expect(home).not.toMatch(/<img [^>]*alt=""/);
 
   const study = await (await request.get("/en/projects/tyt")).text();
   expect(ld(study)).toMatchObject({ "@type": "Article", inLanguage: "en", author: { "@type": "Person" } });

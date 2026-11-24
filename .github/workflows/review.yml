@@ -1,0 +1,83 @@
+name: Review
+
+# Claude reviews each pull request. If it finds nothing blocking, it turns on auto-merge and GitHub
+# merges once every required check (ci and this one) passes. A new push re-runs both checks, so an
+# unreviewed commit cannot ride on an earlier approval.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    # Only the owner's own, non-draft pull requests from this repository: nobody else's can spend the
+    # token or merge itself (theirs show the check as skipped and still need a manual merge).
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.user.login == 'Allan2612' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write # turn on auto-merge
+      pull-requests: write # review comments
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+            BASE: ${{ github.event.pull_request.base.ref }}
+
+            You review pull requests for a public, bilingual (EN/ES) portfolio site built with Next.js 16.
+            The PR branch is checked out in the working directory. Read CLAUDE.md and AGENTS.md first;
+            the private spec and plan they mention are not available here. Use `gh pr view` and
+            `gh pr diff` to see the change, and read the surrounding code where you need context.
+            BASE `main` is a release to production (Vercel deploys it): review the whole diff the same way.
+
+            Block the merge (approve = false) only for problems that matter:
+            - a bug, a broken page or route, a build or type error you can see in the code;
+            - a security problem: secrets or tokens, weakened headers or CSP, unsafe HTML, risky workflow permissions;
+            - personal or confidential data: phone numbers, ID numbers, private addresses, client data
+              (the only public email is the one already in content/site.*.ts);
+            - accessibility regressions: missing alt text or labels, keyboard traps, content hidden when motion is reduced;
+            - a change that breaks a rule in CLAUDE.md or AGENTS.md, or English/Spanish copy that no longer match;
+            - removed or weakened tests or checks without a stated reason.
+            Style preferences and small suggestions do not block: mention them, and approve.
+
+            Post exactly one top-level comment with `gh pr comment`, in Spanish (neutral, no voseo):
+            the verdict first ("Aprobado: se mergea cuando pase el CI" or "Bloqueado"), then each
+            finding with file:line and why it matters. Keep it short. Then return the structured result.
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Read,Glob,Grep,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(git log:*),Bash(git diff:*),Bash(git show:*)"
+            --json-schema '{"type":"object","properties":{"approve":{"type":"boolean"},"summary":{"type":"string"}},"required":["approve","summary"]}'
+
+      - name: Turn on auto-merge, or block
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          APPROVE: ${{ fromJSON(steps.claude.outputs.structured_output || '{}').approve == true }}
+        run: |
+          if [ "$APPROVE" = "true" ]; then
+            gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --merge
+          else
+            echo "::error::Claude blocked this pull request (see its comment), or the review did not finish."
+            exit 1
+          fi

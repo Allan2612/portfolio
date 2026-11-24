@@ -89,7 +89,8 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
               <Image
                 src={project.cover[locale].src}
                 alt={project.cover[locale].alt}
-                priority
+                loading="eager"
+                fetchPriority="high"
                 sizes="(min-width: 1024px) 52rem, 100vw"
                 className="h-auto w-full max-w-wide"
               />
