@@ -39,7 +39,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: { formats: ["image/avif", "image/webp"] },
   // A 404 for URLs outside /en and /es: the root layout is inside [locale], so app/global-not-found.tsx renders it.
-  experimental: { globalNotFound: true },
+  experimental: {
+    globalNotFound: true,
+    // Off: on Vercel the restored Turbopack cache served the previous globals.css (through the Tailwind
+    // loader) with new HTML, so production shipped stale styles. A cold build here takes seconds anyway.
+    turbopackFileSystemCacheForBuild: false,
+  },
   turbopack: {
     rules: {
       "*.css": {
