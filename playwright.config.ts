@@ -6,8 +6,15 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
-  use: { baseURL: "http://localhost:3000" },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  // Reduced motion: axe must measure colours after the intro animation, not halfway through a fade.
+  use: { baseURL: "http://localhost:3000", contextOptions: { reducedMotion: "reduce" } },
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "phone", use: { ...devices["Pixel 7"] } },
+    { name: "safari", use: { ...devices["Desktop Safari"] } },
+    { name: "iphone", use: { ...devices["iPhone 15"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+  ],
   webServer: {
     command: "pnpm start",
     url: "http://localhost:3000/en",

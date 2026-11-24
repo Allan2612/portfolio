@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -15,7 +16,8 @@ const csp = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  // No upgrade-insecure-requests: every resource is same-origin and HSTS already forces HTTPS, while
+  // WebKit applies the upgrade to http://localhost too and loads the production build without CSS.
 ].join("; ");
 
 const securityHeaders = [
@@ -29,8 +31,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  partialPrefetching: true,
+  // Off on purpose: with it, unknown slugs get a prerendered fallback shell sent as 200 before
+  // notFound() runs, so /en/projects/<typo> would not be a real 404. The site has few routes anyway.
+  partialPrefetching: false,
   poweredByHeader: false,
+  images: { formats: ["image/avif", "image/webp"] },
+  // A 404 for URLs outside /en and /es: the root layout is inside [locale], so app/global-not-found.tsx renders it.
+  experimental: { globalNotFound: true },
   turbopack: {
     rules: {
       "*.css": {
@@ -48,4 +55,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Case studies are .mdx files imported by the project page (not routes), so pageExtensions stays default.
+export default createMDX()(nextConfig);

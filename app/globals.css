@@ -1,10 +1,797 @@
 @import "tailwindcss";
 
-/* Design tokens arrive in Phase 2 (visual direction). Until then: system colors, light and dark. */
+/*
+ * Design tokens. Direction "quiet instrument": one serif family, paper and ink, a brass accent used
+ * on one element per screen, a narrow column that starts left of centre, and space instead of lines.
+ * Components use these tokens only (Tailwind utilities such as bg-paper, text-soft, text-lead).
+ * Light and dark follow the system setting; there is no theme toggle (no client JavaScript).
+ */
+
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
+  --paper: #e8e8e3;
+  --surface: #dcdcd6;
+  --surface-2: #cfcfc8;
+  --ink: #181715;
+  /* Dark enough for 4.5:1 on the surface colour too (the About band), not only on paper. */
+  --soft: #5b5a54;
+  /* Brass is a fill with ink on top; as text on paper it fails contrast, so never use it for text in light mode. */
+  --accent: #bfb21a;
+  --accent-ink: #181715;
+}
+
+/* Dark follows the system unless the theme button set data-theme on <html>; both blocks hold the same values. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #121212;
+    --surface: #1e1e1e;
+    --surface-2: #2a2a2a;
+    --ink: #e8e8e3;
+    --soft: #a6a6a1;
+    --accent: #cfc23a;
+    --accent-ink: #121212;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #121212;
+  --surface: #1e1e1e;
+  --surface-2: #2a2a2a;
+  --ink: #e8e8e3;
+  --soft: #a6a6a1;
+  --accent: #cfc23a;
+  --accent-ink: #121212;
+}
+
+/* Header controls: language (EN | ES, the current one filled) and the theme button. */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.lang-switch {
+  display: inline-flex;
+  background: var(--surface);
+  padding: 0.2rem;
+  gap: 0.2rem;
+  font-size: var(--text-small);
+  line-height: 1;
+}
+.lang-switch > * {
+  padding: 0.35rem 0.55rem;
+}
+.lang-switch [aria-current] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.lang-switch a:hover {
+  background: var(--surface-2);
+}
+
+/* Theme button: the moon offers dark, the sun offers light. */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: -0.4rem 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+.theme-toggle:hover {
+  background: var(--surface);
+}
+.theme-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+.theme-toggle .sun,
+:root[data-theme="dark"] .theme-toggle .moon {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .sun {
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .moon {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .theme-toggle .sun {
+    display: block;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-soft: var(--soft);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+
+  --font-serif: var(--font-stix), ui-serif, Georgia, "Times New Roman", serif;
+}
+
+@theme {
+  /* Four type steps, fluid between a 360px phone and a 1440px desktop. Body never drops below 16px. */
+  --text-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --text-small--line-height: 1.45;
+  --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-body--line-height: 1.5;
+  --text-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-lead--line-height: 1.35;
+  --text-display: clamp(3rem, 1rem + 7.2vw, 7.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.035em;
+  --text-head: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+  --text-head--line-height: 1.12;
+  --text-head--letter-spacing: -0.026em;
+
+  /* Layout: one column that starts at ~22% of the viewport on wide screens and at the margin on phones. */
+  --spacing-gutter: clamp(1.25rem, 4vw, 3rem);
+  /* Left edge of the column, from the page edge: the gutter on phones, about 22% of the width on desktops. */
+  /* On very wide monitors the page centres instead of drifting left (72rem of content). */
+  --spacing-inset: max(clamp(1.25rem, 4vw, 3rem), calc(22vw - 4rem), calc((100vw - 72rem) / 2));
+  --spacing-section: clamp(6rem, 4rem + 6vw, 9rem);
+  --container-measure: 36rem;
+  --container-wide: 52rem;
+
+  --radius-none: 0;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Anchored sections (#work, #about…) land with a little air above them. */
+[id] {
+  scroll-margin-top: 1.5rem;
 }
 
 body {
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- Layout ---------- */
+
+/* The column: every block shares this left edge. */
+.col {
+  padding-left: var(--spacing-inset);
+  padding-right: var(--spacing-gutter);
+}
+
+/* Facts beside the text on wide screens: the facts sit in the margin left of the column edge. */
+.split {
+  padding-left: var(--spacing-inset);
+  padding-right: var(--spacing-gutter);
+  display: grid;
+  gap: 2rem;
+}
+.split-main {
+  max-width: var(--container-measure);
+  min-width: 0;
+}
+@media (min-width: 80rem) {
+  .split {
+    padding-left: var(--spacing-gutter);
+    grid-template-columns: calc(var(--spacing-inset) - var(--spacing-gutter)) minmax(0, var(--container-measure));
+    column-gap: 0;
+  }
+  .split-side {
+    grid-column: 1;
+    padding-right: 2.5rem;
+    /* Next to the text it describes, not at the screen's edge. */
+    justify-self: end;
+    width: min(100%, 16rem);
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+  .split-main,
+  .split-title {
+    grid-column: 2;
+  }
+  /* A title above both columns keeps the column edge; the side facts start level with the text. */
+  .split-title + .split-side,
+  .split-title ~ .split-main {
+    grid-row: 2;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--spacing-gutter);
+  top: -4rem;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.5rem 0.75rem;
+}
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* The one filled control on a screen: brass with ink text. */
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.7rem 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 150ms, transform 150ms;
+}
+.button:hover {
+  background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+.button:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Facts (label above value) ---------- */
+
+.facts {
+  display: grid;
+  align-content: start;
+  gap: 1.1rem;
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+}
+.facts dt {
+  color: var(--soft);
+}
+
+/* ---------- Two-ended rows: text at the left, a value at the far right ---------- */
+
+.two-ends {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+}
+.two-ends-value {
+  color: var(--soft);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Detail level: CSS only. "Full detail" reveals every .detail block on the page. ---------- */
+
+.reading {
+  border: 0;
+  padding: 0;
+  margin-inline: 0;
+}
+.reading-options {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  background: var(--surface);
+  padding: 0.25rem;
+  gap: 0.25rem;
+}
+.reading label {
+  position: relative;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  font-size: var(--text-small);
+  transition: background-color 150ms, color 150ms;
+}
+.reading input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.reading label:has(input:checked) {
+  background: var(--ink);
+  color: var(--paper);
+}
+.reading label:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.detail {
+  display: none;
+}
+html:has(#reading-full:checked) .detail {
+  display: block;
+}
+html:has(#reading-full:checked) ul.detail {
+  display: grid;
+}
+
+/* ---------- Links: underlined only in running text; elsewhere position and size say "link" ---------- */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.link,
+.prose a,
+figcaption a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color 150ms;
+}
+.link:hover,
+.prose a:hover,
+figcaption a:hover,
+header nav a:hover,
+footer a:hover,
+.work-title a:hover {
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  padding-top: max(3rem, 9vh);
+}
+.intro-name {
+  font-size: var(--text-display);
+  line-height: var(--text-display--line-height);
+  letter-spacing: var(--text-display--letter-spacing);
+  font-weight: 400;
+}
+.intro-role {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+  color: var(--soft);
+}
+.intro-grid {
+  margin-top: 3rem;
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+.intro-grid > :first-child {
+  max-width: var(--container-measure);
+}
+.intro-statement {
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  max-width: 34rem;
+}
+@media (min-width: 64rem) {
+  .intro-grid {
+    grid-template-columns: minmax(0, 34rem) minmax(0, 24rem);
+    gap: 5rem;
+  }
+}
+.proof {
+  margin-top: 4rem;
+  display: grid;
+  gap: 0.25rem 3rem;
+  font-size: var(--text-small);
+}
+@media (min-width: 48rem) {
+  .proof {
+    grid-auto-flow: column;
+    justify-content: start;
+  }
+}
+
+.page-title {
+  font-size: clamp(2.5rem, 1.25rem + 4.2vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.section-title {
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+}
+
+/* ---------- Selected work: one full-width row per project, text beside its picture or its strongest fact ---------- */
+
+.work {
+  margin-top: 3rem;
+  display: grid;
+  gap: 1.5rem;
+  /* Capped so the blocks do not stretch across very wide monitors. */
+  max-width: 72rem;
+}
+/* Each project is one filled block, so it is clear where a project starts and ends. */
+.work-row {
+  display: grid;
+  gap: 1.5rem;
+  background: var(--surface);
+  padding: clamp(1.25rem, 3vw, 2.75rem);
+  transition: background-color 200ms;
+}
+/* Lighter on hover, not darker: soft ink keeps 4.5:1 against it. */
+.work-row:hover {
+  background: color-mix(in srgb, var(--surface) 55%, var(--paper));
+}
+.work-title {
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+}
+.work-text {
+  max-width: var(--container-measure);
+}
+.work-visual {
+  display: block;
+}
+/* The strongest fact sits straight on the project's block: no box inside the box. */
+.tile {
+  display: grid;
+  align-content: center;
+  gap: 0.75rem;
+  height: 100%;
+}
+.tile-value {
+  font-size: clamp(2.75rem, 1rem + 5vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.tile-label {
+  max-width: 26rem;
+}
+@media (min-width: 64rem) {
+  .work-row {
+    grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: stretch;
+  }
+}
+
+.read-more {
+  font-weight: 600;
+}
+.read-more:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Three short points: scannable instead of a paragraph. */
+/* No display here: on the home page .detail decides whether the list shows (Summary or Full detail). */
+.key-points {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.key-points li + li {
+  margin-top: 0.5rem;
+}
+.key-points li::marker {
+  color: var(--soft);
+}
+.in-short {
+  background: var(--surface);
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2.5rem);
+}
+.in-short .key-points {
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+}
+
+/* ---------- Experience: dates in a narrow column, the role beside them ---------- */
+
+.experience-row {
+  display: grid;
+  gap: 0.25rem;
+}
+@media (min-width: 48rem) {
+  .experience-row {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .experience-row > :first-child {
+    padding-top: 0.35rem;
+  }
+}
+
+/* ---------- About: a field of the surface colour ---------- */
+
+.band {
+  background: var(--surface);
+}
+
+/* ---------- More projects: two columns of text ---------- */
+
+.more {
+  display: grid;
+  gap: 2.5rem 4rem;
+  max-width: var(--container-wide);
+}
+@media (min-width: 48rem) {
+  .more {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Contact: the page closes on an inverted field ---------- */
+
+.closing {
+  background: var(--ink);
+  color: var(--paper);
+}
+.closing-soft {
+  color: color-mix(in srgb, var(--paper) 72%, var(--ink));
+}
+.closing-lead {
+  font-size: var(--text-display);
+  line-height: var(--text-display--line-height);
+  letter-spacing: var(--text-display--letter-spacing);
+  margin-top: 0.5rem;
+}
+.closing-email {
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  overflow-wrap: anywhere;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--accent);
+}
+.closing :focus-visible {
+  outline-color: var(--paper);
+}
+
+/* ---------- Motion: the intro rises on load (CSS only). No scroll reveals: content must be visible without scrolling into it. ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+}
+.rise {
+  animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.rise-2 {
+  animation-delay: 90ms;
+}
+.rise-3 {
+  animation-delay: 180ms;
+}
+/* ---------- Case study text ---------- */
+
+.prose > * + * {
+  margin-top: 1rem;
+}
+/* Sections of a case study are marked by size and space, so it is clear where each one starts. */
+.prose h2 {
+  margin-top: 5rem;
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+}
+.prose h3 {
+  margin-top: 2.5rem;
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+}
+.prose h2 + * {
+  margin-top: 1.25rem;
+}
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.75rem;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+.prose li + li {
+  margin-top: 0.5rem;
+}
+.prose strong {
+  font-weight: 600;
+}
+.prose code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--surface);
+  padding: 0.1em 0.3em;
+}
+.prose figure {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+figcaption {
+  margin-top: 0.75rem;
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+  color: var(--soft);
+}
+
+/* A screenshot beside its phone version; the pair may run wider than the text column. */
+.figure-pair-media {
+  display: grid;
+  grid-template-columns: minmax(0, 3.4fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+@media (min-width: 80rem) {
+  .figure-pair {
+    width: min(var(--container-wide), calc(100vw - var(--spacing-inset) - var(--spacing-gutter)));
+  }
+}
+
+/* Diagrams drawn in HTML: filled blocks, no outlines; readable at any width and in both themes. */
+.diagram {
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+}
+.diagram-core {
+  display: grid;
+  gap: 0.25rem;
+  background: var(--surface-2);
+  padding: 1rem 1.25rem;
+}
+.diagram-core strong {
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+.diagram-rows {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.prose .diagram-rows {
+  list-style: none;
+  padding-left: 0;
+}
+.prose .diagram-rows li + li {
+  margin-top: 0;
+}
+.diagram-rows li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr);
+  align-items: stretch;
+}
+.diagram-port,
+.diagram-adapter {
+  background: var(--surface);
+  padding: 0.6rem 0.9rem;
+}
+/* Soft ink on a surface falls under 4.5:1, so text inside blocks stays in full ink. */
+.diagram-adapter {
+  font-weight: 600;
+}
+.diagram-adapter small {
+  display: block;
+  font-weight: 400;
+  font-size: inherit;
+}
+.diagram-arrow {
+  position: relative;
+}
+.diagram-arrow::before {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  right: 0.55rem;
+  top: 50%;
+  border-top: 2px solid var(--soft);
+}
+.diagram-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0.35rem;
+  top: calc(50% - 0.3rem);
+  border-left: 0.45rem solid var(--soft);
+  border-top: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid transparent;
+}
+
+/* Flow: filled steps with a down arrow between them. */
+.diagram-flow,
+.prose .diagram-flow {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+}
+.prose .diagram-flow li + li {
+  margin-top: 0;
+}
+.diagram-flow li {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+}
+.diagram-flow strong {
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+.diagram-flow li + li::before {
+  content: "";
+  position: absolute;
+  left: 1.5rem;
+  top: -1.75rem;
+  height: 1.25rem;
+  border-left: 2px solid var(--soft);
+}
+.diagram-flow li + li::after {
+  content: "";
+  position: absolute;
+  left: calc(1.5rem - 0.3rem + 1px);
+  top: -0.6rem;
+  border-top: 0.45rem solid var(--soft);
+  border-left: 0.3rem solid transparent;
+  border-right: 0.3rem solid transparent;
+}
+
+/* Modules over a shared core. */
+.diagram-modules,
+.prose .diagram-modules {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.5rem;
+}
+.prose .diagram-modules li + li {
+  margin-top: 0;
+}
+.diagram-modules li {
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+.diagram-link,
+.prose .diagram-link {
+  margin: 0;
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  border-left: 2px solid var(--soft);
+  margin-left: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

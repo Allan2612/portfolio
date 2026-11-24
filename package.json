@@ -10,7 +10,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check:banned": "node scripts/banned-terms.mjs app content lib scripts tests e2e public README.md .next/server/app",
+    "check:banned": "node scripts/banned-terms.mjs app components content lib scripts tests e2e public mdx-components.tsx README.md .next/server/app",
     "cv:public": "node scripts/build-public-cv.mjs",
     "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .githooks',{stdio:'ignore'})}catch{}\""
   },
@@ -18,6 +18,9 @@
     "node": ">=24"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.4.6",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0"
@@ -26,6 +29,7 @@
     "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.65.1",
     "@tailwindcss/turbopack": "4.3.3",
+    "@types/mdx": "^2.0.14",
     "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -1,0 +1,92 @@
+import services from "../images/tyt/services.webp";
+import phoneHome from "../images/tyt/phone-home-es.webp";
+
+## El problema
+
+TyT Tecnología repara computadoras, instala cámaras de seguridad y vende equipo en Pérez Zeledón. No tenía un lugar propio en la web: nada aparecía al buscar el negocio, no había dónde ver sus servicios ni un catálogo para recorrer.
+
+Tres condiciones definieron el proyecto:
+
+- **La gente compra por WhatsApp.** Los clientes del taller ya cierran cada venta en un chat, así que el sitio tenía que llevarlos a WhatsApp, no reemplazarlo con una pasarela de pago.
+- **Los dueños lo mantienen al día.** Productos, precios, fotos, servicios y promociones cambian seguido, y nada de eso podía depender de un programador.
+- **Precios en colones, con referencia en dólares.** El equipo suele cotizarse en dólares, así que el sitio muestra los dos, con un tipo de cambio que se actualiza solo.
+
+## Qué construí
+
+- **Sitio público en español e inglés:** una portada de servicios con una página para cada uno, catálogo con filtros y páginas por categoría, fichas de producto, casos de éxito, contacto con mapa y páginas legales.
+- **Carrito con cierre del pedido por WhatsApp.** El carrito vive en el navegador y, cuando el cliente inicia sesión, en su cuenta; los dos se combinan sin perder artículos. Al finalizar, el carrito se convierte en un mensaje de WhatsApp para el taller.
+- **Cuentas de cliente** con consultas en forma de conversación, para que el cliente elija entre la web y WhatsApp.
+- **Panel de administración** para productos y fotos, servicios, categorías, casos de éxito, consultas y configuración del sitio (número de WhatsApp, horario, ubicación y redes), para que nada de lo que los dueños necesitan cambiar quede fijo en el código.
+- **Tipo de cambio diario:** una tarea programada lo actualiza, y cada precio se muestra en colones con su referencia en dólares.
+- **Carga de productos asistida por IA:** el administrador pega la ficha de otra tienda y Gemini llena el formulario para que lo revise.
+- **Promociones para redes sociales**, descritas más abajo.
+- **SEO técnico:** metadatos por página, `hreflang`, sitemap, datos estructurados y páginas generadas de forma estática.
+
+## Decisiones técnicas
+
+### Puertos y adaptadores
+
+El dominio define interfaces y no conoce ni la base de datos ni los servicios externos. WhatsApp, el almacenamiento de archivos y la fuente del tipo de cambio son adaptadores detrás de esas interfaces.
+
+Eso rindió cuando las imágenes de los productos pasaron de Vercel Blob a Cloudflare R2: el cambio de código fue **un adaptador nuevo**, sin tocar la lógica del negocio, más una copia única de las imágenes que ya existían.
+
+<PortsDiagram
+  label="Puertos y adaptadores en la aplicación de TyT"
+  core="Lógica del negocio"
+  coreNote="Catálogo, carrito, promociones y consultas. Solo conoce interfaces."
+  rows={[
+    ["Almacenamiento de archivos", "Cloudflare R2", "Reemplazó a Vercel Blob cambiando este adaptador"],
+    ["Cierre del pedido", "Mensaje de WhatsApp", null],
+    ["Tipo de cambio", "Fuente diaria del tipo de cambio", null],
+    ["Datos", "Prisma y PostgreSQL", null],
+  ]}
+  caption="Cada servicio externo está detrás de una interfaz que define el dominio. Pasar las imágenes a Cloudflare R2 cambió un solo adaptador."
+/>
+
+### Una identidad visual sin sesión de fotos
+
+El taller tenía un logo y nada más: ni fotografía profesional, ni ilustraciones, ni guía de marca. Las fotos de banco lo habrían hecho ver como cualquier otra tienda, así que el diseño se construyó con lo que la marca sí tiene:
+
+- **El hero del inicio está hecho con el isotipo de TyT**, y sus formas recorren toda la página en lugar de una imagen genérica.
+- **La boleta de taller como lenguaje visual.** Las tarjetas de productos, servicios y contacto parecen boletas de reparación, con un código de referencia y un corte desprendible, y las especificaciones se leen como una ficha técnica.
+- **Un sistema tipográfico en lugar de imágenes:** una tipografía expandida para los títulos, una neutra para el texto y una monoespaciada para los datos del taller, como códigos, especificaciones y etiquetas, sobre una paleta oscura con un color reservado para las acciones y otro para los estados.
+- **Fotos de producto uniformes:** la IA lleva las fotos propias del taller al mismo fondo de estudio (ver la sección siguiente), y el catálogo se ve como una sola colección.
+
+<FigurePair
+  wide={{ src: services, alt: "Página de servicios de TyT: un título grande, filtros por área y tarjetas de servicio con fotos." }}
+  narrow={{ src: phoneHome, alt: "Inicio de TyT en un celular, en español." }}
+  caption="La página de servicios en escritorio y el inicio en un celular."
+/>
+
+### La IA propone, una persona aprueba
+
+Las promociones son donde la IA más ayuda y donde más daño puede hacer, porque un precio equivocado en un volante es una promesa a un cliente. Por eso el flujo reparte el trabajo:
+
+1. El administrador elige un producto.
+2. Gemini prepara fotos con fondo de estudio y el texto de la promoción.
+3. El administrador revisa **foto por foto** y aprueba o descarta cada una.
+4. **El volante lo dibuja el código**, en 4:5 y 9:16 para redes, con el precio y los datos tomados de la base de datos.
+
+Nada se publica sin aprobación, y el modelo nunca escribe un precio.
+
+### Autorización en cada acción
+
+Cada pantalla y cada acción del servidor del panel verifica por sí misma el rol de administrador. La capa de rutas también bloquea a quien no es administrador, pero no es el único candado: si una petición llega a una acción por otro camino, la acción igual la rechaza.
+
+### Calidad que corre sola
+
+- **119 archivos de pruebas**: 105 unitarios con Vitest y 14 end-to-end con Playwright, unas 635 pruebas.
+- CI en cada push: lint, formato, pruebas, build y end-to-end.
+- `develop` para el trabajo diario y `main` para las versiones, integradas mediante pull requests, con un despliegue de prueba por rama.
+- Notas de traspaso, una hoja de ruta y una lista de verificación para cada despliegue, para que otra persona pueda retomar el proyecto.
+
+## Resultado
+
+- **En línea en [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingüe y con el dominio propio del negocio.
+- Hecho para que los dueños administren el catálogo, los servicios y las promociones desde el panel, sin un programador.
+- 19 modelos de datos y 119 archivos de pruebas, por un solo desarrollador, en unos cinco meses.
+- La aplicación está en contenedores, y la migración a infraestructura propia para bajar el costo de hosting está en curso.
+
+## Qué me llevo
+
+Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera establecido sin recursos profesionales, solo con un logo y una idea clara de cómo funciona el taller. Un sistema de diseño construido con las formas y la tipografía de la propia marca funcionó mejor de lo que habrían funcionado las fotos de banco, y crece junto con el catálogo.
