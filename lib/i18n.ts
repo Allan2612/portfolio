@@ -12,3 +12,12 @@ export const otherLocale = (locale: Locale): Locale => (locale === "en" ? "es" :
 
 const sites = { en, es };
 export const getSite = (locale: Locale) => sites[locale];
+
+/** "2026-07" → "Jul 2026" / "jul. 2026", with the site's own month names (the Spanish CV writes "set."). */
+export const formatMonth = (yyyyMm: string, locale: Locale) => {
+  const [year, month] = yyyyMm.split("-").map(Number);
+  return `${sites[locale].months[month - 1]} ${year}`;
+};
+
+export const formatPeriod = (start: string, end: string | null, locale: Locale) =>
+  `${formatMonth(start, locale)} – ${end ? formatMonth(end, locale) : sites[locale].present}`;

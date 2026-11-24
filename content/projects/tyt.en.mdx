@@ -1,0 +1,92 @@
+import services from "../images/tyt/services.webp";
+import phoneHome from "../images/tyt/phone-home-en.webp";
+
+## The problem
+
+TyT Tecnología repairs computers, installs security cameras and sells equipment in Pérez Zeledón. It had no place of its own on the web: nothing that showed up when someone searched for the shop, nowhere to see its services, and no catalog to browse.
+
+Three constraints shaped the project:
+
+- **People buy over WhatsApp.** The shop's customers already close every sale in a chat, so the site had to hand them over to WhatsApp, not replace it with a payment gateway.
+- **The owners keep it up to date.** Products, prices, photos, services and promotions change often, and none of that could depend on a developer.
+- **Prices in colones, with a dollar reference.** Equipment is often priced against the dollar, so the site shows both, with an exchange rate that updates itself.
+
+## What I built
+
+- **Public site in Spanish and English:** a services landing page with one page per service, a catalog with filters and category pages, product pages, success stories, contact with a map, and legal pages.
+- **Cart with WhatsApp checkout.** The cart lives in the browser and, once the customer signs in, in their account; the two merge without losing items. Checkout turns the cart into a WhatsApp message to the shop.
+- **Customer accounts** with inquiries handled as message threads, so a customer can choose between the web and WhatsApp.
+- **Admin dashboard** for products and photos, services, categories, success stories, inquiries and site settings (WhatsApp number, hours, location, social links), so nothing the owners need to change is hard-coded.
+- **Daily exchange rate:** a scheduled job updates it, and every price shows in colones with its dollar reference.
+- **AI-assisted product entry:** the admin pastes a product sheet from another store and Gemini fills in the form for review.
+- **Promotions for social media**, described below.
+- **Technical SEO:** per-page metadata, `hreflang`, a sitemap, structured data and statically generated pages.
+
+## Technical decisions
+
+### Ports and adapters
+
+The domain defines interfaces and knows nothing about the database or outside services. WhatsApp, file storage and the exchange-rate source are adapters behind those interfaces.
+
+That paid off when product images moved from Vercel Blob to Cloudflare R2: the change was **one new adapter**, with no edits to the business logic.
+
+<PortsDiagram
+  label="Ports and adapters in the TyT application"
+  core="Business logic"
+  coreNote="Catalog, cart, promotions and inquiries. Knows only interfaces."
+  rows={[
+    ["File storage", "Cloudflare R2", "Replaced Vercel Blob by swapping this adapter"],
+    ["Checkout", "WhatsApp message", null],
+    ["Exchange rate", "Daily rate source", null],
+    ["Data", "Prisma and PostgreSQL", null],
+  ]}
+  caption="Each outside service sits behind an interface the domain owns. Moving the images to Cloudflare R2 changed one adapter."
+/>
+
+### A visual identity without a photo shoot
+
+The shop had a logo and nothing else: no professional photography, no illustrations, no brand guide. Stock photos would have made it look like any other store, so the design is built from what the brand does have:
+
+- **The home hero is built from TyT's own isotype**, and its shapes carry down the whole home page instead of a generic banner image.
+- **The workshop ticket as the design language.** Product, service and contact cards look like repair tickets, with a reference code and a tear-off cut, and product specs read like a data sheet.
+- **A type system instead of imagery:** an expanded typeface for headings, a neutral one for body text and a monospace for workshop data such as codes, specs and labels, on a dark palette where one color is reserved for actions and another for status.
+- **Consistent product photos:** AI puts the shop's own photos on the same studio background (see the next section), so the catalog looks like one collection.
+
+<FigurePair
+  wide={{ src: services, alt: "TyT services page in Spanish: a large heading, filters by area and service cards with photos." }}
+  narrow={{ src: phoneHome, alt: "TyT home page on a phone, in English." }}
+  caption="The services page on a desktop, and the home page on a phone."
+/>
+
+### AI that drafts, a person who approves
+
+Promotions are where AI helps the most and can hurt the most, because a wrong price on a flyer is a promise to a customer. So the flow splits the work:
+
+1. The admin picks a product.
+2. Gemini prepares studio-style photos and the promotional copy.
+3. The admin reviews **photo by photo** and approves or discards each one.
+4. **The code draws the flyer**, in 4:5 and 9:16 for social media, with the price and details taken from the database.
+
+Nothing is published without approval, and the model never writes a price.
+
+### Authorization on every action
+
+Every admin screen and every server action checks the administrator role itself. The routing layer also blocks non-admins, but it is not the only lock: if a request reaches an action some other way, the action still refuses it.
+
+### Quality that runs on its own
+
+- **119 test files**: 105 unit test files with Vitest and 14 end-to-end with Playwright, about 635 tests.
+- CI on every push: lint, formatting, tests, build and end-to-end.
+- `develop` for daily work and `main` for releases, merged by pull request, with a preview deployment for every branch.
+- Handoff notes, a roadmap and a QA checklist for every deploy, so someone else can pick the project up.
+
+## Result
+
+- **Live at [tytsoluciones.net](https://www.tytsoluciones.net)**, bilingual, on the shop's own domain.
+- Built so the owners manage the catalog, services and promotions from the dashboard, without a developer.
+- 19 data models and 119 test files, by one developer, in about five months.
+- The app is containerized, and a move to self-managed infrastructure to lower hosting costs is in progress.
+
+## What I took from it
+
+The hardest part was not the code: it was making a small shop look established with no professional assets, just a logo and a clear idea of how the workshop works. A design system built from the brand's own shapes and type held up better than stock images would have, and it scales as the catalog grows.

@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -29,8 +30,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  partialPrefetching: true,
+  // Off on purpose: with it, unknown slugs get a prerendered fallback shell sent as 200 before
+  // notFound() runs, so /en/projects/<typo> would not be a real 404. The site has few routes anyway.
+  partialPrefetching: false,
   poweredByHeader: false,
+  images: { formats: ["image/avif", "image/webp"] },
   turbopack: {
     rules: {
       "*.css": {
@@ -48,4 +52,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Case studies are .mdx files imported by the project page (not routes), so pageExtensions stays default.
+export default createMDX()(nextConfig);
