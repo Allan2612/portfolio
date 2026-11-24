@@ -51,7 +51,7 @@ test("every case study links to the next one, and the home page links to every c
 
 test("reading for 5 minutes reveals the details; 1 minute hides them", async ({ page }) => {
   await page.goto("/en");
-  const detail = page.locator(".ledger-detail").first();
+  const detail = page.locator("#work .detail").first();
   await expect(detail).toBeHidden();
   await page.getByText("5 minutes", { exact: true }).click();
   await expect(detail).toBeVisible();

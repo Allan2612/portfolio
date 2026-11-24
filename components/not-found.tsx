@@ -13,9 +13,9 @@ export function NotFoundContent() {
             <h1 className="text-head">{nf.heading}</h1>
             <p className="mt-4 text-lead">{nf.text}</p>
             <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              <li><Link href={`/${locale}`}>{nf.home}</Link></li>
-              <li><Link href={`/${locale}#work`}>{nf.projects}</Link></li>
-              <li><a href={site.cv[locale]} type="application/pdf">{nf.cv}</a></li>
+              <li><Link href={`/${locale}`} className="link">{nf.home}</Link></li>
+              <li><Link href={`/${locale}#work`} className="link">{nf.projects}</Link></li>
+              <li><a href={site.cv[locale]} type="application/pdf" className="link">{nf.cv}</a></li>
             </ul>
           </section>
         );

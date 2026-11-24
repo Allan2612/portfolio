@@ -13,7 +13,8 @@
   --surface: #dcdcd6;
   --surface-2: #cfcfc8;
   --ink: #181715;
-  --soft: #63625c;
+  /* Dark enough for 4.5:1 on the surface colour too (the About band), not only on paper. */
+  --soft: #5b5a54;
   /* Brass is a fill with ink on top; as text on paper it fails contrast, so never use it for text in light mode. */
   --accent: #bfb21a;
   --accent-ink: #181715;
@@ -52,6 +53,9 @@
   --text-body--line-height: 1.5;
   --text-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
   --text-lead--line-height: 1.35;
+  --text-display: clamp(3rem, 1rem + 7.2vw, 7.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.035em;
   --text-head: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
   --text-head--line-height: 1.12;
   --text-head--letter-spacing: -0.026em;
@@ -97,17 +101,6 @@ h3 {
   color: var(--accent-ink);
 }
 
-a {
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
-  transition: text-decoration-color 150ms;
-}
-a:hover {
-  text-decoration-color: currentColor;
-}
-
 /* ---------- Layout ---------- */
 
 /* The column: every block shares this left edge. */
@@ -149,12 +142,6 @@ a:hover {
   .split-title ~ .split-main {
     grid-row: 2;
   }
-}
-
-.section-title {
-  font-size: var(--text-lead);
-  line-height: var(--text-lead--line-height);
-  font-weight: 600;
 }
 
 .skip-link {
@@ -259,104 +246,231 @@ html:has(#reading-full:checked) ul.detail {
   display: grid;
 }
 
-/* ---------- Selected work: a ledger with a preview beside it ---------- */
+/* ---------- Links: underlined only in running text; elsewhere position and size say "link" ---------- */
 
-.ledger-section {
-  position: relative;
+a {
+  color: inherit;
+  text-decoration: none;
 }
-.ledger {
+.link,
+.prose a,
+figcaption a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color 150ms;
+}
+.link:hover,
+.prose a:hover,
+figcaption a:hover,
+header nav a:hover,
+footer a:hover,
+.work-title a:hover {
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  padding-top: max(3rem, 9vh);
+}
+.intro-name {
+  font-size: var(--text-display);
+  line-height: var(--text-display--line-height);
+  letter-spacing: var(--text-display--letter-spacing);
+  font-weight: 400;
+}
+.intro-role {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+  color: var(--soft);
+}
+.intro-grid {
+  margin-top: 3rem;
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+.intro-grid > :first-child {
+  max-width: var(--container-measure);
+}
+.intro-shot img {
+  background: var(--surface);
+}
+@media (min-width: 64rem) {
+  .intro-grid {
+    grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+    gap: 4rem;
+  }
+}
+.proof {
+  margin-top: 4rem;
+  display: grid;
+  gap: 0.25rem 3rem;
+  font-size: var(--text-small);
+}
+@media (min-width: 48rem) {
+  .proof {
+    grid-auto-flow: column;
+    justify-content: start;
+  }
+}
+
+.page-title {
+  font-size: clamp(2.5rem, 1.25rem + 4.2vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.section-title {
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+}
+
+/* ---------- Selected work: one full-width row per project, text beside its picture or its strongest fact ---------- */
+
+.work {
+  margin-top: 3rem;
+  display: grid;
+  gap: 5rem;
+}
+.work-row {
   display: grid;
   gap: 1.5rem;
 }
-.ledger-row {
+.work-title {
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  letter-spacing: var(--text-head--letter-spacing);
+}
+.work-text {
+  max-width: var(--container-measure);
+}
+.work-visual {
+  display: block;
+}
+.tile {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0 1rem;
-  align-items: baseline;
-  text-decoration: none;
-  transition: color 150ms;
+  align-content: end;
+  gap: 0.75rem;
+  min-height: 15rem;
+  height: 100%;
+  padding: 1.75rem;
+  background: var(--surface);
+  transition: background-color 200ms;
 }
-.ledger-name {
-  font-size: var(--text-lead);
-  line-height: var(--text-lead--line-height);
+.work-row:hover .tile {
+  background: var(--surface-2);
 }
-a.ledger-row .ledger-name {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+.tile-value {
+  font-size: clamp(2.75rem, 1rem + 5vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
 }
-.ledger-kind {
-  grid-column: 1;
-  grid-row: 2;
-  font-size: var(--text-small);
-  color: var(--soft);
+.tile-label {
+  max-width: 26rem;
 }
-.ledger-year {
-  grid-column: 2;
-  grid-row: 1;
-  font-size: var(--text-small);
-  color: var(--soft);
-  font-variant-numeric: tabular-nums;
-}
-.ledger-summary {
-  margin-top: 0.35rem;
-}
-.ledger-detail > * + * {
-  margin-top: 0.35rem;
-}
-.ledger-detail {
-  margin-top: 0.5rem;
-}
-.ledger-preview {
-  margin-top: 1rem;
-  width: 100%;
-  height: auto;
-}
-@media (min-width: 48rem) {
-  .ledger-row {
-    grid-template-columns: minmax(0, 1fr) 11rem 3rem;
+@media (min-width: 64rem) {
+  .work-row {
+    grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: stretch;
   }
-  .ledger-kind {
-    grid-column: 2;
-    grid-row: 1;
+  /* Alternate sides so the list does not read as a stack of identical rows. */
+  .work-row:nth-child(even) .work-visual {
+    order: -1;
   }
-  .ledger-year {
-    grid-column: 3;
-    text-align: right;
-  }
-}
-/* Wide screens: the preview leaves the list and sits in the empty space to its right.
-   The first project's preview shows by default; hovering or focusing a project with a preview swaps it. */
-@media (min-width: 80rem) {
-  .ledger > li:hover .ledger-row,
-  .ledger > li:focus-within .ledger-row {
-    color: var(--ink);
-  }
-  .ledger:has(> li:hover) > li:not(:hover) .ledger-row {
-    color: var(--soft);
-  }
-  .ledger-preview {
-    position: absolute;
-    top: calc(var(--spacing-section) + 4rem);
-    left: calc(var(--spacing-inset) + var(--container-measure) + 4rem);
-    width: min(24rem, calc(100% - var(--spacing-inset) - var(--container-measure) - 4rem - var(--spacing-gutter)));
-    margin: 0;
-    opacity: 0;
-    transition: opacity 200ms;
-    pointer-events: none;
-  }
-  .ledger > li:first-child .ledger-preview {
-    opacity: 1;
-  }
-  .ledger:has(> li:is(:hover, :focus-within) .ledger-preview) .ledger-preview {
-    opacity: 0;
-  }
-  .ledger > li:is(:hover, :focus-within) .ledger-preview {
-    opacity: 1;
+  .work-row:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
   }
 }
 
+/* ---------- Experience: dates in a narrow column, the role beside them ---------- */
+
+.experience-row {
+  display: grid;
+  gap: 0.25rem;
+}
+@media (min-width: 48rem) {
+  .experience-row {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .experience-row > :first-child {
+    padding-top: 0.35rem;
+  }
+}
+
+/* ---------- About: a field of the surface colour ---------- */
+
+.band {
+  background: var(--surface);
+}
+
+/* ---------- More projects: two columns of text ---------- */
+
+.more {
+  display: grid;
+  gap: 2.5rem 4rem;
+  max-width: var(--container-wide);
+}
+@media (min-width: 48rem) {
+  .more {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Contact: the page closes on an inverted field ---------- */
+
+.closing {
+  background: var(--ink);
+  color: var(--paper);
+}
+.closing-soft {
+  color: color-mix(in srgb, var(--paper) 72%, var(--ink));
+}
+.closing-lead {
+  font-size: var(--text-display);
+  line-height: var(--text-display--line-height);
+  letter-spacing: var(--text-display--letter-spacing);
+  margin-top: 0.5rem;
+}
+.closing-email {
+  font-size: var(--text-head);
+  line-height: var(--text-head--line-height);
+  overflow-wrap: anywhere;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--accent);
+}
+.closing :focus-visible {
+  outline-color: var(--paper);
+}
+
+/* ---------- Motion: the intro rises on load (CSS only). No scroll reveals: content must be visible without scrolling into it. ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+}
+.rise {
+  animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.rise-2 {
+  animation-delay: 90ms;
+}
+.rise-3 {
+  animation-delay: 180ms;
+}
 /* ---------- Case study text ---------- */
 
 .prose > * + * {

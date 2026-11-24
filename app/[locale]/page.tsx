@@ -9,82 +9,111 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const site = getSite(locale);
+  const lead = projects[0];
 
   return (
     <>
       <Header locale={locale} switchPath={`/${otherLocale(locale)}`} />
       <main id="main">
-        {/* Intro: who, what, where, and the reading-length control (CSS only, see .reading in globals.css). */}
-        <section className="col pt-[max(4rem,14vh)]" aria-labelledby="intro-title">
-          <div className="max-w-measure">
-            <h1 id="intro-title" className="text-head">
-              {site.name}
-              <span className="block">{site.role}</span>
-            </h1>
-            <p className="mt-6 text-lead">{site.hero.statement}</p>
-            <p className="mt-4 text-soft">{site.hero.location}</p>
-            <p className="text-soft">{site.hero.education}</p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <a href="#work" className="button">
-                {site.hero.primary}
-              </a>
-              <a href={site.cv[locale]} type="application/pdf">
-                {site.hero.cv}
-              </a>
-              <a href="#contact">{site.hero.contact}</a>
-            </div>
-            <ul className="mt-10 grid gap-1 text-small">
-              {site.hero.proof.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
-            <fieldset className="reading mt-10">
-              <legend className="text-small text-soft">{site.hero.reading.legend}</legend>
-              <div className="reading-options">
-                <label>
-                  <input type="radio" name="reading" value="short" defaultChecked />
-                  {site.hero.reading.short}
-                </label>
-                <label>
-                  <input type="radio" name="reading" value="full" id="reading-full" />
-                  {site.hero.reading.full}
-                </label>
+        {/* Intro: the name set large, then who/what/where beside the first project's live site. */}
+        <section className="col intro" aria-labelledby="intro-title">
+          <h1 id="intro-title" className="intro-name rise">
+            {site.name}
+            <span className="intro-role">{site.role}</span>
+          </h1>
+          <div className="intro-grid">
+            <div className="rise rise-2">
+              <p className="text-lead">{site.hero.statement}</p>
+              <p className="mt-5">{site.hero.location}</p>
+              <p className="text-soft">{site.hero.education}</p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <a href="#work" className="button">
+                  {site.hero.primary}
+                </a>
+                <a href={site.cv[locale]} type="application/pdf" className="link">
+                  {site.hero.cv}
+                </a>
+                <a href="#contact" className="link">
+                  {site.hero.contact}
+                </a>
               </div>
-            </fieldset>
+              <fieldset className="reading mt-10">
+                <legend className="text-small text-soft">{site.hero.reading.legend}</legend>
+                <div className="reading-options">
+                  <label>
+                    <input type="radio" name="reading" value="short" defaultChecked />
+                    {site.hero.reading.short}
+                  </label>
+                  <label>
+                    <input type="radio" name="reading" value="full" id="reading-full" />
+                    {site.hero.reading.full}
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+            {lead.cover && (
+              <figure className="intro-shot rise rise-3">
+                <Image
+                  src={lead.cover[locale].src}
+                  alt={lead.cover[locale].alt}
+                  priority
+                  sizes="(min-width: 64rem) 50vw, 100vw"
+                  className="h-auto w-full"
+                />
+                <figcaption>
+                  {lead.text[locale].title} · {site.kinds[lead.kind]} ·{" "}
+                  <a href={lead.links.live} className="link">
+                    {lead.links.live?.replace(/^https:\/\/(www\.)?/, "")}
+                  </a>
+                </figcaption>
+              </figure>
+            )}
           </div>
+          <ul className="proof">
+            {site.hero.proof.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
         </section>
 
-        <section id="work" className="col ledger-section pt-section" aria-labelledby="work-title">
+        <section id="work" className="col pt-section" aria-labelledby="work-title">
           <h2 id="work-title" className="section-title">
             {site.work.heading}
           </h2>
-          <ul className="ledger mt-8 max-w-measure">
+          <ul className="work">
             {projects.map((p) => {
               const t = p.text[locale];
               const href = `/${locale}/projects/${p.slug}`;
               return (
-                <li key={p.slug}>
-                  <Link href={href} className="ledger-row">
-                    <span className="ledger-name">{t.title}</span>
-                    <span className="ledger-kind">{site.kinds[p.kind]}</span>
-                    <span className="ledger-year">{p.start.slice(0, 4)}</span>
-                  </Link>
-                  <p className="ledger-summary">{t.summary}</p>
-                  <div className="detail ledger-detail">
-                    <p>{t.detail}</p>
-                    <p className="text-soft">{p.cardStack.join(" · ")}</p>
-                    <p>
-                      <Link href={href}>{site.work.readCase}</Link>
+                <li key={p.slug} className="work-row">
+                  <div className="work-text">
+                    <h3 className="work-title">
+                      <Link href={href}>{t.title}</Link>
+                    </h3>
+                    <p className="text-small text-soft">
+                      {site.kinds[p.kind]} · {formatPeriod(p.start, p.end, locale)}
+                    </p>
+                    <p className="mt-3">{t.summary}</p>
+                    <div className="detail mt-3">
+                      <p>{t.detail}</p>
+                    </div>
+                    <p className="mt-3 text-small text-soft">{p.cardStack.join(" · ")}</p>
+                    <p className="mt-4">
+                      <Link href={href} className="link">
+                        {site.work.readCase}
+                      </Link>
                     </p>
                   </div>
-                  {p.cover && (
-                    <Image
-                      className="ledger-preview"
-                      src={p.cover[locale].src}
-                      alt={p.cover[locale].alt}
-                      sizes="(min-width: 1024px) 22rem, 100vw"
-                    />
-                  )}
+                  <Link href={href} className="work-visual" tabIndex={-1} aria-hidden="true">
+                    {p.thumb ? (
+                      <Image src={p.thumb.src} alt="" sizes="(min-width: 64rem) 45vw, 100vw" className="h-auto w-full" />
+                    ) : (
+                      <span className="tile">
+                        <span className="tile-value">{t.highlight.value}</span>
+                        <span className="tile-label">{t.highlight.label}</span>
+                      </span>
+                    )}
+                  </Link>
                 </li>
               );
             })}
@@ -95,55 +124,57 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           <h2 id="experience-title" className="section-title">
             {site.experience.heading}
           </h2>
-          <ul className="mt-8 grid max-w-measure gap-6">
+          <ul className="mt-10 grid max-w-wide gap-10">
             {site.experience.items.map((e) => (
-              <li key={e.org}>
-                <div className="two-ends">
-                  <span>
-                    <strong className="font-semibold">{e.role}</strong> · {e.org}
-                  </span>
-                  <span className="two-ends-value">{formatPeriod(e.start, e.end, locale)}</span>
+              <li key={e.org} className="experience-row">
+                <p className="text-small text-soft tabular-nums">{formatPeriod(e.start, e.end, locale)}</p>
+                <div>
+                  <p className="text-lead">
+                    {e.role} <span className="text-soft">· {e.org}</span>
+                  </p>
+                  <p className="mt-1">{e.line}</p>
+                  <ul className="detail mt-3 grid list-disc gap-1 pl-5">
+                    {e.detail.map((d) => (
+                      <li key={d}>{d}</li>
+                    ))}
+                  </ul>
                 </div>
-                <p className="mt-1 text-soft">{e.line}</p>
-                <ul className="detail mt-2 grid list-disc gap-1 pl-5">
-                  {e.detail.map((d) => (
-                    <li key={d}>{d}</li>
-                  ))}
-                </ul>
               </li>
             ))}
           </ul>
         </section>
 
-        <section id="about" className="split pt-section" aria-labelledby="about-title">
-          <h2 id="about-title" className="section-title split-title">
-            {site.about.heading}
-          </h2>
-          <dl className="facts split-side">
-            {site.about.facts.map((f) => (
-              <div key={f.label}>
-                <dt>{f.label}</dt>
-                <dd>{f.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="split-main">
-            <div className="grid gap-5">
-              {site.about.paragraphs.map((p, i) => (
-                <p key={p.slice(0, 24)} className={i === 0 ? "text-lead" : undefined}>
-                  {p}
-                </p>
-              ))}
-            </div>
-            <h3 className="mt-14 font-semibold">{site.about.stackHeading}</h3>
-            <dl className="mt-4 grid gap-4">
-              {site.about.stack.map((g) => (
-                <div key={g.label}>
-                  <dt className="text-small text-soft">{g.label}</dt>
-                  <dd>{g.items}</dd>
+        <section id="about" className="band mt-section" aria-labelledby="about-title">
+          <div className="split py-section">
+            <h2 id="about-title" className="section-title split-title">
+              {site.about.heading}
+            </h2>
+            <dl className="facts split-side">
+              {site.about.facts.map((f) => (
+                <div key={f.label}>
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
                 </div>
               ))}
             </dl>
+            <div className="split-main">
+              <div className="grid gap-5">
+                {site.about.paragraphs.map((p, i) => (
+                  <p key={p.slice(0, 24)} className={i === 0 ? "text-lead" : undefined}>
+                    {p}
+                  </p>
+                ))}
+              </div>
+              <h3 className="mt-14 text-lead">{site.about.stackHeading}</h3>
+              <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+                {site.about.stack.map((g) => (
+                  <div key={g.label}>
+                    <dt className="text-small text-soft">{g.label}</dt>
+                    <dd>{g.items}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </section>
 
@@ -151,14 +182,16 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           <h2 id="more-title" className="section-title">
             {site.more.heading}
           </h2>
-          <ul className="mt-8 grid max-w-measure gap-6">
+          <ul className="more mt-10">
             {site.more.items.map((m) => (
               <li key={m.name}>
-                <p className="font-semibold">{m.name}</p>
-                <p className="mt-1">{m.text}</p>
+                <h3 className="text-lead">{m.name}</h3>
+                <p className="mt-2">{m.text}</p>
                 {m.href && (
-                  <p className="mt-1 text-small">
-                    <a href={m.href}>{site.more.code}</a>
+                  <p className="mt-2 text-small">
+                    <a href={m.href} className="link">
+                      {site.more.code}
+                    </a>
                   </p>
                 )}
               </li>
@@ -166,26 +199,26 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           </ul>
         </section>
 
-        <section id="contact" className="col pt-section" aria-labelledby="contact-title">
-          <h2 id="contact-title" className="sr-only">
-            {site.contactSection.heading}
-          </h2>
-          <div className="max-w-measure">
-            <p className="text-lead">
-              <span className="block text-soft">{site.contactSection.prompt}</span>
-              <span className="block">{site.contactSection.lead}</span>
+        <section id="contact" className="closing mt-section" aria-labelledby="contact-title">
+          <div className="col py-section">
+            <h2 id="contact-title" className="sr-only">
+              {site.contactSection.heading}
+            </h2>
+            <p className="text-lead closing-soft">{site.contactSection.prompt}</p>
+            <p className="closing-lead">{site.contactSection.lead}</p>
+            <p className="mt-8">
+              <a href={`mailto:${site.contact.email}`} className="closing-email">
+                {site.contact.email}
+              </a>
             </p>
-            <p className="mt-6 text-head">
-              <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
-            </p>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              <li><a href={site.contact.linkedin}>LinkedIn</a></li>
-              <li><a href={site.contact.github}>GitHub</a></li>
+            <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2">
+              <li><a href={site.contact.linkedin} className="link">LinkedIn</a></li>
+              <li><a href={site.contact.github} className="link">GitHub</a></li>
               <li>
                 {site.contactSection.cvLabel}:{" "}
-                <a href={site.cv.en} type="application/pdf" hrefLang="en">{site.contactSection.cvEn}</a>
+                <a href={site.cv.en} type="application/pdf" hrefLang="en" className="link">{site.contactSection.cvEn}</a>
                 {" · "}
-                <a href={site.cv.es} type="application/pdf" hrefLang="es">{site.contactSection.cvEs}</a>
+                <a href={site.cv.es} type="application/pdf" hrefLang="es" className="link">{site.contactSection.cvEs}</a>
               </li>
             </ul>
           </div>

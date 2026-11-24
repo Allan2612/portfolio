@@ -3,6 +3,7 @@ import type { StaticImageData } from "next/image";
 import type { Locale } from "@/lib/i18n";
 import tytHomeEn from "./images/tyt/home-en.webp";
 import tytHomeEs from "./images/tyt/home-es.webp";
+import tytServices from "./images/tyt/services.webp";
 import AgujaEn from "./projects/aguja-de-oro.en.mdx";
 import AgujaEs from "./projects/aguja-de-oro.es.mdx";
 import InvoicingEn from "./projects/e-invoicing.en.mdx";
@@ -24,6 +25,8 @@ type Text = {
   team: string;
   /** Shown on the home page in the 5-minute reading mode. */
   detail: string;
+  /** The project's strongest fact, set large on the home page when there is no screenshot. */
+  highlight: { value: string; label: string };
 };
 
 export type Project = {
@@ -36,6 +39,8 @@ export type Project = {
   cardStack: string[];
   links: { live?: string; repo?: string };
   cover?: Record<Locale, { src: StaticImageData; alt: string }>;
+  /** Home-page picture for the project row (the cover is used in the intro instead). */
+  thumb?: { src: StaticImageData; alt: Record<Locale, string> };
   text: Record<Locale, Text>;
   /** The case study, one MDX file per language. */
   body: Record<Locale, MDXContent>;
@@ -55,6 +60,13 @@ export const projects: Project[] = [
       en: { src: tytHomeEn, alt: "TyT Tecnología home page in English: security cameras and computers, with the services as four blocks built from the brand's shapes." },
       es: { src: tytHomeEs, alt: "Inicio de TyT Tecnología en español: cámaras de seguridad y computadoras, con los servicios en cuatro bloques hechos con las formas de la marca." },
     },
+    thumb: {
+      src: tytServices,
+      alt: {
+        en: "TyT services page: a large heading, filters by area and service cards with photos.",
+        es: "Página de servicios de TyT: un título grande, filtros por área y tarjetas de servicio con fotos.",
+      },
+    },
     text: {
       en: {
         title: "TyT Tecnología",
@@ -62,6 +74,7 @@ export const projects: Project[] = [
         role: "Sole developer: requirements, design, development, testing, deployment and support",
         team: "Sole developer",
         detail: "Bilingual site with technical SEO, WhatsApp checkout and AI-drafted promotions that an admin approves. Ports and adapters; 119 test files in CI.",
+        highlight: { value: "119", label: "test files in CI, as the sole developer" },
       },
       es: {
         title: "TyT Tecnología",
@@ -69,6 +82,7 @@ export const projects: Project[] = [
         role: "Único desarrollador: requerimientos, diseño, desarrollo, pruebas, despliegue y soporte",
         team: "Único desarrollador",
         detail: "Sitio bilingüe con SEO técnico, checkout por WhatsApp y promociones preparadas con IA que un administrador aprueba. Puertos y adaptadores; 119 archivos de pruebas en CI.",
+        highlight: { value: "119", label: "archivos de pruebas en CI, como único desarrollador" },
       },
     },
     body: { en: TytEn, es: TytEs },
@@ -88,6 +102,7 @@ export const projects: Project[] = [
         role: "Software development intern (full stack)",
         team: "Product team at a software company",
         detail: "Full-repository audit with 8 tax-compliance defects and 9 business-logic bugs, all fixed; tenant isolation with PostgreSQL row-level security proven on all 20 tables in CI.",
+        highlight: { value: "17", label: "audit findings fixed before launch: 8 tax-compliance defects and 9 business-logic bugs" },
       },
       es: {
         title: "SaaS de facturación electrónica",
@@ -95,6 +110,7 @@ export const projects: Project[] = [
         role: "Practicante de desarrollo de software (full stack)",
         team: "Equipo de producto de una empresa de software",
         detail: "Auditoría completa del repositorio con 8 defectos fiscales y 9 de lógica de negocio, todos corregidos; aislamiento entre empresas con RLS de PostgreSQL probado en las 20 tablas en CI.",
+        highlight: { value: "17", label: "hallazgos de la auditoría corregidos antes del lanzamiento: 8 fiscales y 9 de lógica de negocio" },
       },
     },
     body: { en: InvoicingEn, es: InvoicingEs },
@@ -114,6 +130,7 @@ export const projects: Project[] = [
         role: "Personal project",
         team: "Solo",
         detail: "Two processes over a local WebSocket and a GPU worker that only exists while it is needed. Designed to answer in under 3 seconds and to release the GPU when idle. MIT licence.",
+        highlight: { value: "< 3 s", label: "designed response time, with 0 MB of GPU memory in use while idle" },
       },
       es: {
         title: "Miku Assistant",
@@ -121,6 +138,7 @@ export const projects: Project[] = [
         role: "Proyecto personal",
         team: "Individual",
         detail: "Dos procesos sobre un WebSocket local y un proceso de GPU que solo existe mientras hace falta. Diseñado para responder en menos de 3 segundos y liberar la GPU en reposo. Licencia MIT.",
+        highlight: { value: "< 3 s", label: "tiempo de respuesta de diseño, con 0 MB de memoria de GPU en uso en reposo" },
       },
     },
     body: { en: MikuEn, es: MikuEs },
@@ -140,6 +158,7 @@ export const projects: Project[] = [
         role: "Software development intern (backend)",
         team: "Team of five; top contributor",
         detail: "Turned an accounting standard into 311 verifiable requirements and checked each against the code and the running system, then built much of what was missing with TDD. 3,500+ tests in the codebase.",
+        highlight: { value: "311", label: "requirements checked against the code and the running system" },
       },
       es: {
         title: "ERP modular",
@@ -147,6 +166,7 @@ export const projects: Project[] = [
         role: "Practicante de desarrollo de software (backend)",
         team: "Equipo de cinco; principal contribuidor",
         detail: "Convertí una norma contable en 311 requisitos verificables, revisé cada uno contra el código y el sistema en ejecución, y construí con TDD buena parte de lo que faltaba. Más de 3500 pruebas en el proyecto.",
+        highlight: { value: "311", label: "requisitos contrastados con el código y con el sistema en ejecución" },
       },
     },
     body: { en: ErpEn, es: ErpEs },
@@ -166,6 +186,7 @@ export const projects: Project[] = [
         role: "Full stack developer: sales, quick-service and reporting modules, and the production server",
         team: "With a partner",
         detail: "Sales, quick-service and reporting modules with Costa Rican print formats. Production server on DigitalOcean with HTTPS, hardened SSH, a firewall and daily backups.",
+        highlight: { value: "Dec 2025", label: "the business has run its day-to-day on it since then" },
       },
       es: {
         title: "La Aguja de Oro",
@@ -173,6 +194,7 @@ export const projects: Project[] = [
         role: "Desarrollador full stack: módulos de ventas, servicio rápido y reportes, y el servidor de producción",
         team: "En pareja",
         detail: "Módulos de ventas, servicio rápido y reportes con impresos en formato de Costa Rica. Servidor de producción en DigitalOcean con HTTPS, SSH reforzado, firewall y respaldos diarios.",
+        highlight: { value: "dic. 2025", label: "desde entonces el negocio opera su día a día en el sistema" },
       },
     },
     body: { en: AgujaEn, es: AgujaEs },

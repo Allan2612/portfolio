@@ -49,10 +49,10 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
         <article>
           <header className="col pt-[max(3rem,10vh)]">
             <p className="text-small">
-              <a href={`/${locale}#work`}>{cs.back}</a>
+              <a href={`/${locale}#work`} className="link">{cs.back}</a>
             </p>
-            <h1 className="mt-6 text-head">{t.title}</h1>
-            <p className="mt-4 max-w-measure text-lead">{t.summary}</p>
+            <h1 className="page-title mt-6 rise">{t.title}</h1>
+            <p className="mt-5 max-w-measure text-lead rise rise-2">{t.summary}</p>
           </header>
 
           {project.cover && (
@@ -93,8 +93,8 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
                 <div>
                   <dt>{cs.links}</dt>
                   <dd className="grid gap-1">
-                    {project.links.live && <a href={project.links.live}>{cs.live}</a>}
-                    {project.links.repo && <a href={project.links.repo}>{cs.repo}</a>}
+                    {project.links.live && <a href={project.links.live} className="link">{cs.live}</a>}
+                    {project.links.repo && <a href={project.links.repo} className="link">{cs.repo}</a>}
                   </dd>
                 </div>
               )}
@@ -117,12 +117,12 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
             {(prev || next) && (
               <nav className="mt-12 flex flex-wrap justify-between gap-6" aria-label={`${cs.previous} / ${cs.next}`}>
                 {prev && (
-                  <Link href={`/${locale}/projects/${prev.slug}`} rel="prev">
+                  <Link href={`/${locale}/projects/${prev.slug}`} rel="prev" className="link">
                     {cs.previous}: {prev.text[locale].title}
                   </Link>
                 )}
                 {next && (
-                  <Link href={`/${locale}/projects/${next.slug}`} rel="next">
+                  <Link href={`/${locale}/projects/${next.slug}`} rel="next" className="link">
                     {cs.next}: {next.text[locale].title}
                   </Link>
                 )}

@@ -25,13 +25,13 @@ export default async function CvPage({ params }: PageProps<"/[locale]/cv">) {
       <Header locale={locale} switchPath={`/${otherLocale(locale)}/cv`} />
       <main id="main" className="col pt-[max(3rem,10vh)]">
         <div className="max-w-measure">
-          <h1 className="text-head">{cv.title}</h1>
+          <h1 className="page-title rise">{cv.title}</h1>
           <p className="mt-4 text-lead">{cv.intro}</p>
           <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
             <a href={site.cv[locale]} type="application/pdf" className="button">
               {locale === "en" ? cv.downloadEn : cv.downloadEs}
             </a>
-            <a href={site.cv[otherLocale(locale)]} type="application/pdf" hrefLang={otherLocale(locale)}>
+            <a href={site.cv[otherLocale(locale)]} type="application/pdf" hrefLang={otherLocale(locale)} className="link">
               {locale === "en" ? cv.downloadEs : cv.downloadEn}
             </a>
           </p>
@@ -66,7 +66,7 @@ export default async function CvPage({ params }: PageProps<"/[locale]/cv">) {
               <li key={p.name}>
                 <div className="two-ends">
                   <strong className="font-semibold">
-                    {p.href ? <a href={p.href}>{p.name}</a> : p.name}
+                    {p.href ? <a href={p.href} className="link">{p.name}</a> : p.name}
                   </strong>
                   <span className="two-ends-value">{p.note}</span>
                 </div>

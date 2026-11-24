@@ -6,7 +6,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
-  use: { baseURL: "http://localhost:3000" },
+  // Reduced motion: axe must measure colours after the intro animation, not halfway through a fade.
+  use: { baseURL: "http://localhost:3000", contextOptions: { reducedMotion: "reduce" } },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "phone", use: { ...devices["Pixel 7"] } },
