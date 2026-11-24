@@ -59,6 +59,30 @@ test("reading for 5 minutes reveals the details; 1 minute hides them", async ({ 
   await expect(detail).toBeHidden();
 });
 
+test("the theme button switches light and dark and remembers the choice", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  // networkidle: the button only works once React has hydrated it.
+  await page.goto("/en", { waitUntil: "networkidle" });
+  const bg = () => page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
+  const light = await bg();
+  await page.getByRole("button", { name: "Switch between light and dark" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  // Polled: the reduced-motion rule leaves a 0.01ms transition, so the colour settles a frame later.
+  await expect.poll(bg).not.toBe(light);
+  // The choice survives switching language and moving between pages by their links.
+  await page.locator('header a[hreflang="es"]').click();
+  await expect(page).toHaveURL("/es");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.locator('#work a[href="/es/projects/tyt"]').first().click();
+  await expect(page).toHaveURL("/es/projects/tyt");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.goto("/es/cv", { waitUntil: "networkidle" });
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.getByRole("button", { name: "Cambiar entre claro y oscuro" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect.poll(bg).toBe(light);
+});
+
 test("every internal link and image answers 200", async ({ page, request }) => {
   const seen = new Set<string>();
   for (const locale of ["en", "es"]) {
