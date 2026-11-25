@@ -1,3 +1,32 @@
+import galleryWelcome from "../images/rutica/gallery-welcome.webp";
+import galleryWelcomeDark from "../images/rutica/gallery-welcome-dark.webp";
+import galleryRegister from "../images/rutica/gallery-register.webp";
+import galleryRegisterDark from "../images/rutica/gallery-register-dark.webp";
+import galleryAttractions from "../images/rutica/gallery-attractions.webp";
+import galleryAttractionsDark from "../images/rutica/gallery-attractions-dark.webp";
+import galleryPlace from "../images/rutica/gallery-place.webp";
+import galleryPlaceDark from "../images/rutica/gallery-place-dark.webp";
+import galleryEvents from "../images/rutica/gallery-events.webp";
+import galleryEventsDark from "../images/rutica/gallery-events-dark.webp";
+import galleryPromotions from "../images/rutica/gallery-promotions.webp";
+import galleryPromotionsDark from "../images/rutica/gallery-promotions-dark.webp";
+import galleryFavorites from "../images/rutica/gallery-favorites.webp";
+import galleryFavoritesDark from "../images/rutica/gallery-favorites-dark.webp";
+import galleryModeration from "../images/rutica/gallery-moderation.webp";
+import galleryModerationDark from "../images/rutica/gallery-moderation-dark.webp";
+import events from "../images/rutica/events.webp";
+import eventsDark from "../images/rutica/events-dark.webp";
+import eventPhone from "../images/rutica/event-phone.webp";
+import eventPhoneDark from "../images/rutica/event-phone-dark.webp";
+import map from "../images/rutica/map.webp";
+import mapDark from "../images/rutica/map-dark.webp";
+import businessPhone from "../images/rutica/business-phone.webp";
+import businessPhoneDark from "../images/rutica/business-phone-dark.webp";
+import dashboard from "../images/rutica/dashboard.webp";
+import dashboardDark from "../images/rutica/dashboard-dark.webp";
+import adminPhone from "../images/rutica/admin-phone.webp";
+import adminPhoneDark from "../images/rutica/admin-phone-dark.webp";
+
 ## Context
 
 Rutica is a mobile app for discovering what is nearby in Costa Rica: businesses, attractions, events and promotions, on a map, with reviews and favorites. People publish their own businesses, attractions and events, business owners post promotions, and premium plans give owners more room.
@@ -12,7 +41,23 @@ I built it with another student as a course project. Months later, before puttin
 - **Covered the legal basics:** explicit consent at sign-up, a privacy policy draft under Costa Rica’s data protection law, and account deletion from inside the app.
 - **Took it to production safely:** CI on every push, the database migration rehearsed on a copy of production, and a documented release order.
 
-<PhotoSlot>Screens of the app on a phone with made-up data: exploring nearby places, the map, an event page and the business owner’s panel.</PhotoSlot>
+<FigurePair
+  wide={{ src: events, dark: eventsDark, alt: "Rutica's events on a computer, in Spanish: a farmers' market in San Isidro de El General, with its photo, date, price and location." }}
+  narrow={{ src: eventPhone, dark: eventPhoneDark, alt: "An event page on a phone, in Spanish: a live music night with its date, price, capacity and location." }}
+  caption="Events nearby on a computer, and one that someone published on a phone. Made-up data."
+/>
+
+<FigurePair
+  wide={{ src: map, dark: mapDark, alt: "Rutica's map centred on San Isidro de El General, with coloured markers for places, events and businesses." }}
+  narrow={{ src: businessPhone, dark: businessPhoneDark, alt: "A business page on a phone, in Spanish: a café with its rating, description, category, location and deals." }}
+  caption="The map with places, events and businesses, and a business page with its deals."
+/>
+
+<FigurePair
+  wide={{ src: dashboard, dark: dashboardDark, alt: "A business owner's premium dashboard, in Spanish: total favourites, the busiest day, growth against the previous week and the most popular business." }}
+  narrow={{ src: adminPhone, dark: adminPhoneDark, alt: "Subscription management on a phone, in Spanish: a pending plan request with its payment reference and buttons to approve or reject it." }}
+  caption="A business owner's dashboard, and the review of plan payments that only an admin account can approve."
+/>
 
 ## Result
 
@@ -22,6 +67,21 @@ I built it with another student as a course project. Months later, before puttin
 ## What I took from it
 
 Auditing code I helped write was humbling. The most serious problems were not in the screens I remembered but in what the database allowed when nobody went through the app. Since then I put the rules that protect people’s data where they cannot be skipped, and I write the test that proves they hold.
+
+## More screens
+
+<Gallery
+  items={[
+    { src: galleryWelcome, dark: galleryWelcomeDark, alt: "Welcome screen on a phone, in Spanish, with buttons to explore without an account or sign in.", caption: "Welcome" },
+    { src: galleryRegister, dark: galleryRegisterDark, alt: "Sign-up form, in Spanish, with a choice between a personal and a business account.", caption: "Sign up as a person or a business" },
+    { src: galleryAttractions, dark: galleryAttractionsDark, alt: "List of places published by people, in Spanish, each with a photo, rating, likes and comments.", caption: "Places that people publish" },
+    { src: galleryPlace, dark: galleryPlaceDark, alt: "Comments on a place, in Spanish, each with a star rating and a date.", caption: "Comments and ratings on a place" },
+    { src: galleryEvents, dark: galleryEventsDark, alt: "List of events near San Isidro de El General, in Spanish, with date, price and category.", caption: "Events nearby" },
+    { src: galleryPromotions, dark: galleryPromotionsDark, alt: "Deals from nearby businesses, in Spanish, with the discount, the dates and the business.", caption: "Deals from businesses" },
+    { src: galleryFavorites, dark: galleryFavoritesDark, alt: "List of businesses saved as favourites, in Spanish.", caption: "Saved favourites" },
+    { src: galleryModeration, dark: galleryModerationDark, alt: "Content review for the admin account, in Spanish: a business, an event and a place waiting for approval.", caption: "Moderation: nothing goes live without approval" },
+  ]}
+/>
 
 ## Technical decisions
 

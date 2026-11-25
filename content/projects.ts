@@ -16,6 +16,10 @@ import InvoicingEs from "./projects/e-invoicing.es.mdx";
 import mikuPanel from "./images/miku/panel.webp";
 import MikuEn from "./projects/miku.en.mdx";
 import MikuEs from "./projects/miku.es.mdx";
+import ruticaWelcome from "./images/rutica/welcome.webp";
+import ruticaWelcomeDark from "./images/rutica/welcome-dark.webp";
+import ruticaHome from "./images/rutica/home.webp";
+import ruticaHomeDark from "./images/rutica/home-dark.webp";
 import RuticaEn from "./projects/rutica.en.mdx";
 import RuticaEs from "./projects/rutica.es.mdx";
 import ErpEn from "./projects/modular-erp.en.mdx";
@@ -159,12 +163,25 @@ export const projects: Project[] = [
   },
   {
     slug: "rutica",
+    ogShot: { en: "rutica.jpg", es: "rutica.jpg" },
     kind: "course",
     start: "2026-01",
     end: null,
     stack: ["Expo 54", "React Native 0.81", "Expo Router", "TypeScript", "Supabase (PostgreSQL, Auth, Storage, Edge Functions)", "Row-level security", "TanStack Query", "Zustand", "React Hook Form + Zod", "PGlite", "GitHub Actions", "Vercel"],
     cardStack: ["React Native", "Expo", "Supabase", "PostgreSQL (RLS)"],
     links: { repo: "https://github.com/Allan2612/app-rutica" },
+    cover: {
+      en: { src: ruticaHome, dark: ruticaHomeDark, alt: "Rutica's home screen, in Spanish: a search box, category filters and featured businesses near San Isidro de El General. Made-up data." },
+      es: { src: ruticaHome, dark: ruticaHomeDark, alt: "El inicio de Rutica: un buscador, filtros por categoría y comercios destacados cerca de San Isidro de El General. Datos inventados." },
+    },
+    thumb: {
+      src: ruticaWelcome,
+      dark: ruticaWelcomeDark,
+      alt: {
+        en: "Rutica's welcome screen, in Spanish: the logo, “Welcome to Rutica” and buttons to explore without an account or sign in.",
+        es: "Pantalla de bienvenida de Rutica: el logo, “Bienvenido a Rutica” y botones para explorar sin cuenta o iniciar sesión.",
+      },
+    },
     text: {
       en: {
         title: "Rutica",

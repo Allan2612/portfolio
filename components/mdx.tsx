@@ -123,6 +123,22 @@ export function PhotoSlot({ children }: { children: string }) {
   );
 }
 
+/** Extra phone screens at the end of a case: a grid of small screenshots that open in the lightbox. */
+export function Gallery({ items }: { items: (Img & { caption: string })[] }) {
+  return (
+    <ul className="gallery">
+      {items.map((item) => (
+        <li key={item.caption}>
+          <figure>
+            <ThemedImage zoom src={item.src} dark={item.dark} alt={item.alt} sizes="(min-width: 80rem) 14rem, (min-width: 48rem) 22vw, 45vw" className="h-auto w-full" />
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /** One screenshot with its caption, in the light and dark themes when both exist. */
 export function Figure({ image, caption }: { image: Img; caption: string }) {
   return (

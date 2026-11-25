@@ -1,6 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
-import { Figure, FigurePair, FlowDiagram, ModulesDiagram, PhotoSlot, PortsDiagram } from "@/components/mdx";
+import { Figure, FigurePair, FlowDiagram, Gallery, ModulesDiagram, PhotoSlot, PortsDiagram } from "@/components/mdx";
 import { slugify } from "@/lib/slug";
 
 const text = (node: ReactNode): string =>
@@ -12,6 +12,7 @@ const components: MDXComponents = {
   Figure,
   FigurePair,
   FlowDiagram,
+  Gallery,
   ModulesDiagram,
   PhotoSlot,
   PortsDiagram,
