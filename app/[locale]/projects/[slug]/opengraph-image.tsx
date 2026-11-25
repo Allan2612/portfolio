@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { ogImage, ogShot, ogSize } from "@/components/og";
-import { getProject, projects } from "@/content/projects";
+import { getProject } from "@/content/projects";
 import { getSite, isLocale } from "@/lib/i18n";
 
 export function generateImageMetadata({ params }: { params: { locale: string; slug: string } }) {
@@ -9,9 +9,6 @@ export function generateImageMetadata({ params }: { params: { locale: string; sl
   return [{ id: "card", alt, size: ogSize, contentType: "image/png" }];
 }
 
-export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
-}
 
 export default async function Image({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
