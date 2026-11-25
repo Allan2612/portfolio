@@ -1,3 +1,32 @@
+import galleryWelcome from "../images/rutica/gallery-welcome.webp";
+import galleryWelcomeDark from "../images/rutica/gallery-welcome-dark.webp";
+import galleryRegister from "../images/rutica/gallery-register.webp";
+import galleryRegisterDark from "../images/rutica/gallery-register-dark.webp";
+import galleryAttractions from "../images/rutica/gallery-attractions.webp";
+import galleryAttractionsDark from "../images/rutica/gallery-attractions-dark.webp";
+import galleryPlace from "../images/rutica/gallery-place.webp";
+import galleryPlaceDark from "../images/rutica/gallery-place-dark.webp";
+import galleryEvents from "../images/rutica/gallery-events.webp";
+import galleryEventsDark from "../images/rutica/gallery-events-dark.webp";
+import galleryPromotions from "../images/rutica/gallery-promotions.webp";
+import galleryPromotionsDark from "../images/rutica/gallery-promotions-dark.webp";
+import galleryFavorites from "../images/rutica/gallery-favorites.webp";
+import galleryFavoritesDark from "../images/rutica/gallery-favorites-dark.webp";
+import galleryModeration from "../images/rutica/gallery-moderation.webp";
+import galleryModerationDark from "../images/rutica/gallery-moderation-dark.webp";
+import events from "../images/rutica/events.webp";
+import eventsDark from "../images/rutica/events-dark.webp";
+import eventPhone from "../images/rutica/event-phone.webp";
+import eventPhoneDark from "../images/rutica/event-phone-dark.webp";
+import map from "../images/rutica/map.webp";
+import mapDark from "../images/rutica/map-dark.webp";
+import businessPhone from "../images/rutica/business-phone.webp";
+import businessPhoneDark from "../images/rutica/business-phone-dark.webp";
+import dashboard from "../images/rutica/dashboard.webp";
+import dashboardDark from "../images/rutica/dashboard-dark.webp";
+import adminPhone from "../images/rutica/admin-phone.webp";
+import adminPhoneDark from "../images/rutica/admin-phone-dark.webp";
+
 ## Contexto
 
 Rutica es una app móvil para descubrir lo que hay cerca en Costa Rica: comercios, atracciones, eventos y promociones, en un mapa, con reseñas y favoritos. Las personas publican sus propios comercios, atracciones y eventos, los dueños anuncian promociones y los planes premium les dan más espacio.
@@ -12,7 +41,23 @@ La desarrollé con otro estudiante como proyecto de curso. Meses después, antes
 - **Lo básico en lo legal:** consentimiento explícito al registrarse, un borrador de política de privacidad según la ley costarricense de protección de datos y eliminación de la cuenta desde la app.
 - **Un paso a producción seguro:** CI en cada push, la migración de la base ensayada sobre una copia de producción y un orden de publicación documentado.
 
-<PhotoSlot>Pantallas de la app en un celular con datos inventados: explorar lo cercano, el mapa, la página de un evento y el panel del dueño de un comercio.</PhotoSlot>
+<FigurePair
+  wide={{ src: events, dark: eventsDark, alt: "Eventos de Rutica en una computadora: una feria del agricultor en San Isidro de El General, con la foto, la fecha, el precio y la ubicación." }}
+  narrow={{ src: eventPhone, dark: eventPhoneDark, alt: "Página de un evento en un celular: una noche de música en vivo con fecha, precio, cupo y ubicación." }}
+  caption="Los eventos cercanos en una computadora y uno publicado por una persona en un celular. Datos inventados."
+/>
+
+<FigurePair
+  wide={{ src: map, dark: mapDark, alt: "Mapa de Rutica centrado en San Isidro de El General, con marcadores de colores para atracciones, eventos y comercios." }}
+  narrow={{ src: businessPhone, dark: businessPhoneDark, alt: "Página de un comercio en un celular: una cafetería con su calificación, descripción, categoría, ubicación y promociones." }}
+  caption="El mapa con atracciones, eventos y comercios, y la página de un comercio con sus promociones."
+/>
+
+<FigurePair
+  wide={{ src: dashboard, dark: dashboardDark, alt: "Panel premium del dueño de un comercio: favoritos totales, el día con más actividad, el crecimiento frente a la semana anterior y el negocio más popular." }}
+  narrow={{ src: adminPhone, dark: adminPhoneDark, alt: "Gestión de suscripciones en un celular: una solicitud de plan pendiente con su referencia de pago y los botones para aprobarla o rechazarla." }}
+  caption="El panel del dueño de un comercio y la revisión de pagos de planes, que solo puede aprobar una cuenta de administración."
+/>
 
 ## Resultado
 
@@ -22,6 +67,21 @@ La desarrollé con otro estudiante como proyecto de curso. Meses después, antes
 ## Qué me llevo
 
 Auditar código que ayudé a escribir fue una lección de humildad. Los problemas más serios no estaban en las pantallas que recordaba, sino en lo que la base de datos permitía cuando nadie pasaba por la app. Desde entonces pongo las reglas que protegen los datos de las personas donde no se pueden saltar, y escribo la prueba que demuestra que se cumplen.
+
+## Más pantallas
+
+<Gallery
+  items={[
+    { src: galleryWelcome, dark: galleryWelcomeDark, alt: "Pantalla de bienvenida en un celular, con botones para explorar sin cuenta o iniciar sesión.", caption: "Bienvenida" },
+    { src: galleryRegister, dark: galleryRegisterDark, alt: "Formulario para crear una cuenta, eligiendo entre usuario y negocio.", caption: "Crear una cuenta como usuario o como negocio" },
+    { src: galleryAttractions, dark: galleryAttractionsDark, alt: "Lista de atracciones publicadas por personas, con foto, calificación, me gusta y comentarios.", caption: "Atracciones que publican las personas" },
+    { src: galleryPlace, dark: galleryPlaceDark, alt: "Comentarios de un lugar, cada uno con su calificación en estrellas y la fecha.", caption: "Comentarios y calificaciones de un lugar" },
+    { src: galleryEvents, dark: galleryEventsDark, alt: "Lista de eventos cerca de San Isidro de El General, con fecha, precio y categoría.", caption: "Eventos cercanos" },
+    { src: galleryPromotions, dark: galleryPromotionsDark, alt: "Promociones de los comercios cercanos, con el descuento, la vigencia y el comercio.", caption: "Promociones de los comercios" },
+    { src: galleryFavorites, dark: galleryFavoritesDark, alt: "Lista de comercios guardados como favoritos.", caption: "Favoritos guardados" },
+    { src: galleryModeration, dark: galleryModerationDark, alt: "Verificación de contenido para la cuenta de administración: un negocio, un evento y una atracción esperando aprobación.", caption: "Moderación: nada se publica sin aprobación" },
+  ]}
+/>
 
 ## Decisiones técnicas
 

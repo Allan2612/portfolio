@@ -1,3 +1,7 @@
+import gallerySettings from "../images/miku/gallery-settings.webp";
+import galleryFunctions from "../images/miku/gallery-functions.webp";
+import galleryReminders from "../images/miku/gallery-reminders.webp";
+import galleryMemory from "../images/miku/gallery-memory.webp";
 import resources from "../images/miku/resources.webp";
 import quota from "../images/miku/quota.webp";
 import tools from "../images/miku/tools.webp";
@@ -35,6 +39,18 @@ Lo construí por mi cuenta como proyecto de código abierto, con dos metas: resp
 ## Lo que sigue
 
 Medir la latencia de cada etapa de punta a punta (transcripción, modelo, síntesis y conversión de voz) en lugar de depender de la meta de diseño.
+
+## Más pantallas
+
+<Gallery
+  wide
+  items={[
+    { src: gallerySettings, alt: "Configuración del panel: la clave de Gemini, la voz de Miku, la palabra clave, el arranque y el atajo. Datos inventados.", caption: "Configuración" },
+    { src: galleryFunctions, alt: "Funciones: qué se le puede pedir a Miku y cómo, con frases para probar desde el panel. Datos inventados.", caption: "Lo que se le puede pedir" },
+    { src: galleryReminders, alt: "Recordatorios: los avisos activos, un formulario para crear uno nuevo y los pendientes. Datos inventados.", caption: "Recordatorios y pendientes" },
+    { src: galleryMemory, alt: "Memoria: los datos que Miku recuerda de la persona, que se pueden corregir o borrar. Datos inventados.", caption: "Lo que Miku recuerda" },
+  ]}
+/>
 
 ## Decisiones técnicas
 

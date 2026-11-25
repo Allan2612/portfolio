@@ -123,6 +123,22 @@ export function PhotoSlot({ children }: { children: string }) {
   );
 }
 
+/** Extra screens near the end of a case: small screenshots that open in the lightbox. `wide` is for desktop screens. */
+export function Gallery({ items, wide = false }: { items: (Img & { caption: string })[]; wide?: boolean }) {
+  return (
+    <ul className={wide ? "gallery gallery-wide" : "gallery"}>
+      {items.map((item) => (
+        <li key={item.caption}>
+          <figure>
+            <ThemedImage zoom src={item.src} dark={item.dark} alt={item.alt} sizes={wide ? "(min-width: 80rem) 30rem, (min-width: 48rem) 45vw, 100vw" : "(min-width: 80rem) 14rem, (min-width: 48rem) 22vw, 45vw"} className="h-auto w-full" />
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /** One screenshot with its caption, in the light and dark themes when both exist. */
 export function Figure({ image, caption }: { image: Img; caption: string }) {
   return (

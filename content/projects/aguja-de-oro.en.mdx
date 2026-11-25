@@ -1,3 +1,11 @@
+import galleryApartado from "../images/aguja/gallery-apartado.webp";
+import galleryApartadoDark from "../images/aguja/gallery-apartado-dark.webp";
+import galleryRapidoForm from "../images/aguja/gallery-rapido-form.webp";
+import galleryRapidoFormDark from "../images/aguja/gallery-rapido-form-dark.webp";
+import galleryReportes from "../images/aguja/gallery-reportes.webp";
+import galleryReportesDark from "../images/aguja/gallery-reportes-dark.webp";
+import galleryClientes from "../images/aguja/gallery-clientes.webp";
+import galleryClientesDark from "../images/aguja/gallery-clientes-dark.webp";
 import repair from "../images/aguja/repair.webp";
 import repairDark from "../images/aguja/repair-dark.webp";
 import salePhone from "../images/aguja/sale-phone.webp";
@@ -49,6 +57,18 @@ The project was built with a partner, and the split matters:
 What this project taught me most was to listen. I rebuilt screens, and even whole modules, more than once because they were not what the shop needed: I had built them from what I understood, not from what they were asking for. I learned to sit down with them as many times as it took, ask exactly how they work, take notes and confirm before writing code, and to refactor without attachment when the answer changed.
 
 A course project ends when it is graded; a system a business depends on does not. Once the shop started running on it, every change had to be safe to deploy on a working day, every request needed an answer, and the server became my responsibility. That is where I learned to treat backups, access and updates as part of the product, not as an afterthought.
+
+## More screens
+
+<Gallery
+  wide
+  items={[
+    { src: galleryApartado, dark: galleryApartadoDark, alt: "An order in the Layaway state, in Spanish: the products with their tax, the status bar and the totals. Test data.", caption: "An order on layaway" },
+    { src: galleryRapidoForm, dark: galleryRapidoFormDark, alt: "A quick-service ticket, in Spanish: the customer, the machine, the intake and delivery dates and the fault. Test data.", caption: "A quick-service ticket" },
+    { src: galleryReportes, dark: galleryReportesDark, alt: "Report of quotes and sales, in Spanish: each document with its customer, date, status, total and balance due. Test data.", caption: "The quotes and sales report" },
+    { src: galleryClientes, dark: galleryClientesDark, alt: "The shop's customers as cards, with their name and email. Test data.", caption: "The shop's customers" },
+  ]}
+/>
 
 ## Technical decisions
 
