@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { STIX_Two_Text } from "next/font/google";
 import { getSite, isLocale, locales, ogLocale, otherLocale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
@@ -60,6 +61,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         {children}
         <Motion />
         {isLocale(locale) && <Lightbox close={getSite(locale).nav.close} zoom={getSite(locale).nav.zoom} />}
+        <Analytics />
       </body>
     </html>
   );
