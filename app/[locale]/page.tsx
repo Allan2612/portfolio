@@ -245,12 +245,20 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                     <p className="pt-2">{m.text}</p>
                   </div>
                 </div>
-                {m.href && (
-                  <p className="mt-2 text-small">
-                    <a href={m.href} className="link">
-                      {site.more.code}
-                      <span className="sr-only" translate="no"> ({m.name})</span>
-                    </a>
+                {(m.href || m.live) && (
+                  <p className="more-links mt-2 text-small">
+                    {m.live && (
+                      <a href={m.live} className="link">
+                        {site.more.live}
+                        <span className="sr-only" translate="no"> ({m.name})</span>
+                      </a>
+                    )}
+                    {m.href && (
+                      <a href={m.href} className="link">
+                        {site.more.code}
+                        <span className="sr-only" translate="no"> ({m.name})</span>
+                      </a>
+                    )}
                   </p>
                 )}
               </li>
