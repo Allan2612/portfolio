@@ -1,3 +1,7 @@
+import gallerySettings from "../images/miku/gallery-settings.webp";
+import galleryFunctions from "../images/miku/gallery-functions.webp";
+import galleryReminders from "../images/miku/gallery-reminders.webp";
+import galleryMemory from "../images/miku/gallery-memory.webp";
 import resources from "../images/miku/resources.webp";
 import quota from "../images/miku/quota.webp";
 import tools from "../images/miku/tools.webp";
@@ -35,6 +39,18 @@ I built it on my own as an open-source project, around two goals: answer in **un
 ## Next
 
 Measure the latency of each stage end to end (speech-to-text, the model, speech synthesis and voice conversion) instead of relying on the design target.
+
+## More screens
+
+<Gallery
+  wide
+  items={[
+    { src: gallerySettings, alt: "The panel's settings, in Spanish: the Gemini key, Miku's voice, the wake word, startup and the shortcut. Made-up data.", caption: "Settings" },
+    { src: galleryFunctions, alt: "Functions, in Spanish: what you can ask Miku and how, with phrases to try from the panel. Made-up data.", caption: "What you can ask" },
+    { src: galleryReminders, alt: "Reminders, in Spanish: the active alerts, a form to create a new one and the to-do list. Made-up data.", caption: "Reminders and to-dos" },
+    { src: galleryMemory, alt: "Memory, in Spanish: the facts Miku remembers about the person, which can be corrected or deleted. Made-up data.", caption: "What Miku remembers" },
+  ]}
+/>
 
 ## Technical decisions
 

@@ -1,3 +1,11 @@
+import galleryApartado from "../images/aguja/gallery-apartado.webp";
+import galleryApartadoDark from "../images/aguja/gallery-apartado-dark.webp";
+import galleryRapidoForm from "../images/aguja/gallery-rapido-form.webp";
+import galleryRapidoFormDark from "../images/aguja/gallery-rapido-form-dark.webp";
+import galleryReportes from "../images/aguja/gallery-reportes.webp";
+import galleryReportesDark from "../images/aguja/gallery-reportes-dark.webp";
+import galleryClientes from "../images/aguja/gallery-clientes.webp";
+import galleryClientesDark from "../images/aguja/gallery-clientes-dark.webp";
 import repair from "../images/aguja/repair.webp";
 import repairDark from "../images/aguja/repair-dark.webp";
 import salePhone from "../images/aguja/sale-phone.webp";
@@ -49,6 +57,18 @@ El proyecto se hizo en pareja, y la división importa:
 Lo que más me enseñó este proyecto fue escuchar. Rehice pantallas, y hasta módulos completos, más de una vez, porque no eran lo que el taller necesitaba: los había construido con lo que yo entendía, no con lo que ellos pedían. Aprendí a sentarme con ellos las veces que hiciera falta, preguntar en concreto cómo trabajan, tomar notas y confirmar antes de programar, y a refactorizar sin apego cuando la respuesta cambiaba.
 
 Un proyecto de curso termina cuando se califica; un sistema del que depende un negocio, no. Desde que el taller empezó a operar con él, cada cambio tenía que poder desplegarse sin riesgo en un día de trabajo, cada pedido necesitaba una respuesta y el servidor pasó a ser mi responsabilidad. Ahí aprendí a tratar los respaldos, los accesos y las actualizaciones como parte del producto, no como algo para después.
+
+## Más pantallas
+
+<Gallery
+  wide
+  items={[
+    { src: galleryApartado, dark: galleryApartadoDark, alt: "Un pedido en estado Apartado: los productos con su IVA, la barra de estados y los totales. Datos de prueba.", caption: "Un pedido apartado" },
+    { src: galleryRapidoForm, dark: galleryRapidoFormDark, alt: "Boleta de servicio rápido: el cliente, la máquina, las fechas de ingreso y entrega y la descripción de la avería. Datos de prueba.", caption: "Una boleta de servicio rápido" },
+    { src: galleryReportes, dark: galleryReportesDark, alt: "Reporte de proformas y ventas: cada documento con su cliente, fecha, estado, total y saldo pendiente. Datos de prueba.", caption: "El reporte de proformas y ventas" },
+    { src: galleryClientes, dark: galleryClientesDark, alt: "Clientes del taller en tarjetas, con su nombre y correo. Datos de prueba.", caption: "Los clientes del taller" },
+  ]}
+/>
 
 ## Decisiones técnicas
 

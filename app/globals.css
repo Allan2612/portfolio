@@ -1256,9 +1256,40 @@ figcaption {
   gap: 1rem;
   align-items: start;
 }
+/* Extra phone screens (Gallery): two per row on phones, four from tablets up. */
+.prose .gallery {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 1rem;
+}
+.prose .gallery li {
+  margin: 0;
+  padding: 0;
+}
+.prose .gallery figure {
+  margin: 0;
+}
+.prose .gallery-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 48rem) {
+  .prose .gallery {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 48rem) {
+  .prose .gallery-wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 @media (min-width: 80rem) {
   .figure-pair,
-  .figure-single {
+  .figure-single,
+  .prose .gallery {
     width: min(var(--container-wide), calc(100vw - var(--spacing-inset) - var(--spacing-gutter)));
   }
 }
