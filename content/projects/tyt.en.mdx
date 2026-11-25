@@ -1,3 +1,11 @@
+import galleryProducts from "../images/tyt/gallery-products-en.webp";
+import galleryProductsDark from "../images/tyt/gallery-products-en-dark.webp";
+import galleryServices from "../images/tyt/gallery-services-en.webp";
+import galleryServicesDark from "../images/tyt/gallery-services-en-dark.webp";
+import gallerySuccessStories from "../images/tyt/gallery-success-stories-en.webp";
+import gallerySuccessStoriesDark from "../images/tyt/gallery-success-stories-en-dark.webp";
+import galleryAbout from "../images/tyt/gallery-about-en.webp";
+import galleryAboutDark from "../images/tyt/gallery-about-en-dark.webp";
 import services from "../images/tyt/services-en.webp";
 import phoneHome from "../images/tyt/phone-home-en.webp";
 import catalog from "../images/tyt/catalog-en.webp";
@@ -63,6 +71,18 @@ Three facts about the business shaped every decision:
 ## What I took from it
 
 The hardest part was not the code: it was making a small shop look established with no professional assets, just a logo and a clear idea of how the workshop works. A design system built from the brand’s own shapes and type held up better than stock images would have, and it scales as the catalog grows.
+
+## More screens
+
+<Gallery
+  wide
+  items={[
+    { src: galleryProducts, dark: galleryProductsDark, alt: "Products in the admin panel: each with its photo, price, status and actions. Test data.", caption: "Products" },
+    { src: galleryServices, dark: galleryServicesDark, alt: "Services in the admin panel, with their category. Test data.", caption: "Services" },
+    { src: gallerySuccessStories, dark: gallerySuccessStoriesDark, alt: "Success stories: only the ones the customer agreed to share get published. Test data.", caption: "Success stories" },
+    { src: galleryAbout, dark: galleryAboutDark, alt: "The About page's content, editable in Spanish and English side by side. Test data.", caption: "About page in two languages" },
+  ]}
+/>
 
 ## Technical decisions
 

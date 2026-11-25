@@ -1,3 +1,11 @@
+import galleryProducts from "../images/tyt/gallery-products-es.webp";
+import galleryProductsDark from "../images/tyt/gallery-products-es-dark.webp";
+import galleryServices from "../images/tyt/gallery-services-es.webp";
+import galleryServicesDark from "../images/tyt/gallery-services-es-dark.webp";
+import gallerySuccessStories from "../images/tyt/gallery-success-stories-es.webp";
+import gallerySuccessStoriesDark from "../images/tyt/gallery-success-stories-es-dark.webp";
+import galleryAbout from "../images/tyt/gallery-about-es.webp";
+import galleryAboutDark from "../images/tyt/gallery-about-es-dark.webp";
 import services from "../images/tyt/services-es.webp";
 import phoneHome from "../images/tyt/phone-home-es.webp";
 import catalog from "../images/tyt/catalog-es.webp";
@@ -63,6 +71,18 @@ Tres condiciones del negocio marcaron cada decisión:
 ## Qué me llevo
 
 Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera establecido sin recursos profesionales, solo con un logo y una idea clara de cómo funciona el taller. Un sistema de diseño construido con las formas y la tipografía de la propia marca funcionó mejor de lo que habrían funcionado las fotos de banco, y crece junto con el catálogo.
+
+## Más pantallas
+
+<Gallery
+  wide
+  items={[
+    { src: galleryProducts, dark: galleryProductsDark, alt: "Productos del panel de administración: cada uno con su foto, precio, estado y acciones. Datos de prueba.", caption: "Productos" },
+    { src: galleryServices, dark: galleryServicesDark, alt: "Servicios del panel de administración, con su categoría. Datos de prueba.", caption: "Servicios" },
+    { src: gallerySuccessStories, dark: gallerySuccessStoriesDark, alt: "Casos de éxito: solo se publican los que el cliente aceptó compartir. Datos de prueba.", caption: "Casos de éxito" },
+    { src: galleryAbout, dark: galleryAboutDark, alt: "Contenido de «Sobre nosotros», editable en español e inglés lado a lado. Datos de prueba.", caption: "«Sobre nosotros» en dos idiomas" },
+  ]}
+/>
 
 ## Decisiones técnicas
 

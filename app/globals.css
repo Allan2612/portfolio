@@ -1273,9 +1273,17 @@ figcaption {
 .prose .gallery figure {
   margin: 0;
 }
+.prose .gallery-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
 @media (min-width: 48rem) {
   .prose .gallery {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 48rem) {
+  .prose .gallery-wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 80rem) {

@@ -123,14 +123,14 @@ export function PhotoSlot({ children }: { children: string }) {
   );
 }
 
-/** Extra phone screens at the end of a case: a grid of small screenshots that open in the lightbox. */
-export function Gallery({ items }: { items: (Img & { caption: string })[] }) {
+/** Extra screens near the end of a case: small screenshots that open in the lightbox. `wide` is for desktop screens. */
+export function Gallery({ items, wide = false }: { items: (Img & { caption: string })[]; wide?: boolean }) {
   return (
-    <ul className="gallery">
+    <ul className={wide ? "gallery gallery-wide" : "gallery"}>
       {items.map((item) => (
         <li key={item.caption}>
           <figure>
-            <ThemedImage zoom src={item.src} dark={item.dark} alt={item.alt} sizes="(min-width: 80rem) 14rem, (min-width: 48rem) 22vw, 45vw" className="h-auto w-full" />
+            <ThemedImage zoom src={item.src} dark={item.dark} alt={item.alt} sizes={wide ? "(min-width: 80rem) 30rem, (min-width: 48rem) 45vw, 100vw" : "(min-width: 80rem) 14rem, (min-width: 48rem) 22vw, 45vw"} className="h-auto w-full" />
             <figcaption>{item.caption}</figcaption>
           </figure>
         </li>
