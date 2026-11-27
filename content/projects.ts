@@ -189,7 +189,7 @@ export const projects: Project[] = [
         role: "Full stack developer with another student; the audit and the release are mine",
         team: "In a pair (course project), from scratch; audit and release on my own",
         keyPoints: [
-          "Built from scratch end to end in a pair: the database, the backend and the app",
+          "Built from scratch in a pair: the database, the backend and the app",
           "More than 140 findings turned into an 88-task plan, carried out and released",
           "Security rules enforced by the database and checked in CI on every push",
         ],
@@ -197,11 +197,11 @@ export const projects: Project[] = [
       },
       es: {
         title: "Rutica",
-        summary: "App móvil de comercios, eventos y promociones cercanos, hecha desde cero en pareja. Después la audité de punta a punta y la llevé a producción.",
+        summary: "App móvil de comercios, eventos y promociones cercanos, hecha desde cero en pareja. Después la audité por completo y la llevé a producción.",
         role: "Desarrollador full stack junto a otro estudiante; la auditoría y la puesta en producción son mías",
         team: "En pareja (proyecto de curso), desde cero; auditoría y puesta en producción por mi cuenta",
         keyPoints: [
-          "Hecha de punta a punta desde cero en pareja: la base de datos, el backend y la app",
+          "Hecha desde cero en pareja: la base de datos, el backend y la app",
           "Más de 140 hallazgos convertidos en un plan de 88 tareas, ejecutado y publicado",
           "Reglas de seguridad que hace cumplir la base de datos, revisadas en CI en cada push",
         ],
