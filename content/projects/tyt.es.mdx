@@ -40,7 +40,7 @@ Tres condiciones del negocio marcaron cada decisión:
 - **Un sitio público en español e inglés:** servicios, catálogo con filtros, fichas de producto, casos de éxito y contacto con mapa.
 - **Pedidos por WhatsApp:** el carrito se convierte en un mensaje de WhatsApp para el taller, como ya compran sus clientes.
 - **Un panel de administración** donde los dueños manejan productos y fotos, servicios, promociones, consultas y la configuración del sitio.
-- **Una imagen que hace ver establecido a un negocio pequeño**, construida con su propio logo en lugar de fotos de banco.
+- **Una imagen que hace ver establecido a un negocio pequeño**, construida con su propio logo y no con fotos genéricas.
 - **IA que ayuda pero nunca decide:** propone fichas de producto y fotos de promociones, una persona aprueba cada una y los precios siempre salen de la base de datos.
 
 <FigurePair
@@ -70,7 +70,7 @@ Tres condiciones del negocio marcaron cada decisión:
 
 ## Qué me llevo
 
-Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera establecido sin recursos profesionales, solo con un logo y una idea clara de cómo funciona el taller. Un sistema de diseño construido con las formas y la tipografía de la propia marca funcionó mejor de lo que habrían funcionado las fotos de banco, y crece junto con el catálogo.
+Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera establecido sin recursos profesionales, solo con un logo y una idea clara de cómo funciona el taller. Construir el diseño con las formas y la tipografía de su propia marca le dio una identidad que es solo suya, y que crece junto con el catálogo.
 
 ## Más pantallas
 
@@ -90,7 +90,7 @@ Lo más difícil no fue el código: fue hacer que un negocio pequeño se viera e
 
 El dominio define interfaces y no conoce ni la base de datos ni los servicios externos. WhatsApp, el almacenamiento de archivos y la fuente del tipo de cambio son adaptadores detrás de esas interfaces.
 
-Eso rindió cuando las imágenes de los productos pasaron de Vercel Blob a Cloudflare R2: el cambio de código fue **un adaptador nuevo**, sin tocar la lógica del negocio, más una copia única de las imágenes que ya existían.
+Eso sirvió cuando las imágenes de los productos pasaron de Vercel Blob a Cloudflare R2: el cambio de código fue **un adaptador nuevo**, sin tocar la lógica del negocio, más una copia única de las imágenes que ya existían.
 
 <PortsDiagram
   label="Puertos y adaptadores en la aplicación de TyT"
@@ -107,7 +107,7 @@ Eso rindió cuando las imágenes de los productos pasaron de Vercel Blob a Cloud
 
 ### Una identidad visual sin sesión de fotos
 
-El taller tenía un logo y nada más: ni fotografía profesional, ni ilustraciones, ni guía de marca. Las fotos de banco lo habrían hecho ver como cualquier otra tienda, así que el diseño se construyó con lo que la marca sí tiene:
+El taller tenía un logo y nada más: ni fotografía profesional, ni ilustraciones, ni guía de marca. Llenarlo de fotos genéricas sacadas de internet lo habría hecho ver como cualquier otra tienda, así que el diseño se construyó con lo que la marca sí tiene:
 
 - **El hero del inicio está hecho con el isotipo de TyT**, y sus formas recorren toda la página en lugar de una imagen genérica.
 - **La boleta de taller como lenguaje visual.** Las tarjetas de productos, servicios y contacto parecen boletas de reparación, con un código de referencia y un corte desprendible, y las especificaciones se leen como una ficha técnica.

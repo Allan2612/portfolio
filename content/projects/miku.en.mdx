@@ -33,7 +33,7 @@ I built it on my own as an open-source project, around two goals: answer in **un
 ## Result
 
 - **Designed to respond in under 3 seconds** after activation, by loading the voice while the user is still speaking.
-- **Releases the GPU when idle**: 0 MB of video memory, with the voice back in a few seconds when needed.
+- **Releases the GPU when idle**: 0 MB of video memory, with the voice back in a few seconds when needed.
 - Open source under the MIT license, with architecture notes, a tool reference, a changelog and its own audit plan.
 
 ## Next
@@ -68,7 +68,7 @@ Two processes talk over a local WebSocket, plus a GPU worker for the voice and a
   steps={[
     ["App · Tauri and TypeScript", "Live2D avatar, lip sync and subtitles"],
     ["Core · Python asyncio", "Wake word, Whisper on the CPU, the Gemini agent and the closed tool list"],
-    ["Voice worker · GPU", "Exists only while it is needed; killed when idle, back to 0 MB of video memory"],
+    ["Voice worker · GPU", "Exists only while it is needed; killed when idle, back to 0 MB of video memory"],
   ]}
   caption="The app and the core talk over a local WebSocket; the core starts and stops the voice worker."
 />

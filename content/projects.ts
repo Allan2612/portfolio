@@ -130,13 +130,13 @@ export const projects: Project[] = [
       dark: agujaHomeDark,
       alt: {
         en: "The La Aguja de Oro system's home screen: the shop's apps, such as Quick service, Workshop, Sales and Reports.",
-        es: "El inicio del sistema de La Aguja de Oro: las aplicaciones del taller, como Servicio Rápido, Taller, Ventas y Reportes.",
+        es: "El inicio del sistema de La Aguja de Oro: las aplicaciones de la tienda, como Servicio Rápido, Taller, Ventas y Reportes.",
       },
     },
     text: {
       en: {
         title: "La Aguja de Oro",
-        summary: "Odoo 17 ERP for a tailoring shop, built with a partner. I set up and run its production server.",
+        summary: "Odoo 17 ERP for a sewing machine shop, built with a partner. I set up and run its production server.",
         role: "Full stack developer: sales, quick-service and reporting modules, and the production server",
         team: "With a partner",
         keyPoints: [
@@ -148,7 +148,7 @@ export const projects: Project[] = [
       },
       es: {
         title: "La Aguja de Oro",
-        summary: "ERP en Odoo 17 para un taller de costura, desarrollado en pareja. Monté y administro su servidor de producción.",
+        summary: "ERP en Odoo 17 para una tienda de máquinas de coser, desarrollado en pareja. Monté y administro su servidor de producción.",
         role: "Desarrollador full stack: módulos de ventas, servicio rápido y reportes, y el servidor de producción",
         team: "En pareja",
         keyPoints: [
@@ -169,7 +169,7 @@ export const projects: Project[] = [
     end: null,
     stack: ["Expo 54", "React Native 0.81", "Expo Router", "TypeScript", "Supabase (PostgreSQL, Auth, Storage, Edge Functions)", "Row-level security", "TanStack Query", "Zustand", "React Hook Form + Zod", "PGlite", "GitHub Actions", "Vercel"],
     cardStack: ["React Native", "Expo", "Supabase", "PostgreSQL (RLS)"],
-    links: { repo: "https://github.com/Allan2612/app-rutica" },
+    links: { live: "https://rutica.avt.codes", repo: "https://github.com/Allan2612/app-rutica" },
     cover: {
       en: { src: ruticaHome, dark: ruticaHomeDark, alt: "Rutica's home screen, in Spanish: a search box, category filters and featured businesses near San Isidro de El General. Made-up data." },
       es: { src: ruticaHome, dark: ruticaHomeDark, alt: "El inicio de Rutica: un buscador, filtros por categoría y comercios destacados cerca de San Isidro de El General. Datos inventados." },
@@ -185,11 +185,11 @@ export const projects: Project[] = [
     text: {
       en: {
         title: "Rutica",
-        summary: "Mobile app for nearby businesses, events and deals, built with another student. I audited it end to end and fixed what I found before production.",
-        role: "Developer with another student; the audit and the fixes are mine",
-        team: "In a pair (course project); audit and fixes on my own",
+        summary: "Mobile app for nearby businesses, events and deals, built from scratch with another student. Then I audited it and took it to production.",
+        role: "Full stack developer with another student; the audit and the release are mine",
+        team: "In a pair (course project), from scratch; audit and release on my own",
         keyPoints: [
-          "A mobile app built in a pair, then audited end to end on my own",
+          "Built from scratch end to end in a pair: the database, the backend and the app",
           "More than 140 findings turned into an 88-task plan, carried out and released",
           "Security rules enforced by the database and checked in CI on every push",
         ],
@@ -197,11 +197,11 @@ export const projects: Project[] = [
       },
       es: {
         title: "Rutica",
-        summary: "App móvil de comercios, eventos y promociones cercanos, desarrollada en pareja. La auditoré de punta a punta y corregí lo encontrado antes de producción.",
-        role: "Desarrollador junto a otro estudiante; la auditoría y las correcciones son mías",
-        team: "En pareja (proyecto de curso); auditoría y correcciones por mi cuenta",
+        summary: "App móvil de comercios, eventos y promociones cercanos, hecha desde cero en pareja. Después la audité de punta a punta y la llevé a producción.",
+        role: "Desarrollador full stack junto a otro estudiante; la auditoría y la puesta en producción son mías",
+        team: "En pareja (proyecto de curso), desde cero; auditoría y puesta en producción por mi cuenta",
         keyPoints: [
-          "Una app móvil desarrollada en pareja y después auditada de punta a punta por mi cuenta",
+          "Hecha de punta a punta desde cero en pareja: la base de datos, el backend y la app",
           "Más de 140 hallazgos convertidos en un plan de 88 tareas, ejecutado y publicado",
           "Reglas de seguridad que hace cumplir la base de datos, revisadas en CI en cada push",
         ],
