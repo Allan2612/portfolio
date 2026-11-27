@@ -417,8 +417,7 @@ figcaption a {
 .prose a:hover,
 figcaption a:hover,
 header nav a:hover,
-footer a:hover,
-.work-title a:hover {
+footer a:hover {
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
@@ -537,6 +536,48 @@ footer a:hover,
 .read-more:hover {
   text-decoration: underline;
   text-underline-offset: 0.2em;
+}
+
+/* The whole card opens the case: the "Read the case" link stretches over the block. The live site and the
+   code sit above that layer, so each still opens on its own; one tab stop per card for the case. */
+.work-row {
+  position: relative;
+  isolation: isolate;
+  cursor: pointer;
+}
+/* z-index: the picture's reveal animation would otherwise paint over this layer. */
+.work-row .read-more::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.work-row:hover .read-more {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.work-row .read-more:focus-visible {
+  outline: none;
+}
+.work-row:has(.read-more:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.work-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+}
+/* External links grouped together after the case, which reads as the main action. */
+.work-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+.work-links a {
+  position: relative;
+  z-index: 2;
 }
 
 /* Three short points: scannable instead of a paragraph. */
@@ -1348,25 +1389,20 @@ figcaption {
   font-weight: 400;
   font-size: inherit;
 }
+/* Arrows are one SVG (components/mdx.tsx): a stroked line and head that always meet. */
+.diagram-arrow-svg {
+  display: block;
+  flex: none;
+  fill: none;
+  stroke: var(--soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .diagram-arrow {
-  position: relative;
-}
-.diagram-arrow::before {
-  content: "";
-  position: absolute;
-  left: 0.35rem;
-  right: 0.55rem;
-  top: 50%;
-  border-top: 2px solid var(--soft);
-}
-.diagram-arrow::after {
-  content: "";
-  position: absolute;
-  right: 0.35rem;
-  top: calc(50% - 0.3rem);
-  border-left: 0.45rem solid var(--soft);
-  border-top: 0.3rem solid transparent;
-  border-bottom: 0.3rem solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Flow: filled steps with a down arrow between them. */
@@ -1391,22 +1427,16 @@ figcaption {
   font-size: var(--text-body);
   font-weight: 600;
 }
-.diagram-flow li + li::before {
-  content: "";
+/* The arrow fills the gap above each step, on the centre line. */
+.diagram-flow-arrow {
   position: absolute;
-  left: 1.5rem;
-  top: -1.75rem;
-  height: 1.25rem;
-  border-left: 2px solid var(--soft);
-}
-.diagram-flow li + li::after {
-  content: "";
-  position: absolute;
-  left: calc(1.5rem - 0.3rem + 1px);
-  top: -0.6rem;
-  border-top: 0.45rem solid var(--soft);
-  border-left: 0.3rem solid transparent;
-  border-right: 0.3rem solid transparent;
+  left: 0;
+  right: 0;
+  top: -2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Modules over a shared core. */
@@ -1426,12 +1456,18 @@ figcaption {
   padding: 0.75rem 1rem;
   font-weight: 600;
 }
-.diagram-link,
-.prose .diagram-link {
+/* Modules to core: arrow, what travels between them, arrow, all on the centre line. */
+.diagram-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0;
+  text-align: center;
+}
+.diagram-link p,
+.prose .diagram-link p {
   margin: 0;
-  padding: 0.6rem 0 0.6rem 1.5rem;
-  border-left: 2px solid var(--soft);
-  margin-left: 1.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

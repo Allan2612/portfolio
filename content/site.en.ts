@@ -93,7 +93,7 @@ const site = {
   about: {
     heading: "About",
     paragraphs: [
-      "I'm Allan Vargas Torres, a full stack developer in Costa Rica. I build software end to end: the data model, the API, the interface, the tests and the server it runs on. For TyT that meant working out with the owners what the shop needed, designing the data model, building the site and its dashboard, and deploying it. For La Aguja de Oro it meant learning Odoo well enough to fit it to how a tailoring shop actually works, and then setting up and maintaining the server it runs on.",
+      "I'm Allan Vargas Torres, a full stack developer in Costa Rica. I build software end to end: the data model, the API, the interface, the tests and the server it runs on. For TyT that meant working out with the owners what the shop needed, designing the data model, building the site and its dashboard, and deploying it. For La Aguja de Oro it meant learning Odoo well enough to fit it to how a sewing machine shop actually works, and then setting up and maintaining the server it runs on.",
       "My habits: tests first when the rules matter, CI on every push, and documentation that someone else can pick up. During my internship that meant writing accounting rules test-first on a team of five, and auditing an e-invoicing platform before its launch.",
       "I use AI coding assistants every day. Every change still goes through tests and my own review, and I can explain any line I ship. On the ERP gap analysis I designed the AI agents that cross-checked each requirement, including one whose only job was to try to disprove every “missing” verdict; I integrated and validated what they found.",
     ],
@@ -203,7 +203,7 @@ const site = {
         stack: "Expo, React Native, Supabase, TanStack Query",
         note: "Course project, pair work",
         text: "Mobile app for nearby businesses, events and deals, co-developed with another student.",
-        href: "https://github.com/Allan2612/app-rutica",
+        href: "https://rutica.avt.codes",
       },
       {
         name: "PlanTica",

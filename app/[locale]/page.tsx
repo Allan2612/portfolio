@@ -102,10 +102,8 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               return (
                 <li key={p.slug} className="work-row" data-reveal>
                   <div className="work-text">
-                    <h3 className="work-title">
-                      <Link href={href} translate="no">
-                        {t.title}
-                      </Link>
+                    <h3 className="work-title" translate="no">
+                      {t.title}
                     </h3>
                     <p className="text-small text-soft">
                       {site.kinds[p.kind]} · {formatPeriod(p.start, p.end, locale)}
@@ -121,23 +119,28 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                       </div>
                     </div>
                     <p className="mt-4 text-small text-soft">{p.cardStack.join(" · ")}</p>
-                    <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                    {/* Always in this order: the case (it covers the whole card), then the live site, then the code. */}
+                    <div className="work-actions mt-6">
                       <Link href={href} className="read-more">
                         {site.work.readCase}<span className="sr-only" translate="no"> ({t.title})</span> <span className="arrow" aria-hidden="true">→</span>
                       </Link>
-                      {p.links.live && (
-                        <a href={p.links.live} className="link">
-                          {site.work.live}<span className="sr-only" translate="no"> ({t.title})</span> <span aria-hidden="true">↗</span>
-                        </a>
+                      {(p.links.live || p.links.repo) && (
+                        <span className="work-links">
+                          {p.links.live && (
+                            <a href={p.links.live} className="link">
+                              {site.work.live}<span className="sr-only" translate="no"> ({t.title})</span> <span aria-hidden="true">↗</span>
+                            </a>
+                          )}
+                          {p.links.repo && (
+                            <a href={p.links.repo} className="link">
+                              {site.work.code}<span className="sr-only" translate="no"> ({t.title})</span> <span aria-hidden="true">↗</span>
+                            </a>
+                          )}
+                        </span>
                       )}
-                      {p.links.repo && (
-                        <a href={p.links.repo} className="link">
-                          {site.work.code}<span className="sr-only" translate="no"> ({t.title})</span> <span aria-hidden="true">↗</span>
-                        </a>
-                      )}
-                    </p>
+                    </div>
                   </div>
-                  <Link href={href} className="work-visual" tabIndex={-1} aria-hidden="true">
+                  <span className="work-visual" aria-hidden="true">
                     {p.thumb ? (
                       <span className="shutter">
                         <ThemedImage src={p.thumb.src} dark={p.thumb.dark} alt={p.thumb.alt[locale]} sizes="(min-width: 64rem) 45vw, 100vw" className="h-auto w-full" />
@@ -150,7 +153,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                         <span className="tile-label">{t.highlight.label}</span>
                       </span>
                     )}
-                  </Link>
+                  </span>
                 </li>
               );
             })}
