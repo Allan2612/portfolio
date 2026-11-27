@@ -33,7 +33,7 @@ Lo construí por mi cuenta como proyecto de código abierto, con dos metas: resp
 ## Resultado
 
 - **Diseñado para responder en menos de 3 segundos** desde la activación, cargando la voz mientras el usuario todavía habla.
-- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
+- **Libera la GPU en reposo**: 0 MB de memoria de video, y la voz vuelve en unos segundos cuando hace falta.
 - Código abierto con licencia MIT, con notas de arquitectura, referencia de herramientas, registro de cambios y su propio plan de auditoría.
 
 ## Lo que sigue
@@ -68,7 +68,7 @@ Dos procesos se comunican por un WebSocket local, más un proceso de GPU para la
   steps={[
     ["Aplicación · Tauri y TypeScript", "Avatar Live2D, sincronización de labios y subtítulos"],
     ["Núcleo · Python asyncio", "Palabra clave, Whisper en la CPU, el agente de Gemini y la lista cerrada de herramientas"],
-    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
+    ["Proceso de voz · GPU", "Solo existe mientras hace falta; se cierra en reposo y la memoria de video vuelve a 0 MB"],
   ]}
   caption="La aplicación y el núcleo se comunican por un WebSocket local; el núcleo arranca y detiene el proceso de voz."
 />

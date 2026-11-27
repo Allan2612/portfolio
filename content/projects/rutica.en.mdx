@@ -31,10 +31,11 @@ import adminPhoneDark from "../images/rutica/admin-phone-dark.webp";
 
 Rutica is a mobile app for discovering what is nearby in Costa Rica: businesses, attractions, events and promotions, on a map, with reviews and favorites. People publish their own businesses, attractions and events, business owners post promotions, and premium plans give owners more room.
 
-I built it with another student as a course project. Months later, before putting it in production, it needed a hard look: an app where anyone can publish content, rate others and pay for a plan has to hold up when someone does not use it the way it was meant to be used. I did that audit on my own, fixed what it found and took the app to production.
+Another student and I built it end to end, from scratch, as a course project: the data model in PostgreSQL, the backend on Supabase and the app in Expo, for phones and the web. Months later, before putting it in production, it needed a hard look: an app where anyone can publish content, rate others and pay for a plan has to hold up when someone does not use it the way it was meant to be used. I did that audit on my own, fixed what it found and took the app to production.
 
 ## What I did
 
+- **The whole app, from scratch, together with my partner:** the data model, sign-in, the map, publishing businesses, places and events, promotions, reviews, favorites, premium plans and the admin panel.
 - **Audited the whole repository:** 8 reports with more than 140 findings, from the database and security to UX, performance and legal compliance.
 - **Turned the audit into a plan of 88 tasks in 8 phases** and carried it out, logging the 13 new problems that appeared along the way.
 - **Moved the rules that protect the app into the database**, so nobody can skip them by talking to the database directly.
@@ -66,7 +67,7 @@ I built it with another student as a course project. Months later, before puttin
 
 ## What I took from it
 
-Auditing code I helped write was humbling. The most serious problems were not in the screens I remembered but in what the database allowed when nobody went through the app. Since then I put the rules that protect people’s data where they cannot be skipped, and I write the test that proves they hold.
+Auditing the code I had written with my partner was humbling. The most serious problems were not in the screens I remembered but in what the database allowed when nobody went through the app. Since then I put the rules that protect people’s data where they cannot be skipped, and I write the test that proves they hold.
 
 ## More screens
 

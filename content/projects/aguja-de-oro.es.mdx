@@ -16,9 +16,9 @@ import documents from "../images/aguja/documents.webp";
 
 ## Contexto
 
-La Aguja de Oro es un taller de costura. Llevaba sus ventas, reparaciones, garantías e inventario a mano o en hojas sueltas. Necesitaba un sistema que se adaptara a su forma de trabajar, impresos con los datos fiscales de Costa Rica (facturas, proformas, boletas de reparación y certificados de garantía) y algo que el personal pudiera usar desde el celular.
+La Aguja de Oro vende máquinas de coser, sus repuestos y artículos de costura, y también repara máquinas. Llevaba sus ventas, reparaciones, garantías e inventario a mano o en hojas sueltas. Necesitaba un sistema que se adaptara a su forma de trabajar, impresos con los datos fiscales de Costa Rica (facturas, proformas, boletas de reparación y certificados de garantía) y algo que el personal pudiera usar desde el celular.
 
-En pareja le construimos un ERP en Odoo 17, y yo monté y mantengo el servidor donde corre. El taller opera su día a día con el sistema desde diciembre de 2025.
+En pareja le construimos un ERP en Odoo 17, y yo monté y mantengo el servidor donde corre. La tienda opera su día a día con el sistema desde diciembre de 2025.
 
 ## Qué hice
 
@@ -27,7 +27,7 @@ El proyecto se hizo en pareja, y la división importa:
 - **Ventas** (desarrollador principal): ventas con el IVA incluido en el precio, estados por pestaña, adelantos y vencimientos.
 - **Servicio rápido** (lo creé yo): un módulo nuevo para trabajos cortos que no necesitan todo el flujo de reparación.
 - **Reportes** (míos), además de aportes en **reparaciones**, un módulo que creó mi compañero, y un módulo de **garantías** personalizado, con un certificado rediseñado.
-- **Impresos con formato de Costa Rica:** facturas, proformas, boletas de reparación y certificados de garantía, con un encabezado que el taller configura por su cuenta; y un tema adaptable para que el sistema funcione desde el celular.
+- **Impresos con formato de Costa Rica:** facturas, proformas, boletas de reparación y certificados de garantía, con un encabezado que la tienda configura por su cuenta; y un tema adaptable para que el sistema funcione desde el celular.
 - **El servidor de producción:** lo monté, lo aseguré y lo mantengo, con respaldos diarios.
 
 <FigurePair
@@ -37,8 +37,8 @@ El proyecto se hizo en pareja, y la división importa:
 />
 
 <Figure
-  image={{ src: documents, alt: "La factura impresa y la boleta de ingreso de una reparación: el logo del taller, el cliente, las líneas con IVA y la lista de lo que trae la máquina." }}
-  caption="La factura y la boleta de ingreso, con los formatos del taller: el IVA por línea y la lista de lo que trae cada máquina al llegar. Datos de prueba."
+  image={{ src: documents, alt: "La factura impresa y la boleta de ingreso de una reparación: el logo de la tienda, el cliente, las líneas con IVA y la lista de lo que trae la máquina." }}
+  caption="La factura y la boleta de ingreso, con los formatos de la tienda: el IVA por línea y la lista de lo que trae cada máquina al llegar. Datos de prueba."
 />
 
 <Figure
@@ -54,9 +54,9 @@ El proyecto se hizo en pareja, y la división importa:
 
 ## Qué me llevo
 
-Lo que más me enseñó este proyecto fue escuchar. Rehice pantallas, y hasta módulos completos, más de una vez, porque no eran lo que el taller necesitaba: los había construido con lo que yo entendía, no con lo que ellos pedían. Aprendí a sentarme con ellos las veces que hiciera falta, preguntar en concreto cómo trabajan, tomar notas y confirmar antes de programar, y a refactorizar sin apego cuando la respuesta cambiaba.
+Lo que más me enseñó este proyecto fue escuchar. Rehice pantallas, y hasta módulos completos, más de una vez, porque no eran lo que la tienda necesitaba: los había construido con lo que yo entendía, no con lo que ellos pedían. Aprendí a sentarme con ellos las veces que hiciera falta, preguntar en concreto cómo trabajan, tomar notas y confirmar antes de programar, y a refactorizar sin apego cuando la respuesta cambiaba.
 
-Un proyecto de curso termina cuando se califica; un sistema del que depende un negocio, no. Desde que el taller empezó a operar con él, cada cambio tenía que poder desplegarse sin riesgo en un día de trabajo, cada pedido necesitaba una respuesta y el servidor pasó a ser mi responsabilidad. Ahí aprendí a tratar los respaldos, los accesos y las actualizaciones como parte del producto, no como algo para después.
+Un proyecto de curso termina cuando se califica; un sistema del que depende un negocio, no. Desde que la tienda empezó a operar con él, cada cambio tenía que poder desplegarse sin riesgo en un día de trabajo, cada pedido necesitaba una respuesta y el servidor pasó a ser mi responsabilidad. Ahí aprendí a tratar los respaldos, los accesos y las actualizaciones como parte del producto, no como algo para después.
 
 ## Más pantallas
 
@@ -66,7 +66,7 @@ Un proyecto de curso termina cuando se califica; un sistema del que depende un n
     { src: galleryApartado, dark: galleryApartadoDark, alt: "Un pedido en estado Apartado: los productos con su IVA, la barra de estados y los totales. Datos de prueba.", caption: "Un pedido apartado" },
     { src: galleryRapidoForm, dark: galleryRapidoFormDark, alt: "Boleta de servicio rápido: el cliente, la máquina, las fechas de ingreso y entrega y la descripción de la avería. Datos de prueba.", caption: "Una boleta de servicio rápido" },
     { src: galleryReportes, dark: galleryReportesDark, alt: "Reporte de proformas y ventas: cada documento con su cliente, fecha, estado, total y saldo pendiente. Datos de prueba.", caption: "El reporte de proformas y ventas" },
-    { src: galleryClientes, dark: galleryClientesDark, alt: "Clientes del taller en tarjetas, con su nombre y correo. Datos de prueba.", caption: "Los clientes del taller" },
+    { src: galleryClientes, dark: galleryClientesDark, alt: "Clientes de la tienda en tarjetas, con su nombre y correo. Datos de prueba.", caption: "Los clientes de la tienda" },
   ]}
 />
 
@@ -96,7 +96,7 @@ Monté y documenté el servidor, y lo mantengo:
 
 ### Extender Odoo en lugar de pelear con él
 
-Cada cambio vive en un módulo propio que hereda de los modelos y las vistas de Odoo, así que el código estándar nunca se edita y el sistema se puede actualizar sin perder los cambios del taller.
+Cada cambio vive en un módulo propio que hereda de los modelos y las vistas de Odoo, así que el código estándar nunca se edita y el sistema se puede actualizar sin perder los cambios de la tienda.
 
 ### Un servidor pequeño, bien configurado
 
@@ -104,4 +104,4 @@ El negocio es pequeño, y el presupuesto también. En lugar de una máquina más
 
 ### Salir a producción fue el comienzo, no el final
 
-El sistema siguió creciendo después de salir a producción. Desde entonces construí el módulo de servicio rápido, rehíce las ventas para que el estado de la reparación y los adelantos queden ligados a la factura, agregué un encabezado de proforma que el taller configura desde Ajustes y rediseñé las facturas y el certificado de garantía. A la par llegaron las correcciones que solo revela el uso diario: precios con IVA que se actualizan mientras se escriben, logos bien recortados en los impresos, fechas en hora local y PDF que se descargan en cualquier celular. Detalles así deciden si la gente sigue usando un sistema.
+El sistema siguió creciendo después de salir a producción. Desde entonces construí el módulo de servicio rápido, rehíce las ventas para que el estado de la reparación y los adelantos queden ligados a la factura, agregué un encabezado de proforma que la tienda configura desde Ajustes y rediseñé las facturas y el certificado de garantía. A la par llegaron las correcciones que solo revela el uso diario: precios con IVA que se actualizan mientras se escriben, logos bien recortados en los impresos, fechas en hora local y PDF que se descargan en cualquier celular. Detalles así deciden si la gente sigue usando un sistema.

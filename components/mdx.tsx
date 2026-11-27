@@ -17,6 +17,19 @@ export function FigurePair({ wide, narrow, caption }: { wide: Img; narrow: Img; 
   );
 }
 
+/** Diagram arrow drawn in SVG, so the line and the head always meet and stay centred. */
+function Arrow({ to = "down" }: { to?: "down" | "right" }) {
+  return to === "down" ? (
+    <svg className="diagram-arrow-svg" width="14" height="24" viewBox="0 0 14 24" aria-hidden="true">
+      <path d="M7 2v19M2 15.5 7 21l5-5.5" />
+    </svg>
+  ) : (
+    <svg className="diagram-arrow-svg" width="24" height="14" viewBox="0 0 24 14" aria-hidden="true">
+      <path d="M2 7h19M15.5 2 21 7l-5.5 5" />
+    </svg>
+  );
+}
+
 type Step = [title: string, note: string | null];
 
 /** Steps in order, top to bottom, with an arrow between each. */
@@ -26,6 +39,11 @@ export function FlowDiagram({ label, steps, caption }: { label: string; steps: S
       <ol className="diagram-flow">
         {steps.map(([title, note], n) => (
           <li key={title} data-reveal style={{ "--i": n } as CSSProperties}>
+            {n > 0 && (
+              <span className="diagram-flow-arrow">
+                <Arrow />
+              </span>
+            )}
             <strong>{title}</strong>
             {note && <span>{note}</span>}
           </li>
@@ -59,7 +77,11 @@ export function ModulesDiagram({
           <li key={m}>{m}</li>
         ))}
       </ul>
-      <p className="diagram-link">{link}</p>
+      <div className="diagram-link">
+        <Arrow />
+        <p>{link}</p>
+        <Arrow />
+      </div>
       <div className="diagram-core">
         <strong>{core}</strong>
         <span>{coreNote}</span>
@@ -95,7 +117,9 @@ export function PortsDiagram({
         {rows.map(([port, adapter, note]) => (
           <li key={port}>
             <span className="diagram-port">{port}</span>
-            <span className="diagram-arrow" aria-hidden="true" />
+            <span className="diagram-arrow">
+              <Arrow to="right" />
+            </span>
             <span className="diagram-adapter">
               {adapter}
               {note && <small>{note}</small>}
